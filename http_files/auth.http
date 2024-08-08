@@ -1,0 +1,25 @@
+POST localhost:8080/register
+Content-Type: Application/json
+
+{
+  "username": "trashdog",
+  "password": "password123",
+  "email": "disconmemay@example.com"
+
+}
+
+
+
+###
+GET localhost:8080/users
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjMyODM4NzcsInVzZXJfaWQiOjF9.miN-rjd61SWnbaXK2FzH8XDmTnuTpbjjhkpW3xGAaCo
+
+###
+POST localhost:8080/login
+Content-Type: Application/json
+
+{
+  "username": "trashdog",
+  "password": "password123",
+  "email": "disconmemay@example.com"
+}
