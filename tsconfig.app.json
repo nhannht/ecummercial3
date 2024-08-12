@@ -22,12 +22,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./client/*"]
     }
   },
   "include": [
-    "./client/**/*.{ts,tsx}"
-  ]
+    "./client/**/*.{ts,tsx}",
+
+  ],
+
+
 }

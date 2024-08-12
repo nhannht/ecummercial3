@@ -4,10 +4,11 @@ import "gorm.io/gorm"
 
 type Order struct {
 	gorm.Model
-	UserID      uint
-	User        User
-	OrderDate   string
-	TotalAmount float64
-	OrderItems  []OrderItem
-	Payments    []Payment
+	UserID      uint        `faker:"-"`
+	User        User        `faker:"-"`
+	OrderDate   string      `faker:"date"`
+	TotalAmount float64     `faker:"amount"`
+	OrderItems  []OrderItem `faker:"-"`
+	Payments    []Payment   `faker:"-"`
+	Status      string      `faker:"oneof:pending,shipped,delivered"`
 }

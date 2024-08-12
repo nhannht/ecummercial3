@@ -1,6 +1,6 @@
 
 import { Input } from "@/components/ui/input"
-import { Link} from "react/router-dom"
+import { Link} from "react-router-dom"
 import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationLink, PaginationEllipsis, PaginationNext } from "@/components/ui/pagination"
 
 export default function SearchResults() {
@@ -28,7 +28,7 @@ export default function SearchResults() {
           </div>
           <div className="grid gap-6">
             <div className="bg-background rounded-md shadow-sm overflow-hidden">
-              <Link href="#" className="flex items-center gap-4 p-4 hover:bg-muted transition-colors" prefetch={false}>
+              <Link to="#" className="flex items-center gap-4 p-4 hover:bg-muted transition-colors" >
                 <img
                   src="/placeholder.svg"
                   alt="Result thumbnail"
@@ -44,15 +44,15 @@ export default function SearchResults() {
                     content.
                   </p>
                   <div className="text-sm text-muted-foreground">
-                    <a href="#" className="hover:underline">
+                    <Link to="#" className="hover:underline">
                       example.com/result
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </Link>
             </div>
             <div className="bg-background rounded-md shadow-sm overflow-hidden">
-              <Link href="#" className="flex items-center gap-4 p-4 hover:bg-muted transition-colors" prefetch={false}>
+              <Link to="#" className="flex items-center gap-4 p-4 hover:bg-muted transition-colors" >
                 <img
                   src="/placeholder.svg"
                   alt="Result thumbnail"
@@ -67,15 +67,15 @@ export default function SearchResults() {
                     This is another search result with a brief description of the content.
                   </p>
                   <div className="text-sm text-muted-foreground">
-                    <a href="#" className="hover:underline">
+                    <Link to="#" className="hover:underline">
                       example.com/another-result
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </Link>
             </div>
             <div className="bg-background rounded-md shadow-sm overflow-hidden">
-              <Link href="#" className="flex items-center gap-4 p-4 hover:bg-muted transition-colors" prefetch={false}>
+              <Link to="#" className="flex items-center gap-4 p-4 hover:bg-muted transition-colors" >
                 <img
                   src="/placeholder.svg"
                   alt="Result thumbnail"
@@ -90,15 +90,15 @@ export default function SearchResults() {
                     This is the third search result with a brief description of the content.
                   </p>
                   <div className="text-sm text-muted-foreground">
-                    <a href="#" className="hover:underline">
+                    <Link to="#" className="hover:underline">
                       example.com/third-result
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </Link>
             </div>
             <div className="bg-background rounded-md shadow-sm overflow-hidden">
-              <Link href="#" className="flex items-center gap-4 p-4 hover:bg-muted transition-colors" prefetch={false}>
+              <Link to="#" className="flex items-center gap-4 p-4 hover:bg-muted transition-colors" >
                 <img
                   src="/placeholder.svg"
                   alt="Result thumbnail"
@@ -121,7 +121,7 @@ export default function SearchResults() {
               </Link>
             </div>
             <div className="bg-background rounded-md shadow-sm overflow-hidden">
-              <Link href="#" className="flex items-center gap-4 p-4 hover:bg-muted transition-colors" prefetch={false}>
+              <Link to="#" className="flex items-center gap-4 p-4 hover:bg-muted transition-colors" >
                 <img
                   src="/placeholder.svg"
                   alt="Result thumbnail"
@@ -136,9 +136,9 @@ export default function SearchResults() {
                     This is the fifth search result with a brief description of the content.
                   </p>
                   <div className="text-sm text-muted-foreground">
-                    <a href="#" className="hover:underline">
+                    <Link to="#" className="hover:underline">
                       example.com/fifth-result
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </Link>

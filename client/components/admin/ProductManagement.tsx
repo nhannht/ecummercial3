@@ -1,14 +1,11 @@
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-
-
-export default function Component() {
+export default function ProductManagement() {
   const [products, setProducts] = useState([
     {
       id: 1,
@@ -34,9 +31,11 @@ export default function Component() {
       inventory: 100,
       image: "/placeholder.svg",
     },
-  ])
-  const [showDialog, setShowDialog] = useState(false)
-  const [editingProduct, setEditingProduct] = useState(null)
+  ]);
+  const [showDialog, setShowDialog] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [filter, setFilter] = useState("");
+
   const handleAddProduct = () => {
     setEditingProduct({
       id: Date.now(),
@@ -45,73 +44,68 @@ export default function Component() {
       price: 0,
       inventory: 0,
       image: "",
-    })
-    setShowDialog(true)
-  }
+    });
+    setShowDialog(true);
+  };
+
   const handleEditProduct = (product) => {
-    setEditingProduct(product)
-    setShowDialog(true)
-  }
+    setEditingProduct(product);
+    setShowDialog(true);
+  };
+
   const handleDeleteProduct = (id) => {
-    setProducts(products.filter((p) => p.id !== id))
-  }
+    setProducts(products.filter((p) => p.id !== id));
+  };
+
   const handleSaveProduct = (product) => {
     if (editingProduct.id) {
-      setProducts(products.map((p) => (p.id === editingProduct.id ? { ...p, ...product } : p)))
+      setProducts(products.map((p) => (p.id === editingProduct.id ? { ...p, ...product } : p)));
     } else {
-      setProducts([...products, product])
+      setProducts([...products, product]);
     }
-    setEditingProduct(null)
-    setShowDialog(false)
-  }
+    setEditingProduct(null);
+    setShowDialog(false);
+  };
+
   return (
     <div className="flex flex-col h-full">
       <header className="bg-background border-b px-6 py-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Product Management</h1>
+        <div className="flex items-center gap-4">
+          <Input
+            type="text"
+            placeholder="Filter products"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="max-w-xs"
+          />
+        </div>
         <Button onClick={handleAddProduct}>Add Product</Button>
       </header>
       <main className="flex-1 overflow-auto p-6">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Image</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Inventory</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {products.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell>
-                  <img
-                    src="/placeholder.svg"
-                    alt={product.name}
-                    width={64}
-                    height={64}
-                    className="aspect-square rounded-md object-cover"
-                  />
-                </TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.description}</TableCell>
-                <TableCell>${product.price.toFixed(2)}</TableCell>
-                <TableCell>{product.inventory}</TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" onClick={() => handleEditProduct(product)}>
-                      Edit
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={() => handleDeleteProduct(product.id)}>
-                      Delete
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {products.map((product) => (
+            <div key={product.id} className="border rounded-lg p-4 flex flex-col">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-48 object-cover rounded-md mb-4"
+              />
+              <h2 className="text-lg font-bold mb-2">{product.name}</h2>
+              <p className="text-sm text-muted-foreground mb-2">{product.description}</p>
+              <p className="text-lg font-semibold mb-2">${product.price.toFixed(2)}</p>
+              <p className="text-sm text-muted-foreground mb-4">Inventory: {product.inventory}</p>
+              <div className="flex gap-2 mt-auto">
+                <Button size="sm" variant="outline" onClick={() => handleEditProduct(product)}>
+                  Edit
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => handleDeleteProduct(product.id)}>
+                  Delete
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
       </main>
       {showDialog && (
         <Dialog>
@@ -125,7 +119,7 @@ export default function Component() {
             <div>
               <form
                 onSubmit={(e) => {
-                  e.preventDefault()
+                  e.preventDefault();
                   handleSaveProduct({
                     id: editingProduct.id,
                     name: e.target.name.value,
@@ -133,7 +127,7 @@ export default function Component() {
                     price: parseFloat(e.target.price.value),
                     inventory: parseInt(e.target.inventory.value),
                     image: e.target.image.value,
-                  })
+                  });
                 }}
               >
                 <div className="grid gap-4">
@@ -161,11 +155,9 @@ export default function Component() {
                   </div>
                 </div>
                 <div className="mt-6 flex justify-end gap-2">
-                  <div>
-                    <Button type="button" variant="outline">
-                      Cancel
-                    </Button>
-                  </div>
+                  <Button type="button" variant="outline" onClick={() => setShowDialog(false)}>
+                    Cancel
+                  </Button>
                   <Button type="submit">Save</Button>
                 </div>
               </form>
@@ -174,5 +166,5 @@ export default function Component() {
         </Dialog>
       )}
     </div>
-  )
+  );
 }

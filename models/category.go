@@ -4,6 +4,6 @@ import "gorm.io/gorm"
 
 type Category struct {
 	gorm.Model
-	CategoryName string
-	Products     []Product `gorm:"many2many:product_categories;"`
+	CategoryName string    `gorm:"unique" binding:"required" faker:"word,unique"`
+	Products     []Product `gorm:"many2many:product_categories;" faker:"-"`
 }

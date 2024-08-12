@@ -1,12 +1,12 @@
 
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Label } from "@/components/ui/label"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import { Button } from "../ui/button"
+import { Input } from "../ui/input"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../ui/card"
+import { Badge } from "../ui/badge"
+import { Label } from "../ui/label"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select"
 
 export default function UserManagement() {
   const [users, setUsers] = useState([

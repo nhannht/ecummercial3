@@ -68,11 +68,5 @@ func setupRoute(r *gin.Engine) {
 		r.DELETE("/payments/:id", handlers.DeletePayment)
 
 	}
-	{
-		r.POST("/addresses", handlers.CreateAddress)
-		r.GET("/addresses", handlers.GetAddresses)
-		r.GET("/addresses/:id", handlers.GetAddress)
-		r.PUT("/addresses/:id", handlers.UpdateAddress)
-		r.DELETE("/addresses/:id", handlers.DeleteAddress)
-	}
+
 }

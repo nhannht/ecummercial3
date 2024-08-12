@@ -1,13 +1,11 @@
-import Signup from "./components/me/Signup.tsx";
-import ProductList from "./components/me/ProductList";
+import {Outlet} from "react-router-dom";
 
 
 function App() {
 
     return (
         <div>
-            <Signup/>
-            <ProductList/>
+            <Outlet/>
         </div>
     )
 }

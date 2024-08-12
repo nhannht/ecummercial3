@@ -26,7 +26,6 @@ func ConnectAndMigrateDatabase() {
 		dbDropTables := DB.Migrator().DropTable(
 			&models.User{},
 			&models.Category{},
-			&models.Address{},
 			&models.Order{},
 			&models.OrderItem{},
 			&models.Payment{},
@@ -36,20 +35,25 @@ func ConnectAndMigrateDatabase() {
 		if dbDropTables != nil {
 			log.Fatalf("Could not drop tables: %v", dbDropTables)
 		}
+
 	}
 
 	migrateErr := DB.AutoMigrate(
 		&models.User{},
 		&models.Category{},
-		&models.Address{},
 		&models.Order{},
 		&models.OrderItem{},
 		&models.Payment{},
 		&models.Product{},
 		&models.Review{},
 	)
+
 	if migrateErr != nil {
 		return
+	}
+
+	if mode == "development" {
+		fillDbWithRandomData()
 	}
 
 }

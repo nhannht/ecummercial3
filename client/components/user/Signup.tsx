@@ -1,7 +1,7 @@
 
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Label } from "../ui/label"
+import { Input } from "../ui/input"
+import { Button } from "../ui/button"
 import {Link} from "react-router-dom"
 
 export default function Signup() {

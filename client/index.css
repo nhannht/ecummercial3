@@ -67,3 +67,28 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+.quill-content {
+  @apply bg-white p-4 rounded-lg shadow-md;
+}
+
+.quill-content p {
+  @apply mb-4;
+}
+
+.quill-content h1, .quill-content h2, .quill-content h3, .quill-content h4, .quill-content h5, .quill-content h6 {
+  @apply font-bold mb-2;
+}
+
+.quill-content ul, .quill-content ol {
+  @apply list-disc list-inside mb-4;
+}
+
+.quill-content a {
+  @apply text-blue-500 underline;
+}
+
+.quill-content img {
+  @apply max-w-full h-auto rounded-lg;
+}

@@ -1,0 +1,69 @@
+@startuml
+
+class Order {
+  +gorm.Model
+  +UserID: uint
+  +OrderDate: string
+  +TotalAmount: float64
+  +Status: string
+}
+
+class OrderItem {
+  +gorm.Model
+  +OrderID: uint
+  +ProductID: uint
+  +Quantity: int
+  +Price: float64
+}
+
+class Payment {
+  +gorm.Model
+  +OrderID: uint
+  +Amount: float64
+  +PaymentDate: string
+  +PaymentMethod: string
+  +Status: string
+}
+
+class User {
+  +gorm.Model
+  +Name: string
+  +Email: string
+}
+
+class Review {
+  +gorm.Model
+  +UserID: uint
+  +ProductID: uint
+  +Rating: int
+  +Comment: string
+  +ReviewDate: string
+}
+
+class Product {
+  +gorm.Model
+  +Name: string
+  +Description: string
+  +Price: float64
+  +Stock: int
+  +Image: string
+  +OtherImages: StringArray
+}
+
+class Category {
+  +gorm.Model
+  +CategoryName: string
+  +Products: []Product
+}
+
+Order "1" -- "0..*" OrderItem : contains
+Order "1" -- "0..*" Payment : includes
+Order "1" -- "1" User : placed by
+User "1" -- "0..*" Review : writes
+Review "1" -- "1" User : written by
+OrderItem "0..*" -- "1" Product : includes
+Review "1" -- "1" Product : about
+Product "0..*" -- "0..*" Category : belongs to
+Category "0..*" -- "0..*" Product : includes
+
+@enduml

@@ -1,9 +1,9 @@
 
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar"
+import { Label } from "../ui/label"
+import { Input } from "../ui/input"
+import { Button } from "../ui/button"
+import { Separator } from "../ui/separator"
 
 export default function Component() {
   return (

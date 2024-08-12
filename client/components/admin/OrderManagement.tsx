@@ -1,10 +1,10 @@
 
 import { useState, useMemo } from "react"
-import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem, DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
+import { Input } from "../ui/input"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem, DropdownMenuItem } from "../ui/dropdown-menu"
+import { Button } from "../ui/button"
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../ui/table"
+import { Badge } from "../ui/badge"
 import {Link } from "react-router-dom"
 export default function Component() {
   const [orders, setOrders] = useState([
