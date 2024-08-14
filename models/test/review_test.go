@@ -1,6 +1,7 @@
-package models
+package test
 
 import (
+	"nhannht.kute/ecummercial/models"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -10,10 +11,10 @@ import (
 func TestCreateReview(t *testing.T) {
 	db := SetupTestDB()
 
-	user := User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
+	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.Create(&user)
 
-	product := Product{
+	product := models.Product{
 		Name:        "Laptop",
 		Description: "A high-end gaming laptop",
 		Price:       1500.00,
@@ -21,7 +22,7 @@ func TestCreateReview(t *testing.T) {
 	}
 	db.Create(&product)
 
-	review := Review{
+	review := models.Review{
 		UserID:     user.ID,
 		ProductID:  product.ID,
 		Rating:     5,
@@ -42,10 +43,10 @@ func TestCreateReview(t *testing.T) {
 func TestGetReview(t *testing.T) {
 	db := SetupTestDB()
 
-	user := User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
+	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.Create(&user)
 
-	product := Product{
+	product := models.Product{
 		Name:        "Laptop",
 		Description: "A high-end gaming laptop",
 		Price:       1500.00,
@@ -53,7 +54,7 @@ func TestGetReview(t *testing.T) {
 	}
 	db.Create(&product)
 
-	review := Review{
+	review := models.Review{
 		UserID:     user.ID,
 		ProductID:  product.ID,
 		Rating:     5,
@@ -62,7 +63,7 @@ func TestGetReview(t *testing.T) {
 	}
 	db.Create(&review)
 
-	var fetchedReview Review
+	var fetchedReview models.Review
 	result := db.First(&fetchedReview, review.ID)
 
 	assert.Nil(t, result.Error)
@@ -74,10 +75,10 @@ func TestGetReview(t *testing.T) {
 func TestUpdateReview(t *testing.T) {
 	db := SetupTestDB()
 
-	user := User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
+	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.Create(&user)
 
-	product := Product{
+	product := models.Product{
 		Name:        "Laptop",
 		Description: "A high-end gaming laptop",
 		Price:       1500.00,
@@ -85,7 +86,7 @@ func TestUpdateReview(t *testing.T) {
 	}
 	db.Create(&product)
 
-	review := Review{
+	review := models.Review{
 		UserID:     user.ID,
 		ProductID:  product.ID,
 		Rating:     5,
@@ -94,14 +95,14 @@ func TestUpdateReview(t *testing.T) {
 	}
 	db.Create(&review)
 
-	updatedData := Review{
+	updatedData := models.Review{
 		Rating:     4,
 		Comment:    "Very good product!",
 		ReviewDate: "2023-10-02",
 	}
 	db.Model(&review).Updates(updatedData)
 
-	var updatedReview Review
+	var updatedReview models.Review
 	db.First(&updatedReview, review.ID)
 
 	assert.Equal(t, 4, updatedReview.Rating)
@@ -112,10 +113,10 @@ func TestUpdateReview(t *testing.T) {
 func TestDeleteReview(t *testing.T) {
 	db := SetupTestDB()
 
-	user := User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
+	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.Create(&user)
 
-	product := Product{
+	product := models.Product{
 		Name:        "Laptop",
 		Description: "A high-end gaming laptop",
 		Price:       1500.00,
@@ -123,7 +124,7 @@ func TestDeleteReview(t *testing.T) {
 	}
 	db.Create(&product)
 
-	review := Review{
+	review := models.Review{
 		UserID:     user.ID,
 		ProductID:  product.ID,
 		Rating:     5,
@@ -134,7 +135,7 @@ func TestDeleteReview(t *testing.T) {
 
 	db.Delete(&review)
 
-	var deletedReview Review
+	var deletedReview models.Review
 	result := db.First(&deletedReview, review.ID)
 
 	assert.NotNil(t, result.Error)

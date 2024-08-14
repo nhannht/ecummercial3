@@ -1,6 +1,7 @@
-package models
+package test
 
 import (
+	"nhannht.kute/ecummercial/models"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -8,9 +9,10 @@ import (
 )
 
 func TestCreateCategory(t *testing.T) {
+
 	db := SetupTestDB()
 
-	category := Category{CategoryName: "Electronics"}
+	category := models.Category{CategoryName: "Electronics"}
 	result := db.Create(&category)
 
 	assert.Nil(t, result.Error)
@@ -20,10 +22,10 @@ func TestCreateCategory(t *testing.T) {
 func TestGetCategory(t *testing.T) {
 	db := SetupTestDB()
 
-	category := Category{CategoryName: "Electronics"}
+	category := models.Category{CategoryName: "Electronics"}
 	db.Create(&category)
 
-	var fetchedCategory Category
+	var fetchedCategory models.Category
 	result := db.First(&fetchedCategory, category.ID)
 
 	assert.Nil(t, result.Error)
@@ -33,13 +35,13 @@ func TestGetCategory(t *testing.T) {
 func TestUpdateCategory(t *testing.T) {
 	db := SetupTestDB()
 
-	category := Category{CategoryName: "Electronics"}
+	category := models.Category{CategoryName: "Electronics"}
 	db.Create(&category)
 
-	updatedData := Category{CategoryName: "Home Appliances"}
+	updatedData := models.Category{CategoryName: "Home Appliances"}
 	db.Model(&category).Updates(updatedData)
 
-	var updatedCategory Category
+	var updatedCategory models.Category
 	db.First(&updatedCategory, category.ID)
 
 	assert.Equal(t, "Home Appliances", updatedCategory.CategoryName)
@@ -48,12 +50,12 @@ func TestUpdateCategory(t *testing.T) {
 func TestDeleteCategory(t *testing.T) {
 	db := SetupTestDB()
 
-	category := Category{CategoryName: "Electronics"}
+	category := models.Category{CategoryName: "Electronics"}
 	db.Create(&category)
 
 	db.Delete(&category)
 
-	var deletedCategory Category
+	var deletedCategory models.Category
 	result := db.First(&deletedCategory, category.ID)
 
 	assert.NotNil(t, result.Error)

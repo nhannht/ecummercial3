@@ -36,3 +36,11 @@ type Product struct {
 	Image       string      `faker:"-"`
 	OtherImages StringArray `faker:"-"`
 }
+
+func (p *Product) BeforeCreate(tx *gorm.DB) (err error) {
+	if err = validate.Struct(p); err != nil {
+		return err
+	}
+
+	return nil
+}

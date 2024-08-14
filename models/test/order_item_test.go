@@ -1,6 +1,7 @@
-package models
+package test
 
 import (
+	"nhannht.kute/ecummercial/models"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -10,26 +11,30 @@ import (
 func TestCreateOrderItem(t *testing.T) {
 	db := SetupTestDB()
 
-	user := User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
+	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.Create(&user)
 
-	order := Order{
+	order := models.Order{
 		UserID:      user.ID,
 		OrderDate:   "2023-10-01",
 		TotalAmount: 100.50,
 	}
 	db.Create(&order)
 
-	product := Product{Name: "Laptop", Price: 1000.00}
+	product := models.Product{Name: "Laptop", Price: 1000.00}
 	db.Create(&product)
 
-	orderItem := OrderItem{
+	orderItem := models.OrderItem{
 		OrderID:   order.ID,
 		ProductID: product.ID,
 		Quantity:  1,
 		Price:     1000.00,
 	}
 	result := db.Create(&orderItem)
+
+	//fmt.Printf("%v\n", result.Error)
+	//fmt.Printf("userid of order of order item %v\n", orderItem.Order.UserID)
+	//fmt.Printf("%v\n", orderItem)
 
 	assert.Nil(t, result.Error)
 	assert.NotZero(t, orderItem.ID)
@@ -40,20 +45,20 @@ func TestCreateOrderItem(t *testing.T) {
 func TestGetOrderItem(t *testing.T) {
 	db := SetupTestDB()
 
-	user := User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
+	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.Create(&user)
 
-	order := Order{
+	order := models.Order{
 		UserID:      user.ID,
 		OrderDate:   "2023-10-01",
 		TotalAmount: 100.50,
 	}
 	db.Create(&order)
 
-	product := Product{Name: "Laptop", Price: 1000.00}
+	product := models.Product{Name: "Laptop", Price: 1000.00}
 	db.Create(&product)
 
-	orderItem := OrderItem{
+	orderItem := models.OrderItem{
 		OrderID:   order.ID,
 		ProductID: product.ID,
 		Quantity:  1,
@@ -61,7 +66,7 @@ func TestGetOrderItem(t *testing.T) {
 	}
 	db.Create(&orderItem)
 
-	var fetchedOrderItem OrderItem
+	var fetchedOrderItem models.OrderItem
 	result := db.First(&fetchedOrderItem, orderItem.ID)
 
 	assert.Nil(t, result.Error)
@@ -72,20 +77,20 @@ func TestGetOrderItem(t *testing.T) {
 func TestUpdateOrderItem(t *testing.T) {
 	db := SetupTestDB()
 
-	user := User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
+	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.Create(&user)
 
-	order := Order{
+	order := models.Order{
 		UserID:      user.ID,
 		OrderDate:   "2023-10-01",
 		TotalAmount: 100.50,
 	}
 	db.Create(&order)
 
-	product := Product{Name: "Laptop", Price: 1000.00}
+	product := models.Product{Name: "Laptop", Price: 1000.00}
 	db.Create(&product)
 
-	orderItem := OrderItem{
+	orderItem := models.OrderItem{
 		OrderID:   order.ID,
 		ProductID: product.ID,
 		Quantity:  1,
@@ -93,13 +98,13 @@ func TestUpdateOrderItem(t *testing.T) {
 	}
 	db.Create(&orderItem)
 
-	updatedData := OrderItem{
+	updatedData := models.OrderItem{
 		Quantity: 2,
 		Price:    2000.00,
 	}
 	db.Model(&orderItem).Updates(updatedData)
 
-	var updatedOrderItem OrderItem
+	var updatedOrderItem models.OrderItem
 	db.First(&updatedOrderItem, orderItem.ID)
 
 	assert.Equal(t, 2, updatedOrderItem.Quantity)
@@ -109,20 +114,20 @@ func TestUpdateOrderItem(t *testing.T) {
 func TestDeleteOrderItem(t *testing.T) {
 	db := SetupTestDB()
 
-	user := User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
+	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.Create(&user)
 
-	order := Order{
+	order := models.Order{
 		UserID:      user.ID,
 		OrderDate:   "2023-10-01",
 		TotalAmount: 100.50,
 	}
 	db.Create(&order)
 
-	product := Product{Name: "Laptop", Price: 1000.00}
+	product := models.Product{Name: "Laptop", Price: 1000.00}
 	db.Create(&product)
 
-	orderItem := OrderItem{
+	orderItem := models.OrderItem{
 		OrderID:   order.ID,
 		ProductID: product.ID,
 		Quantity:  1,
@@ -132,7 +137,7 @@ func TestDeleteOrderItem(t *testing.T) {
 
 	db.Delete(&orderItem)
 
-	var deletedOrderItem OrderItem
+	var deletedOrderItem models.OrderItem
 	result := db.First(&deletedOrderItem, orderItem.ID)
 
 	assert.NotNil(t, result.Error)

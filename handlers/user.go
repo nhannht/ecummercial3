@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"nhannht.kute/ecummercial/db"
@@ -9,7 +10,7 @@ import (
 
 type CreateUserInput struct {
 	Name     string `json:"name" binding:"required"`
-	Email    string `json:"email" binding:"required"`
+	Email    string `json:"email" binding:"required" validate:"email"`
 	Password string `json:"password" binding:"required"`
 }
 
@@ -21,7 +22,14 @@ func CreateUser(c *gin.Context) {
 	}
 
 	user := models.User{Name: input.Name, Email: input.Email, Password: input.Password}
-	db.DB.Create(&user)
+	fmt.Printf("db is %v", db.DB)
+	fmt.Printf("user is %v", user)
+	result := db.DB.Create(&user)
+
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
 }

@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"nhannht.kute/ecummercial/db"
 	"nhannht.kute/ecummercial/models"
@@ -22,15 +23,16 @@ func CreateProduct(c *gin.Context) {
 		return
 	}
 	file, err := c.FormFile("image")
+	var imagePath string
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Image upload failed"})
-		return
-	}
+		log.Printf("Error retrieving image: %v", err)
+	} else {
+		imagePath = fmt.Sprintf("uploads/%s", file.Filename)
+		if err := c.SaveUploadedFile(file, imagePath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save image"})
+			return
+		}
 
-	imagePath := fmt.Sprintf("uploads/%s", file.Filename)
-	if err := c.SaveUploadedFile(file, imagePath); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save image"})
-		return
 	}
 
 	product := models.Product{

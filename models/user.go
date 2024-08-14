@@ -1,6 +1,9 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
+)
 
 type User struct {
 	gorm.Model
@@ -11,4 +14,17 @@ type User struct {
 	Orders    []Order  `faker:"-"`
 	Reviews   []Review `faker:"-"`
 	Role      string   `binding:"required" faker:"oneof:user"`
+}
+
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+	if err = validate.Struct(u); err != nil {
+		return err
+	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	u.Password = string(hashedPassword)
+
+	return nil
 }

@@ -1,6 +1,7 @@
-package models
+package test
 
 import (
+	"nhannht.kute/ecummercial/models"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -10,7 +11,7 @@ import (
 func TestCreateProduct(t *testing.T) {
 	db := SetupTestDB()
 
-	product := Product{
+	product := models.Product{
 		Name:        "Laptop",
 		Description: "A high-end gaming laptop",
 		Price:       1500.00,
@@ -29,7 +30,7 @@ func TestCreateProduct(t *testing.T) {
 func TestGetProduct(t *testing.T) {
 	db := SetupTestDB()
 
-	product := Product{
+	product := models.Product{
 		Name:        "Laptop",
 		Description: "A high-end gaming laptop",
 		Price:       1500.00,
@@ -37,7 +38,7 @@ func TestGetProduct(t *testing.T) {
 	}
 	db.Create(&product)
 
-	var fetchedProduct Product
+	var fetchedProduct models.Product
 	result := db.First(&fetchedProduct, product.ID)
 
 	assert.Nil(t, result.Error)
@@ -50,7 +51,7 @@ func TestGetProduct(t *testing.T) {
 func TestUpdateProduct(t *testing.T) {
 	db := SetupTestDB()
 
-	product := Product{
+	product := models.Product{
 		Name:        "Laptop",
 		Description: "A high-end gaming laptop",
 		Price:       1500.00,
@@ -58,7 +59,7 @@ func TestUpdateProduct(t *testing.T) {
 	}
 	db.Create(&product)
 
-	updatedData := Product{
+	updatedData := models.Product{
 		Name:        "Gaming Laptop",
 		Description: "An updated high-end gaming laptop",
 		Price:       1600.00,
@@ -66,7 +67,7 @@ func TestUpdateProduct(t *testing.T) {
 	}
 	db.Model(&product).Updates(updatedData)
 
-	var updatedProduct Product
+	var updatedProduct models.Product
 	db.First(&updatedProduct, product.ID)
 
 	assert.Equal(t, "Gaming Laptop", updatedProduct.Name)
@@ -78,7 +79,7 @@ func TestUpdateProduct(t *testing.T) {
 func TestDeleteProduct(t *testing.T) {
 	db := SetupTestDB()
 
-	product := Product{
+	product := models.Product{
 		Name:        "Laptop",
 		Description: "A high-end gaming laptop",
 		Price:       1500.00,
@@ -88,7 +89,7 @@ func TestDeleteProduct(t *testing.T) {
 
 	db.Delete(&product)
 
-	var deletedProduct Product
+	var deletedProduct models.Product
 	result := db.First(&deletedProduct, product.ID)
 
 	assert.NotNil(t, result.Error)

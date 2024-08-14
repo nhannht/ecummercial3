@@ -1,8 +1,9 @@
-package models
+package test
 
 import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"nhannht.kute/ecummercial/models"
 )
 
 func SetupTestDB() *gorm.DB {
@@ -10,7 +11,15 @@ func SetupTestDB() *gorm.DB {
 	if dbConnectErr != nil {
 		panic("failed to connect to test database")
 	}
-	dbMigrateErr := db.Migrator().AutoMigrate(&User{}, &Order{}, &OrderItem{}, &Product{}, &Category{}, &Review{}, &Payment{})
+	dbMigrateErr := db.
+		Migrator().
+		AutoMigrate(&models.User{},
+			&models.Order{},
+			&models.OrderItem{},
+			&models.Product{},
+			&models.Category{},
+			&models.Review{},
+			&models.Payment{})
 	if dbMigrateErr != nil {
 		return nil
 	}

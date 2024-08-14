@@ -43,15 +43,9 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Password hashing failed"})
-		return
-	}
-
 	user := models.User{Name: input.Username,
 		Email:    input.Email,
-		Password: string(hashedPassword),
+		Password: input.Password,
 		Role:     "user",
 	}
 	if err := db.DB.Create(&user).Error; err != nil {

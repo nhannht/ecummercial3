@@ -127,7 +127,6 @@ func createRandomOrders() {
 				}
 
 				order.UserID = user.ID
-				order.User = user
 			}
 
 			DB.Create(&order)
@@ -161,7 +160,6 @@ func createRandomOrderItems() {
 					log.Fatalln("Cannot convert product to models.Product ")
 				}
 				orderItem.ProductID = product.ID
-				orderItem.Product = product
 			}
 			if len(orders) > 0 {
 				orderI, pickErr := lib.PickRandomElement(orders)
@@ -173,7 +171,6 @@ func createRandomOrderItems() {
 					log.Fatalln("Cannot convert order to models.Order ")
 				}
 				orderItem.OrderID = order.ID
-				orderItem.Order = order
 			}
 			DB.Create(&orderItem)
 
@@ -204,7 +201,6 @@ func createRandomPayments() {
 					log.Fatalln("Cannot convert order to models.Order ")
 				}
 				payment.OrderID = order.ID
-				payment.Order = order
 			}
 			DB.Create(&payment)
 
@@ -236,7 +232,6 @@ func createRandomReviews() {
 					log.Fatalln("Cannot convert user to models.User ")
 				}
 				review.UserID = user.ID
-				review.User = user
 			}
 			if len(products) > 0 {
 				productI, pickErr := lib.PickRandomElement(products)
@@ -248,11 +243,38 @@ func createRandomReviews() {
 					log.Fatalln("Cannot convert product to models.Product ")
 				}
 				review.ProductID = product.ID
-				review.Product = product
 			}
 			DB.Create(&review)
 
 			log.Printf("Successfully created fake review: %+v\n", review)
+		}
+	}
+	faker.ResetUnique()
+}
+
+func createRandomShippingInfo() {
+	for i := 0; i < 10; i++ {
+		shippingInfo := models.ShippingInfo{}
+		fakerErr := faker.FakeData(&shippingInfo)
+		if fakerErr != nil {
+			log.Fatalf("Error creating fake shipping info: %v", fakerErr)
+		} else {
+			var orders []models.Order
+			DB.Find(&orders)
+			if len(orders) > 0 {
+				orderI, pickErr := lib.PickRandomElement(orders)
+				if pickErr != nil {
+					log.Fatalf("Cannot pick random order %v", pickErr)
+				}
+				order, ok := orderI.(models.Order)
+				if !ok {
+					log.Fatalln("Cannot convert order to models.Order")
+				}
+				shippingInfo.OrderID = order.ID
+			}
+			DB.Create(&shippingInfo)
+
+			log.Printf("Successfully created fake shipping info: %+v\n", shippingInfo)
 		}
 	}
 	faker.ResetUnique()
@@ -267,4 +289,5 @@ func fillDbWithRandomData() {
 	createRandomPayments()
 	createRandomOrderItems()
 	createRandomCategories()
+	createRandomShippingInfo()
 }

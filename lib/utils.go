@@ -1,7 +1,9 @@
 package lib
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
 	"math/rand"
 	"reflect"
 	"time"
@@ -22,4 +24,9 @@ func PickRandomElement(slice interface{}) (interface{}, error) {
 
 	randomIndex := rand.Intn(s.Len()) // Generate a random index
 	return s.Index(randomIndex).Interface(), nil
+}
+
+func PrettyPrintObject(object interface{}) {
+	o, _ := json.MarshalIndent(object, "", "\t")
+	fmt.Printf("order json %v\n", string(o))
 }
