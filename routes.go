@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"nhannht.kute/ecummercial/handlers"
+	"nhannht.kute/ecummercial/server/handlers"
 )
 
 func setupRoute(r *gin.Engine) {

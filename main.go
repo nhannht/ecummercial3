@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"nhannht.kute/ecummercial/db"
+	"nhannht.kute/ecummercial/server/db"
 )
 
 func main() {
