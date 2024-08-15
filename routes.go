@@ -68,5 +68,22 @@ func setupRoute(r *gin.Engine) {
 		r.DELETE("/payments/:id", handlers.DeletePayment)
 
 	}
+	r.GET("/product-images/:imageName", handlers.ServeProductImage)
+	r.GET("/images/others/:imageName", handlers.ServeOtherImage)
+	r.POST("/upload/other", handlers.UploadOtherImage)
+	r.GET("/configuration/homepage/section1", handlers.GetConfHomePageSection1)
+	r.POST("/configuration/homepage/section1", handlers.EditConfHomePageSection1)
+
+	r.GET("/configuration/termandcondition/main", handlers.GetConfTermsAndConditionsPage)
+	r.POST("/configuration/termandcondition/main", handlers.EditConfTermsAndConditionsPage)
+
+	r.GET("/configuration/aboutus/main", handlers.GetConfAboutPage)
+	r.POST("/configuration/aboutus/main", handlers.EditConfAboutPage)
+
+	r.GET("/configuration/faq/main", handlers.GetConfFAQPage)
+	r.POST("/configuration/faq/main", handlers.EditConfFAQPage)
+
+	r.GET("/configuration/contact/main", handlers.GetConfContactPage)
+	r.POST("/configuration/contact/main", handlers.EditConfContactPage)
 
 }

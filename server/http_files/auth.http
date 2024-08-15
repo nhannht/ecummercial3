@@ -23,3 +23,8 @@ Content-Type: Application/json
   "password": "password123",
   "email": "disconmemay@example.com"
 }
+###
+GET localhost:8080/product-images/shit.jpg
+
+###
+GET localhost:8080/configuration/homepage/section1

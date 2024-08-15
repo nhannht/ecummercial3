@@ -34,7 +34,8 @@
     "react-resizable-panels": "^2.0.23",
     "react-router-dom": "^6.26.0",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "@react-buddy/ide-toolbox": "^2.4.0"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",

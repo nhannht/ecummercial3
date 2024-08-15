@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 /gorm.sqlite3
+/configuration/termandcondition/config.json
+/configuration/aboutus/config.json
+/configuration/contact/config.json
+/configuration/faq/config.json
+/configuration/homepage/section1.json

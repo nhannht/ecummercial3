@@ -4,7 +4,6 @@ import AdminApp from "./components/admin/AdminApp";
 import UserDashboard from "./components/user/UserDashBoard";
 import HomePage from "./components/shop/HomePage";
 import ProductListingPage from "./components/shop/ProductList";
-import ProductDetailPage from "./components/shop/ProductDetails";
 import CartPage from "./components/shop/Cart";
 import CheckoutPage from "./components/shop/Checkout";
 import OrderConfirmationPage from "./components/shop/OrderConfirmation";
@@ -24,6 +23,9 @@ import {RouteObject} from "react-router-dom";
 import DashBoard from "./components/admin/DashBoard";
 import ProductDescriptionEditor from "./components/admin/ProductDescriptionEditor";
 import NewProductEditor from "./components/admin/NewProductEditor";
+import EditSection1Config from "./components/admin/configuration-editors/Landing/Section1";
+import TermsAndConditionsEditor from "./components/admin/configuration-editors/termandcondition/TermAndConditionEditor";
+import ContactEditor from "./components/admin/configuration-editors/contact/ContactEditor";
 
 export const shopRoutes: RouteObject[] = [
     {
@@ -79,6 +81,10 @@ const adminRoutes:RouteObject[] = [
         element: <div><DashBoard/></div>
     },
     {
+        path:"landing",
+        element:<div></div>
+    },
+    {
       path:"products/new",
       element: <div><NewProductEditor /></div>
     },
@@ -97,6 +103,18 @@ const adminRoutes:RouteObject[] = [
     {
         path:"product-editor",
         element: <div><ProductDescriptionEditor/></div>
+    },
+    {
+        path:"configuration/homepage/section1",
+        element: <div><EditSection1Config/></div>
+    },
+    {
+        path:"configuration/termandcondition/main",
+        element:<div><TermsAndConditionsEditor/></div>
+    },
+    {
+        path:"configuration/contact/main",
+        element:<div><ContactEditor /></div>
     }
 ];
 const userRoutes = [
