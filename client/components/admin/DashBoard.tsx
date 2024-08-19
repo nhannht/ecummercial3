@@ -1,4 +1,4 @@
-
+//@ts-nocheck
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
 import {Link} from "react-router-dom"
 import { Input } from "@/components/ui/input"

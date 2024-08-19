@@ -15,8 +15,8 @@ func setupRoute(r *gin.Engine) {
 	}
 
 	{
-		protected.POST("/users", handlers.CreateUser)
-		protected.GET("/users", handlers.GetUsers)
+		r.POST("/users", handlers.CreateUser)
+		r.GET("/users", handlers.GetUsers)
 		r.GET("/users/:id", handlers.GetUser)
 		protected.PUT("/users/:id", handlers.UpdateUser)
 		protected.DELETE("/users/:id", handlers.DeleteUser)

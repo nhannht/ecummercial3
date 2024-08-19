@@ -23,7 +23,6 @@ describe('ShopNavigationBar', () => {
         );
 
         const trigger = screen.getByRole('button');
-        //@ts-expect-error : toBeInDocument only work when import "@testing-library/jest-dom/vitest" but we already add it in vitest.setup.ts, the checker just so dump
         expect(trigger).toBeInTheDocument();
 
 
@@ -41,7 +40,6 @@ describe('ShopNavigationBar', () => {
 
         shopLinks.forEach(link => {
             const linkElement = screen.getByText(link.title);
-            //@ts-expect-error
             expect(linkElement).toBeInTheDocument();
         });
     });
@@ -77,7 +75,6 @@ describe('ShopNavigationBar', () => {
 
         shopLinks.forEach(link => {
             const linkElement = screen.getByText(link.title);
-            //@ts-expect-error
             expect(linkElement).toBeInTheDocument();
         });
     });

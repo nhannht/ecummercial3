@@ -20,9 +20,9 @@ const formats = [
 
 const ProductDescriptionEditor = ({content,setContent}) => {
 
-    const handleSave = () => {
-        console.log(content)
-    };
+    // const handleSave = () => {
+    //     console.log(content)
+    // };
 
 
     return (

@@ -29,9 +29,7 @@
     }
   },
   "include": [
-    "./client/**/*.{ts,tsx}",
-
+    "./client/",
+    "./dev/"
   ],
-
-
 }

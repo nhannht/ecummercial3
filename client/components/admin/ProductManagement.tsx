@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";

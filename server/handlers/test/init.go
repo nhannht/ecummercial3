@@ -8,12 +8,11 @@ import (
 )
 
 func initDatabase() {
-	err := os.Setenv("mode", "test")
+	err := os.Setenv("MODE", "test")
 	if err != nil {
 		log.Fatalf("Cannot set mode to test %v", err)
 	}
 	db.ConnectAndMigrateDatabase()
-
 }
 func SetupRouter() *gin.Engine {
 

@@ -21,7 +21,6 @@ import FAQPage from "./components/shop/FAQ";
 import TermsAndConditionsPage from "./components/shop/TermsAndConditions";
 import {RouteObject} from "react-router-dom";
 import DashBoard from "./components/admin/DashBoard";
-import ProductDescriptionEditor from "./components/admin/ProductDescriptionEditor";
 import NewProductEditor from "./components/admin/NewProductEditor";
 import EditSection1Config from "./components/admin/configuration-editors/Landing/Section1";
 import TermsAndConditionsEditor from "./components/admin/configuration-editors/termandcondition/TermAndConditionEditor";
@@ -100,10 +99,10 @@ const adminRoutes:RouteObject[] = [
         path: "users",
         element: <div><UserManagementPage/></div>
     },
-    {
-        path:"product-editor",
-        element: <div><ProductDescriptionEditor/></div>
-    },
+    // {
+    //     path:"product-editor",
+    //     element: <div><ProductDescriptionEditor/></div>
+    // },
     {
         path:"configuration/homepage/section1",
         element: <div><EditSection1Config/></div>

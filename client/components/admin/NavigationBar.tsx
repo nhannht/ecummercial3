@@ -6,7 +6,6 @@ import {
     Package2Icon,
     PackageIcon,
     SettingsIcon,
-    ShoppingCartIcon,
     UsersIcon,
 } from "lucide-react";
 const routesData = [

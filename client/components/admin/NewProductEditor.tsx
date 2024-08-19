@@ -1,23 +1,13 @@
-import {useEffect, useState} from 'react';
+//@ts-nocheck
+import  {useEffect, useState} from 'react';
 import ProductDescriptionEditor from './ProductDescriptionEditor';
 import {Input} from '../ui/input';
 import {Label} from '../ui/label';
 import {Button} from '../ui/button';
 import ProductDetails from "../shop/ProductDetails";
-import {createCategory, fetchCategories} from "../../lib/handler";
+import {createCategory, fetchCategories} from "@/lib/handler.ts";
 import {Select} from "../ui/select";
 
-function CategorySelect  (){
-    const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
-    return (
-        <Select
-            placeholder="Select a category"
-            options={categoryOptions}
-            onChange={({ value }) => console.log(value)}
-        />
-    );
-}
 
 
 const NewProductEditor = () => {

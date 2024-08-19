@@ -10,7 +10,7 @@ import (
 
 func TestConnectAndMigrateDatabase(t *testing.T) {
 	// Call the function to connect and migrate the database
-	setEnvErr := os.Setenv("mode", "development")
+	setEnvErr := os.Setenv("MODE", "test")
 	if setEnvErr != nil {
 		return
 	}

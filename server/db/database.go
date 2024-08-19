@@ -2,7 +2,6 @@ package db
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
@@ -13,27 +12,24 @@ import (
 var DB *gorm.DB
 
 func ConnectAndMigrateDatabase() {
-	err := godotenv.Load(".env")
-	mode := os.Getenv("mode")
-	if err != nil {
-		log.Printf("could not load env file: %v,"+
-			" this bug can happend when running test, manually set env using os.Setenv please", err)
-	}
+	var dbErr error
+
+	mode := os.Getenv("MODE")
 	if mode == "test" {
-		DB, err = gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
-		if err != nil {
-			log.Fatalf("Could not connect to sqlite3 db: %v", err)
+		DB, dbErr = gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+		if dbErr != nil {
+			log.Fatalf("Could not connect to sqlite3 db: %v", dbErr)
 		}
 
 	} else {
-		DB, err = gorm.Open(sqlite.Open("gorm.sqlite3"), &gorm.Config{})
-		if err != nil {
-			log.Fatalf("Could not connect to sqlite3 db: %v", err)
+		DB, dbErr = gorm.Open(sqlite.Open("gorm.sqlite3"), &gorm.Config{})
+		if dbErr != nil {
+			log.Fatalf("Could not connect to sqlite3 db: %v", dbErr)
 		}
 	}
 	fmt.Println("Connected to database")
 
-	if mode == "development" {
+	if mode == "debug" {
 		dbDropTables := DB.Migrator().DropTable(
 			&models.User{},
 			&models.Category{},
@@ -65,7 +61,7 @@ func ConnectAndMigrateDatabase() {
 		return
 	}
 
-	if mode == "development" {
+	if mode == "debug" {
 		fillDbWithRandomData()
 	}
 

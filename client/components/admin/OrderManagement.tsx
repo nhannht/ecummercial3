@@ -169,12 +169,12 @@ export default function Component() {
                 <Badge
                   variant={
                     order.status === "Pending"
-                      ? "warning"
+                      ? "default"
                       : order.status === "Shipped"
-                      ? "info"
+                      ? "outline"
                       : order.status === "Delivered"
-                      ? "success"
-                      : "danger"
+                      ? "destructive"
+                      : "secondary"
                   }
                 >
                   {order.status}
@@ -189,7 +189,7 @@ export default function Component() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem>
-                      <Link href="#" prefetch={false}>
+                      <Link to="#" >
                         View Details
                       </Link>
                     </DropdownMenuItem>

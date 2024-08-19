@@ -5,11 +5,10 @@ import {
     NavigationMenuContent,
     NavigationMenuItem, NavigationMenuLink,
     NavigationMenuList,
-    NavigationMenuTrigger, navigationMenuTriggerStyle,
+    NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 
 import {HamburgerMenuIcon} from "@radix-ui/react-icons";
-import {cn} from "../../lib/utils";
 
 const shopLinks: { title: string; href: string; description: string }[] = [
     { title: "Home", href: "/", description: "Go to the homepage" },

@@ -61,19 +61,19 @@ export default function ContactUs() {
           <div className="grid gap-2">
             <h2 className="text-2xl font-bold">Follow Us</h2>
             <div className="flex items-center gap-4">
-              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+              <Link to="#" className="text-muted-foreground hover:text-primary" >
                 <TwitterIcon className="h-6 w-6" />
                 <span className="sr-only">Twitter</span>
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+              <Link to="#" className="text-muted-foreground hover:text-primary" >
                 <FacebookIcon className="h-6 w-6" />
                 <span className="sr-only">Facebook</span>
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+              <Link to="#" className="text-muted-foreground hover:text-primary" >
                 <InstagramIcon className="h-6 w-6" />
                 <span className="sr-only">Instagram</span>
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary" prefetch={false}>
+              <Link to="#" className="text-muted-foreground hover:text-primary" >
                 <LinkedinIcon className="h-6 w-6" />
                 <span className="sr-only">LinkedIn</span>
               </Link>
