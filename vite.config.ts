@@ -1,6 +1,7 @@
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 import * as path from "node:path";
+import browserslistToEsbuild from "browserslist-to-esbuild";
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
@@ -11,7 +12,22 @@ export default defineConfig({
         }
     },
     build:{
-        target: ["es2020",'edge88','firefox78','chrome87','safari12']
+        target: browserslistToEsbuild('>0.01%, not dead'),
+    },
+    esbuild:{
+        supported:{
+            'const-and-let':true,
+            "destructuring":true,
+            "array-spread":true,
+            "rest-argument":true,
+            "object-extensions":true,
+            "default-argument":true,
+            "class":true,
+            "async-await":true,
+            "for-of":true
+
+
+        }
     }
 
 
