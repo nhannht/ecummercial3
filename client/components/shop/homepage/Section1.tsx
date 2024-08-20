@@ -1,5 +1,5 @@
-import {Link} from "react-router-dom";
-
+// import {Link} from "react-router-dom";
+//@ts-ignore
 export function Section1(props: {
     heading: string,
     description: string,
@@ -25,19 +25,20 @@ export function Section1(props: {
                 <div className="flex flex-col items-start space-y-4">
                     <div className="space-y-2">
                         <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
-                            {props.heading}
+                            {/*{props.heading}*/}
+                            Nhan Ng
                         </h1>
                         <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                            {props.description}
+                            {/*{props.description}*/}
+                            Let 's technology solve your problems
                         </p>
                     </div>
-                    <Link
-                        to={props.link}
-                        className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-
-                    >
-                        {props.buttonText}
-                    </Link>
+                    {/*<Link*/}
+                    {/*    to={props.link}*/}
+                    {/*    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"*/}
+                    {/*>*/}
+                    {/*    /!*{props.buttonText}*!/*/}
+                    {/*</Link>*/}
                 </div>
             </div>
         </div>

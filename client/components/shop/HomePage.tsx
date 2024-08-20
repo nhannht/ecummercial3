@@ -49,19 +49,19 @@ export default function HomePage() {
     return (
         <div className="flex flex-col min-h-dvh">
             <div>
-                <div className={"h-[300vh]"}>
-                    <div className={"sticky top-[5vh]"}>
-                        <img
-                            // src={"http://localhost:8080/images/others/" + props.image}
-                            src={"Asset 1.svg"}
-                            id={"flower-one"}
+                {/*<div className={"h-[300vh]"}>*/}
+                {/*    <div className={"sticky top-[5vh]"}>*/}
+                {/*        <img*/}
+                {/*            // src={"http://localhost:8080/images/others/" + props.image}*/}
+                {/*            src={"Asset 1.svg"}*/}
+                {/*            id={"flower-one"}*/}
 
-                            alt="Featured Product"
-                            className="mx-auto w-1/2
-                          aspect-square overflow-hidden rounded-xl object-cover object-center"
-                        />
-                    </div>
-                </div>
+                {/*            alt="Featured Product"*/}
+                {/*            className="mx-auto w-1/2*/}
+                {/*          aspect-square overflow-hidden rounded-xl object-cover object-center"*/}
+                {/*        />*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
             <main className="flex-1">
                 <Section1
