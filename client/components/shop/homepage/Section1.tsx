@@ -1,22 +1,25 @@
 import {Link} from "react-router-dom";
 
-export function Section1(props:{
+export function Section1(props: {
     heading: string,
     description: string,
     image: string,
     buttonText: string,
     link: string
 }) {
+
+
     return <section className="w-full pt-12 md:pt-24 lg:pt-32">
         <div className="container space-y-10 xl:space-y-16">
             <div className="grid max-w-[1300px] mx-auto gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-16">
                 <div>
                     <img
-                        src={"http://localhost:8080/images/others/" + props.image}
-                        width="800"
-                        height="600"
+                        // src={"http://localhost:8080/images/others/" + props.image}
+                        src={"Asset 1.svg"}
+
                         alt="Featured Product"
-                        className="mx-auto aspect-[4/3] overflow-hidden rounded-xl object-cover object-center"
+                        className="mx-auto
+                         duration-1000 aspect-square overflow-hidden rounded-xl object-cover object-center"
                     />
                 </div>
                 <div className="flex flex-col items-start space-y-4">
