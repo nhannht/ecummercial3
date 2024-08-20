@@ -10,6 +10,9 @@ export default defineConfig({
             '@': path.resolve(__dirname, './client'),
         }
     },
+    build:{
+        target: ["es2020",'edge88','firefox78','chrome87','safari12']
+    }
 
 
 
