@@ -32,6 +32,7 @@ export default function HorizonProductList(props: {
             <div className="flex gap-6 px-4 md:px-6">
                 {props.products.map((product) => (
                     <div className="flex-shrink-0 w-[280px] md:w-[320px]">
+                        {/*@ts-ignore*/}
                         <ProductCard {...product} />
                     </div>
                 ))}

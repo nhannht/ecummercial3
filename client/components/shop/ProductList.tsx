@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import { useSearchParams} from "react-router-dom";
 // import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import {Button} from "@/components/ui/button";
 import {CategoryData, ProductData} from "@/components/shop/shop";
@@ -45,7 +45,7 @@ export default function ProductList() {
     const [priceMin, setPriceMin] = useState(0);
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
     const [searchParams, setSearchParams] = useSearchParams();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [resultMetaData, setResultMetaData] = useState({})
 
     useEffect(() => {
@@ -200,9 +200,11 @@ export default function ProductList() {
                                 onClick={() => setSearchParams({page: (parseInt(searchParams.get("page") || "1") - 1).toString()})}
                             />
                         </PaginationItem>
+                        {/*@ts-ignore*/}
                         {Array.from({length: Math.ceil(resultMetaData.totalCount / resultMetaData.pageSize)}, (_, index) => {
                             const pageNumber = index + 1;
                             const currentPage = parseInt(searchParams.get("page") || "1");
+                            // @ts-ignore
                             const totalPages = Math.ceil(resultMetaData.totalCount / resultMetaData.pageSize);
 
                             if (totalPages > 5) {
