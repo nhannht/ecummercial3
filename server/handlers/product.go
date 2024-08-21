@@ -148,8 +148,12 @@ func GetProducts(c *gin.Context) {
 	maxPrice := c.Query("maxPrice")
 	categories := c.QueryArray("categories")
 
+	// Get query parameters for sorting
+	sortBy := c.DefaultQuery("sortBy", "price")     // Default sort by price
+	sortOrder := c.DefaultQuery("sortOrder", "asc") // Default sort order ascending
+
 	// Build the query
-	query := db.DB.Preload("Categories")
+	query := db.DB.Model(&models.Product{})
 
 	if minPrice != "" {
 		query = query.Where("price >= ?", minPrice)
@@ -160,25 +164,35 @@ func GetProducts(c *gin.Context) {
 	if len(categories) > 0 {
 		query = query.Joins("JOIN product_categories ON product_categories.product_id = products.id").
 			Joins("JOIN categories ON categories.id = product_categories.category_id").
-			Where("categories.name IN ?", categories)
+			Where("categories.category_name IN ?", categories).
+			Group("products.id")
+	}
+
+	// Apply sorting
+	if sortBy == "price" || sortBy == "updated_at" {
+		query = query.Order(fmt.Sprintf("%s %s", sortBy, sortOrder))
+	} else {
+		// Default to sorting by price if an invalid sortBy value is provided
+		query = query.Order("price asc")
 	}
 
 	// Get the total count of products after applying filters
 	var totalCount int64
-	query.Model(&models.Product{}).Count(&totalCount)
+	query.Count(&totalCount)
 
 	// Fetch the products with pagination and filters
 	query.Offset(offset).Limit(pageSize).Find(&products)
 
-	// Return the products along with pagination metadata
+	// Return the products along with pagination and sorting metadata
 	c.JSON(http.StatusOK, gin.H{
 		"data":       products,
 		"totalCount": totalCount,
 		"page":       page,
 		"pageSize":   pageSize,
+		"sortBy":     sortBy,
+		"sortOrder":  sortOrder,
 	})
 }
-
 func GetProduct(c *gin.Context) {
 	var product models.Product
 	if err := db.DB.Where("id = ?", c.Param("id")).First(&product).Error; err != nil {
