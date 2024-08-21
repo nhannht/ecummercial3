@@ -2,9 +2,17 @@ import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 import * as path from "node:path";
 import browserslistToEsbuild from "browserslist-to-esbuild";
+import legacy from '@vitejs/plugin-legacy'
+import ResizeObserver from "resize-observer-polyfill"
+
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react()],
+    plugins: [react(),
+    legacy({
+        targets: ['safari >= 11'],
+        additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
+    })
+    ],
     root: './client',
     resolve: {
         alias: {
