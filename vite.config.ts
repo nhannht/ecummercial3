@@ -8,10 +8,11 @@ import ResizeObserver from "resize-observer-polyfill"
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react(),
-    legacy({
-        targets: ['safari >= 11'],
-        additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
-    })
+    // legacy({
+    //     targets: ['safari >= 12, chrome >= 64'],
+    //     additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
+    //     modernPolyfills:true
+    // })
     ],
     root: './client',
     resolve: {
