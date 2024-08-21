@@ -25,10 +25,10 @@ func (a *StringArray) Scan(value interface{}) error {
 }
 
 type Product struct {
-	gorm.Model
+	gorm.Model  `faker:"-"`
 	Name        string      `faker:"name,unique" gorm:"unique" binding:"required"`
 	Description string      `faker:"paragraph"`
-	Price       float64     `faker:"amount"`
+	Price       float64     `faker:"amount" gorm:"index"`
 	Stock       int         `faker:"oneof: 100,200,300,400,500,0"`
 	Categories  []Category  `gorm:"many2many:product_categories;" faker:"-"`
 	Reviews     []Review    `faker:"-"`

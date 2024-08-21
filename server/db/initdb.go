@@ -38,8 +38,8 @@ func createAdminUser() {
 	log.Println("Admin user created successfully")
 }
 
-func createRandomUsers() {
-	for i := 0; i < 10; i++ {
+func createRandomUsers(t int) {
+	for i := 0; i < t; i++ {
 		user := models.User{}
 		fakerErr := faker.FakeData(&user)
 		if fakerErr != nil {
@@ -49,20 +49,20 @@ func createRandomUsers() {
 			user.Password = string(hashedPassword)
 			DB.Create(&user)
 
-			log.Printf("Successfully created fake user: %+v\n", user)
+			//log.Printf("Successfully created fake user: %+v\n", user)
 		}
 	}
+	log.Printf("Successfully created %v fake users", t)
 	faker.ResetUnique()
 }
 
-func createRandomCategories() {
-	for i := 0; i < 10; i++ {
+func createRandomCategories(t int) {
+	for i := 0; i < t; i++ {
 		category := models.Category{}
 		fakerErr := faker.FakeData(&category)
 		if fakerErr != nil {
 			log.Fatalf("Error creating fake category: %v", fakerErr)
 		} else {
-			DB.Create(&category)
 			var products []models.Product
 			DB.Find(&products)
 			if len(products) > 0 {
@@ -81,17 +81,18 @@ func createRandomCategories() {
 					log.Fatalf("Cannot add category to user %v", addCategoryErr)
 				}
 			}
-			log.Printf("Successfully created fake category: %+v\n", category)
+			//log.Printf("Successfully created fake category: %+v\n", category)
 		}
 
-		DB.Create(&category)
+		//DB.Create(&category)
 	}
+	log.Printf("Successfully created %v fake categories", t)
 
 	faker.ResetUnique()
 }
 
-func createRandomProducts() {
-	for i := 0; i < 10; i++ {
+func createRandomProducts(t int) {
+	for i := 0; i < t; i++ {
 		product := models.Product{}
 		fakerErr := faker.FakeData(&product)
 		if fakerErr != nil {
@@ -99,14 +100,15 @@ func createRandomProducts() {
 		} else {
 			DB.Create(&product)
 
-			log.Printf("Successfully created fake product: %+v\n", product)
+			//log.Printf("Successfully created fake product: %+v\n", product)
 		}
 	}
+	log.Printf("Successfully created %v fake products", t)
 	faker.ResetUnique()
 }
 
-func createRandomOrders() {
-	for i := 0; i < 10; i++ {
+func createRandomOrders(t int) {
+	for i := 0; i < t; i++ {
 		order := models.Order{}
 		fakerErr := faker.FakeData(&order)
 		if fakerErr != nil {
@@ -131,21 +133,20 @@ func createRandomOrders() {
 
 			DB.Create(&order)
 
-			log.Printf("Successfully created fake order: %+v\n", order)
+			//log.Printf("Successfully created fake order: %+v\n", order)
 		}
 	}
+	log.Printf("Successfully created %v fake orders", t)
 	faker.ResetUnique()
 }
 
-func createRandomOrderItems() {
-	for i := 0; i < 10; i++ {
+func createRandomOrderItems(t int) {
+	for i := 0; i < t; i++ {
 		orderItem := models.OrderItem{}
 		fakerErr := faker.FakeData(&orderItem)
 		if fakerErr != nil {
 			log.Fatalf("Error creating fake order item: %v", fakerErr)
 		} else {
-			DB.Create(&orderItem)
-
 			var products []models.Product
 			DB.Find(&products)
 			var orders []models.Order
@@ -174,20 +175,20 @@ func createRandomOrderItems() {
 			}
 			DB.Create(&orderItem)
 
-			log.Printf("Successfully created fake order item: %+v\n", orderItem)
+			//log.Printf("Successfully created fake order item: %+v\n", orderItem)
 		}
 	}
+	log.Printf("Successfully created %v fake order items", t)
 	faker.ResetUnique()
 }
 
-func createRandomPayments() {
-	for i := 0; i < 10; i++ {
+func createRandomPayments(t int) {
+	for i := 0; i < t; i++ {
 		payment := models.Payment{}
 		fakerErr := faker.FakeData(&payment)
 		if fakerErr != nil {
 			log.Fatalf("Error creating fake payment: %v", fakerErr)
 		} else {
-			DB.Create(&payment)
 
 			var orders []models.Order
 			DB.Find(&orders)
@@ -204,20 +205,20 @@ func createRandomPayments() {
 			}
 			DB.Create(&payment)
 
-			log.Printf("Successfully created fake payment: %+v\n", payment)
+			//log.Printf("Successfully created fake payment: %+v\n", payment)
 		}
 	}
+	log.Printf("Successfully created %v fake payments", t)
 	faker.ResetUnique()
 }
 
-func createRandomReviews() {
-	for i := 0; i < 10; i++ {
+func createRandomReviews(t int) {
+	for i := 0; i < t; i++ {
 		review := models.Review{}
 		fakerErr := faker.FakeData(&review)
 		if fakerErr != nil {
 			log.Fatalf("Error creating fake review: %v", fakerErr)
 		} else {
-			DB.Create(&review)
 			var users []models.User
 			var products []models.Product
 			DB.Find(&users)
@@ -246,14 +247,15 @@ func createRandomReviews() {
 			}
 			DB.Create(&review)
 
-			log.Printf("Successfully created fake review: %+v\n", review)
+			//log.Printf("Successfully created fake review: %+v\n", review)
 		}
 	}
+	log.Printf("Successfully created %v fake reviews", t)
 	faker.ResetUnique()
 }
 
-func createRandomShippingInfo() {
-	for i := 0; i < 10; i++ {
+func createRandomShippingInfo(t int) {
+	for i := 0; i < t; i++ {
 		shippingInfo := models.ShippingInfo{}
 		fakerErr := faker.FakeData(&shippingInfo)
 		if fakerErr != nil {
@@ -274,20 +276,21 @@ func createRandomShippingInfo() {
 			}
 			DB.Create(&shippingInfo)
 
-			log.Printf("Successfully created fake shipping info: %+v\n", shippingInfo)
+			//log.Printf("Successfully created fake shipping info: %+v\n", shippingInfo)
 		}
 	}
+	log.Printf("Successfully created %v fake shipping info", t)
 	faker.ResetUnique()
 }
 
 func fillDbWithRandomData() {
 	createAdminUser()
-	createRandomUsers()
-	createRandomProducts()
-	createRandomOrders()
-	createRandomReviews()
-	createRandomPayments()
-	createRandomOrderItems()
-	createRandomCategories()
-	createRandomShippingInfo()
+	createRandomUsers(10)
+	createRandomProducts(100)
+	createRandomOrders(10)
+	createRandomReviews(10)
+	createRandomPayments(10)
+	createRandomOrderItems(10)
+	createRandomCategories(20)
+	createRandomShippingInfo(10)
 }

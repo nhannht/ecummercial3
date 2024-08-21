@@ -43,6 +43,7 @@ func ConnectAndMigrateDatabase() {
 		if dbDropTables != nil {
 			log.Fatalf("Could not drop tables: %v", dbDropTables)
 		}
+		log.Println("Successfully dropped tables")
 
 	}
 

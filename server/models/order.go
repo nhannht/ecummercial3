@@ -5,7 +5,7 @@ import (
 )
 
 type Order struct {
-	gorm.Model
+	gorm.Model   `faker:"-"`
 	UserID       uint         `faker:"-" validate:"required"`
 	OrderDate    string       `faker:"date" validate:"datetime=2006-01-02"`
 	TotalAmount  float64      `faker:"amount" validate:"gte=0"`

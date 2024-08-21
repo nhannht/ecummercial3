@@ -11,32 +11,33 @@ func setupRoute(r *gin.Engine) {
 	{
 		r.POST("/register", handlers.Register)
 		r.POST("/login", handlers.Login)
-		protected.POST("/logout", handlers.Logout)
+		r.POST("/logout", handlers.Logout)
 	}
 
 	{
 		r.POST("/users", handlers.CreateUser)
 		r.GET("/users", handlers.GetUsers)
 		r.GET("/users/:id", handlers.GetUser)
-		protected.PUT("/users/:id", handlers.UpdateUser)
-		protected.DELETE("/users/:id", handlers.DeleteUser)
+		r.PUT("/users/:id", handlers.UpdateUser)
+		r.DELETE("/users/:id", handlers.DeleteUser)
 
 	}
 
 	{
-		protected.POST("/products", handlers.CreateProduct)
+		r.POST("/products", handlers.CreateProduct)
 		r.GET("/products", handlers.GetProducts)
 		r.GET("/products/:id", handlers.GetProduct)
-		protected.PUT("/products/:id", handlers.UpdateProduct)
-		protected.DELETE("/products/:id", handlers.DeleteProduct)
+		r.PUT("/products/:id", handlers.UpdateProduct)
+		r.DELETE("/products/:id", handlers.DeleteProduct)
+		r.GET("/products/prices", handlers.GetMinMaxPrice)
 	}
 
 	{
-		protected.POST("/orders", handlers.CreateOrder)
+		r.POST("/orders", handlers.CreateOrder)
 		r.GET("/orders", handlers.GetOrders)
 		r.GET("/orders/:id", handlers.GetOrder)
-		protected.PUT("/orders/:id", handlers.UpdateOrder)
-		protected.DELETE("/orders/:id", handlers.DeleteOrder)
+		r.PUT("/orders/:id", handlers.UpdateOrder)
+		r.DELETE("/orders/:id", handlers.DeleteOrder)
 	}
 	{
 		r.POST("/orderitems", handlers.CreateOrderItem)

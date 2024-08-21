@@ -11,6 +11,7 @@ import (
 	"nhannht.kute/ecummercial/server/models"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -134,9 +135,48 @@ func CreateProduct(c *gin.Context) {
 
 func GetProducts(c *gin.Context) {
 	var products []models.Product
-	db.DB.Find(&products)
 
-	c.JSON(http.StatusOK, gin.H{"data": products})
+	// Get query parameters for pagination
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
+
+	// Calculate offset and limit
+	offset := (page - 1) * pageSize
+
+	// Get query parameters for filtering
+	minPrice := c.Query("minPrice")
+	maxPrice := c.Query("maxPrice")
+	categories := c.QueryArray("categories")
+
+	// Build the query
+	query := db.DB.Preload("Categories")
+
+	if minPrice != "" {
+		query = query.Where("price >= ?", minPrice)
+	}
+	if maxPrice != "" {
+		query = query.Where("price <= ?", maxPrice)
+	}
+	if len(categories) > 0 {
+		query = query.Joins("JOIN product_categories ON product_categories.product_id = products.id").
+			Joins("JOIN categories ON categories.id = product_categories.category_id").
+			Where("categories.name IN ?", categories)
+	}
+
+	// Get the total count of products after applying filters
+	var totalCount int64
+	query.Model(&models.Product{}).Count(&totalCount)
+
+	// Fetch the products with pagination and filters
+	query.Offset(offset).Limit(pageSize).Find(&products)
+
+	// Return the products along with pagination metadata
+	c.JSON(http.StatusOK, gin.H{
+		"data":       products,
+		"totalCount": totalCount,
+		"page":       page,
+		"pageSize":   pageSize,
+	})
 }
 
 func GetProduct(c *gin.Context) {
@@ -201,4 +241,26 @@ func DeleteProduct(c *gin.Context) {
 	db.DB.Delete(&product)
 
 	c.JSON(http.StatusOK, gin.H{"data": true})
+}
+
+func GetMinMaxPrice(c *gin.Context) {
+	var minPrice, maxPrice float64
+
+	// Query to get the minimum price
+	if err := db.DB.Model(&models.Product{}).Select("MIN(price)").Scan(&minPrice).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get minimum price"})
+		return
+	}
+
+	// Query to get the maximum price
+	if err := db.DB.Model(&models.Product{}).Select("MAX(price)").Scan(&maxPrice).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get maximum price"})
+		return
+	}
+
+	// Return the min and max prices
+	c.JSON(http.StatusOK, gin.H{
+		"minPrice": minPrice,
+		"maxPrice": maxPrice,
+	})
 }

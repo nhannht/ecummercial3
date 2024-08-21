@@ -5,7 +5,7 @@ import (
 )
 
 type Payment struct {
-	gorm.Model
+	gorm.Model    `faker:"-"`
 	OrderID       uint    `faker:"-"`
 	PaymentDate   string  `faker:"date"`
 	Amount        float64 `faker:"unique"`

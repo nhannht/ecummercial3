@@ -1,1 +1,8 @@
-POST localhost:8080/api/register
+###
+GET localhost:8080/products
+
+###
+GET localhost:8080/categories
+
+###
+GET localhost:8080/products/prices

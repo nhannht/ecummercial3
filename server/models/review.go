@@ -5,7 +5,7 @@ import (
 )
 
 type Review struct {
-	gorm.Model
+	gorm.Model `faker:"-"`
 	UserID     uint   `faker:"-"`
 	ProductID  uint   `faker:"-"`
 	Rating     int    `faker:"oneof: 1,2,3,4,5"`

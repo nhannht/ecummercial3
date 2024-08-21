@@ -31,3 +31,4 @@ client/dist-ssr
 /configuration/faq/config.json
 /configuration/homepage/section1.json
 /ecummercial
+/client/.env.production
