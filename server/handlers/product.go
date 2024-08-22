@@ -195,7 +195,7 @@ func GetProducts(c *gin.Context) {
 }
 func GetProduct(c *gin.Context) {
 	var product models.Product
-	if err := db.DB.Where("id = ?", c.Param("id")).First(&product).Error; err != nil {
+	if err := db.DB.Preload("Categories").Where("id = ?", c.Param("id")).First(&product).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
