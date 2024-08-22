@@ -1,4 +1,4 @@
-import {CategoryData} from "@/components/shop/shop";
+import {Category} from "@/components/shop/shop";
 import {useState} from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
 import {Button} from "@/components/ui/button.tsx";
@@ -8,8 +8,8 @@ import {cn} from "@/lib/utils.ts";
 import {Badge} from "@/components/ui/badge.tsx";
 
 export function CategoryPicker(props: {
-    categories: CategoryData[]
-    selectedCategories: CategoryData[],
+    categories: Category[]
+    selectedCategories: Category[],
     handleSelectCategory: (categoryID: string) => void,
     handleRemoveCategory: (categoryID: string) => void,
 }) {

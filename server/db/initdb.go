@@ -286,7 +286,7 @@ func createRandomShippingInfo(t int) {
 func fillDbWithRandomData() {
 	createAdminUser()
 	createRandomUsers(10)
-	createRandomProducts(100)
+	createRandomProducts(50)
 	createRandomOrders(10)
 	createRandomReviews(10)
 	createRandomPayments(10)

@@ -2,7 +2,7 @@ import {useEffect, useMemo, useState} from "react";
 import { useSearchParams} from "react-router-dom";
 // import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import {Button} from "@/components/ui/button";
-import {CategoryData, ProductData} from "@/components/shop/shop";
+import {Category, Product} from "@/components/shop/shop";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Label} from "@/components/ui/label";
 import {TwoThumpSlider} from "@/components/ui/slider.tsx";
@@ -38,8 +38,8 @@ const CheckboxFilter: React.FC<CheckboxFilterProps> = ({items, selectedItems, on
 };
 
 export default function ProductList() {
-    const [products, setProducts] = useState<ProductData[]>([]);
-    const [categories, setCategories] = useState<CategoryData[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [priceRange, setPriceRange] = useState([0, 1]);
     const [priceMax, setPriceMax] = useState(0);
     const [priceMin, setPriceMin] = useState(0);

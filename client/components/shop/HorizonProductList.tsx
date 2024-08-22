@@ -1,7 +1,7 @@
 import {Card, CardContent} from "@/components/ui/card"
 import {Button} from "@/components/ui/button"
 import  {PropsWithChildren} from "react";
-import {ProductData} from "@/components/shop/shop";
+import {Product} from "@/components/shop/shop";
 
 function ProductCard(props:PropsWithChildren< {
     name: string,
@@ -25,7 +25,7 @@ function ProductCard(props:PropsWithChildren< {
 
 
 export default function HorizonProductList(props: {
-    products: ProductData[]
+    products: Product[]
 }) {
     return (
         <div className="w-full overflow-x-auto pb-4 scrollbar-hide">

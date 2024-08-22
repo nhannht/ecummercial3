@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {CategoryData, ProductData} from "@/components/shop/shop";
+import {Category, Product, Review} from "@/components/shop/shop";
 import {useLocation, useParams} from "react-router-dom";
 import {CategoryPicker} from "@/components/admin/product-editor/CategoryPicker.tsx";
 import {MainImagePicker} from "@/components/admin/product-editor/MainImagePicker.tsx";
@@ -29,8 +29,9 @@ const ProductEditor = () => {
     const [otherImages, setOtherImages] = useState<File[]>([]);
     const [otherImageUrls, setOtherImageUrls] = useState<string[]>([]);
 
-    const [categories, setCategories] = useState<CategoryData[]>([]);
-    const [pickedCategories, setPickedCategories] = useState<CategoryData[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [pickedCategories, setPickedCategories] = useState<Category[]>([]);
+    const [reviews,setReviews] = useState<Review[]>([]);
 
 
     useEffect(() => {
@@ -43,19 +44,20 @@ const ProductEditor = () => {
             fetch(`${import.meta.env.VITE_SERVER_URL}/products/${id}`)
                 .then(response => response.json())
                 .then((product) => {
-                    const productData: ProductData = product.data;
+                    const productData: Product = product.data;
                     setName(productData.Name)
                     setPrice(productData.Price)
                     // setStock(product.stock);
                     setDescription(productData.Description);
-                    setMainImageUrl(`${import.meta.env.VITE_SERVER_URL}/${productData.Image}`);
-                    productData.OtherImages.forEach((image) => {
+                    productData.Image.trim() !== "" && setMainImageUrl(`${import.meta.env.VITE_SERVER_URL}/${productData.Image}`);
+                    productData.OtherImages && productData.OtherImages.forEach((image) => {
                         otherImageUrls.push(`${import.meta.env.VITE_SERVER_URL}/${image}`)
                     })
                     // console.log(otherImageUrls)
                     let t = [...new Set(otherImageUrls)]
                     setOtherImageUrls(t);
                     setPickedCategories(productData.Categories);
+                    setReviews(productData.Reviews);
                     // console.log(product);
                     // console.log(product.Categories)
 
@@ -118,10 +120,10 @@ const ProductEditor = () => {
             formData.append('Image', mainImage);
         }
         console.log(otherImages);
-        otherImages.forEach((image, index) => {
+        otherImages.forEach((image) => {
             formData.append(`OtherImages[]`, image);
         });
-        pickedCategories.forEach((category, index) => {
+        pickedCategories.forEach((category) => {
             formData.append(`Categories[]`, category.ID);
         });
         console.log([...formData]);
@@ -221,6 +223,7 @@ const ProductEditor = () => {
                     otherImageUrls={otherImageUrls}
                     mainImageAlt={"Main image alt"}
                     productPrice={price}
+                    reviews={reviews}
                 />
             </div>
         </div>

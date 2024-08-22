@@ -274,6 +274,21 @@ func GetProducts(c *gin.Context) {
 	var totalCount int64
 	query.Count(&totalCount)
 
+	// Get query parameters for preloading
+	preloadReviews := c.DefaultQuery("preloadReviews", "false") == "true"
+	preloadCategories := c.DefaultQuery("preloadCategories", "false") == "true"
+	preloadOrderItems := c.DefaultQuery("preloadOrderItems", "false") == "true"
+
+	if preloadReviews {
+		query = query.Preload("Reviews")
+	}
+	if preloadCategories {
+		query = query.Preload("Categories")
+	}
+	if preloadOrderItems {
+		query = query.Preload("OrderItems")
+	}
+
 	// Fetch the products with pagination and filters
 	query.Offset(offset).Limit(pageSize).Find(&products)
 
@@ -289,7 +304,10 @@ func GetProducts(c *gin.Context) {
 }
 func GetProduct(c *gin.Context) {
 	var product models.Product
-	if err := db.DB.Preload("Categories").Where("id = ?", c.Param("id")).First(&product).Error; err != nil {
+	query := db.DB.Model(&models.Product{})
+	query.Preload("Categories").Preload("Reviews.User").Preload("OrderItems")
+
+	if err := query.Where("id = ?", c.Param("id")).First(&product).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}

@@ -38,6 +38,7 @@ type Product struct {
 }
 
 func (p *Product) BeforeCreate(tx *gorm.DB) (err error) {
+
 	if err = validate.Struct(p); err != nil {
 		return err
 	}
