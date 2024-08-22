@@ -5,7 +5,9 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"io"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"nhannht.kute/ecummercial/server/db"
 	"nhannht.kute/ecummercial/server/models"
@@ -92,33 +94,73 @@ func hashFileName(fileName string) string {
 }
 
 type CreateProductInput struct {
-	Name        string  `json:"name" binding:"required"`
-	Description string  `json:"description" binding:"required"`
-	Price       float64 `json:"price" binding:"required"`
-	Stock       int     `json:"stock" binding:"required"`
+	Name        string  ` binding:"required"`
+	Description string  ` binding:"required"`
+	Price       float64 ` binding:"required"`
+	Stock       int     ` binding:"required"`
 }
 
 func CreateProduct(c *gin.Context) {
 	var input CreateProductInput
-	if err := c.ShouldBindJSON(&input); err != nil {
+	err := c.ShouldBind(&input)
+	if err != nil {
+		log.Printf("Error binding JSON: %v", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	file, err := c.FormFile("image")
-	var imagePath string
-	var hashedFileName string
-	if err != nil {
-		log.Printf("Error retrieving image: %v, fallback using placeholder image", err)
-		hashedFileName = "placeholder.svg"
+	file, getMainImageErr := c.FormFile("Image")
+	var mainImagePath string
+	if getMainImageErr != nil {
+		log.Printf("There is no main image provided")
 	} else {
-		sanitizedFileName := sanitizeFileName(file.Filename)
-		hashedFileName = hashFileName(sanitizedFileName) + filepath.Ext(sanitizedFileName)
-		imagePath = fmt.Sprintf("uploads/%s", hashedFileName)
-		if err := c.SaveUploadedFile(file, imagePath); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save image"})
+		mainImagePath, err = saveOrReuseImage(file)
+		if err != nil {
+			if err.Error() == "file size exceeds the 10 MB limit" {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "File size exceeds the 10 MB limit"})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save image"})
+			}
 			return
 		}
+	}
 
+	form, err := c.MultipartForm()
+	if err != nil {
+		log.Printf("Error parsing multipart form: %v", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse form"})
+		return
+	}
+
+	otherImagesFiles := form.File["OtherImages[]"]
+	var otherImagePaths []string
+
+	if otherImagesFiles != nil {
+		log.Printf("There are %d other images provided", len(otherImagesFiles))
+		for _, otherImageFile := range otherImagesFiles {
+			otherImagePath, err := saveOrReuseImage(otherImageFile)
+			if err != nil {
+				if err.Error() == "file size exceeds the 10 MB limit" {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "File size exceeds the 10 MB limit"})
+				} else {
+					c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save image"})
+				}
+				return
+			}
+			otherImagePaths = append(otherImagePaths, otherImagePath)
+		}
+	} else {
+		log.Printf("There are no other images provided")
+	}
+
+	categoryIDs := c.PostFormArray("Categories[]")
+	var categories []models.Category
+	for _, categoryID := range categoryIDs {
+		var category models.Category
+		if err := db.DB.Where("id = ?", categoryID).First(&category).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid category ID"})
+			return
+		}
+		categories = append(categories, category)
 	}
 
 	product := models.Product{
@@ -126,11 +168,63 @@ func CreateProduct(c *gin.Context) {
 		Description: input.Description,
 		Price:       input.Price,
 		Stock:       input.Stock,
-		Image:       hashedFileName, // Save the image path in the product
+		Image:       mainImagePath, // Save the image path in the product
+		OtherImages: otherImagePaths,
+		Categories:  categories,
 	}
-	db.DB.Create(&product)
+	result := db.DB.Create(&product)
+	if result.Error != nil {
+		log.Printf("Error when creating product: %v", result.Error)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": product})
+}
+
+func saveOrReuseImage(file *multipart.FileHeader) (string, error) {
+
+	// Define the maximum file size (10 MB)
+	const maxFileSize = 10 * 1024 * 1024 // 10 MB
+
+	// Check the file size
+	if file.Size > maxFileSize {
+		return "", fmt.Errorf("file size exceeds the 10 MB limit")
+	}
+
+	// Open the file
+	src, err := file.Open()
+	if err != nil {
+		return "", err
+	}
+	defer src.Close()
+
+	// Read the file content
+	fileContent, err := io.ReadAll(src)
+	if err != nil {
+		return "", err
+	}
+
+	// Hash the file content
+	hasher := sha256.New()
+	hasher.Write(fileContent)
+	hashedFileName := hex.EncodeToString(hasher.Sum(nil)) + filepath.Ext(file.Filename)
+
+	// Check if the file already exists
+	imagePath := fmt.Sprintf("uploads/products/%s", hashedFileName)
+	if _, err := os.Stat(imagePath); err == nil {
+		// File already exists, reuse it
+		return imagePath, nil
+	}
+
+	// Save the new file
+	if err := os.MkdirAll(filepath.Dir(imagePath), os.ModePerm); err != nil {
+		return "", err
+	}
+	if err := os.WriteFile(imagePath, fileContent, os.ModePerm); err != nil {
+		return "", err
+	}
+
+	return imagePath, nil
 }
 
 func GetProducts(c *gin.Context) {
@@ -215,32 +309,53 @@ func UpdateProduct(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	file, err := c.FormFile("image")
-	var imagePath string
+	file, getMainImageErr := c.FormFile("image")
+
+	// handle main image
+	var mainImagePath string
 	var hashedFileName string
-	if err != nil {
-		log.Printf("Error retrieving image: %v, fallback using placeholder image", err)
-		hashedFileName = "placeholder.svg"
+	if getMainImageErr != nil {
+		log.Printf("There is no main image provided")
 	} else {
 		sanitizedFileName := sanitizeFileName(file.Filename)
 		hashedFileName = hashFileName(sanitizedFileName) + filepath.Ext(sanitizedFileName)
 
-		imagePath = fmt.Sprintf("uploads/%s", file.Filename)
-		if err := c.SaveUploadedFile(file, imagePath); err != nil {
+		if err := c.SaveUploadedFile(file, mainImagePath); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save image"})
 			return
 		}
+		mainImagePath = fmt.Sprintf("uploads/products/%s", hashedFileName)
 	}
 
-	db.DB.Model(&product).Updates(input)
+	// handle other images
+	form, _ := c.MultipartForm()
 
-	product = models.Product{
+	otherImagesFiles := form.File["otherImages"]
+	var otherImagePaths []string
+
+	if otherImagesFiles != nil {
+		for _, otherImageFile := range otherImagesFiles {
+			sanitizedFileName := sanitizeFileName(otherImageFile.Filename)
+			hashedOtherImageFileName := hashFileName(sanitizedFileName) + filepath.Ext(sanitizedFileName)
+
+			otherImagePath := fmt.Sprintf("uploads/products/%s", hashedOtherImageFileName)
+			if err := c.SaveUploadedFile(otherImageFile, otherImagePath); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save image"})
+				return
+			}
+			otherImagePaths = append(otherImagePaths, hashedOtherImageFileName)
+		}
+	}
+	newProduct := models.Product{
 		Name:        input.Name,
 		Description: input.Description,
 		Price:       input.Price,
 		Stock:       input.Stock,
-		Image:       hashedFileName, // Save the image path in the product
+		Image:       mainImagePath, // Save the image path in the product
+		OtherImages: otherImagePaths,
 	}
+
+	db.DB.Model(&product).Updates(newProduct)
 
 	c.JSON(http.StatusOK, gin.H{"data": product})
 }

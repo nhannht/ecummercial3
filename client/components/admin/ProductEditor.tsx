@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {CategoryData, ProductData} from "@/components/shop/shop";
-import {useBlocker, useLocation, useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import {CategoryPicker} from "@/components/admin/product-editor/CategoryPicker.tsx";
 import {MainImagePicker} from "@/components/admin/product-editor/MainImagePicker.tsx";
 import {OtherImagesPicker} from "@/components/admin/product-editor/OtherImagesPicker.tsx";
@@ -9,6 +9,7 @@ import {Input} from "@/components/ui/input.tsx";
 import ProductDescriptionEditor from "@/components/admin/ProductDescriptionEditor.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import ProductDetails from "@/components/shop/ProductDetails.tsx";
+import {useToast} from "@/components/ui/use-toast.ts";
 
 
 const ProductEditor = () => {
@@ -31,11 +32,6 @@ const ProductEditor = () => {
     const [categories, setCategories] = useState<CategoryData[]>([]);
     const [pickedCategories, setPickedCategories] = useState<CategoryData[]>([]);
 
-    let blocker = useBlocker(
-        ({ currentLocation, nextLocation }) =>
-            isDirty  &&
-            currentLocation.pathname !== nextLocation.pathname
-    );
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_SERVER_URL}/categories`)
@@ -52,26 +48,19 @@ const ProductEditor = () => {
                     setPrice(productData.Price)
                     // setStock(product.stock);
                     setDescription(productData.Description);
-                    // setMainImageUrl(product.mainImageUrl);
-                    // setOtherImageUrls(product.otherImageUrls);
+                    setMainImageUrl(`${import.meta.env.VITE_SERVER_URL}/${productData.Image}`);
+                    productData.OtherImages.forEach((image) => {
+                        otherImageUrls.push(`${import.meta.env.VITE_SERVER_URL}/${image}`)
+                    })
+                    // console.log(otherImageUrls)
+                    let t = [...new Set(otherImageUrls)]
+                    setOtherImageUrls(t);
                     setPickedCategories(productData.Categories);
                     // console.log(product);
                     // console.log(product.Categories)
 
                 }).catch(error => console.error('Error fetching product:', error));
         }
-
-        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-            if (isDirty) {
-                event.preventDefault();
-            }
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
 
     }, [isEditMode, id, isDirty]);
 
@@ -119,26 +108,60 @@ const ProductEditor = () => {
         setIsDirty(true)
     }
 
-    const handleSave = () => {
-        // console.log("placeholder")
-        // todo
-        setIsDirty(false)
-    }
+    const handleSave = async () => {
+        const formData = new FormData();
+        formData.append('Name', name);
+        formData.append('Price', price.toString());
+        formData.append('Stock', stock.toString());
+        formData.append('Description', description);
+        if (mainImage) {
+            formData.append('Image', mainImage);
+        }
+        console.log(otherImages);
+        otherImages.forEach((image, index) => {
+            formData.append(`OtherImages[]`, image);
+        });
+        pickedCategories.forEach((category, index) => {
+            formData.append(`Categories[]`, category.ID);
+        });
+        console.log([...formData]);
+
+        try {
+            const response = isEditMode && id
+                ? await fetch(`${import.meta.env.VITE_SERVER_URL}/products/${id}`, {
+                    method: 'PUT',
+                    body: formData,
+                })
+                : await fetch(`${import.meta.env.VITE_SERVER_URL}/products`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+            if (!response.ok) {
+
+                return response.text().then(text => {
+                    throw new Error(`Server response with status ${response.status} and error is ${text}`);
+                })
+            }
+
+            const data = await response.json();
+            console.log('Product saved successfully:', data);
+            toast(
+                {
+                    title: "Product created"
+                }
+            )
+            setIsDirty(false);
+        } catch (error) {
+            console.log(JSON.stringify(error));
+        }
+    };
+
+    const {toast} = useToast();
 
 
     return (
         <div className="new-product-editor">
-            {blocker.state === "blocked" ? (
-                <div>
-                    <p>Are you sure you want to leave?</p>
-                    <button onClick={() => blocker.proceed()}>
-                        Proceed
-                    </button>
-                    <button onClick={() => blocker.reset()}>
-                        Cancel
-                    </button>
-                </div>
-            ) : null}
 
             <CategoryPicker categories={categories}
                             selectedCategories={pickedCategories}

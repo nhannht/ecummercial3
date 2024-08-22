@@ -9,6 +9,7 @@ export type ProductData = {
     Price: number,
     Image:string,
     Stock:number,
-    Categories: CategoryData[]
+    Categories: CategoryData[],
+    OtherImages:string[]
 
 }

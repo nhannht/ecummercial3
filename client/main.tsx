@@ -6,6 +6,7 @@ import router from "./router";
 import {DevSupport} from "@react-buddy/ide-toolbox";
 import {ComponentPreviews, useInitial} from "../dev";
 import 'react-quill/dist/quill.snow.css';
+import {Toaster} from "@/components/ui/toaster.tsx";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                     useInitialHook={useInitial}
         >
             <RouterProvider router={router}/>
+            <Toaster />
         </DevSupport>
     </React.StrictMode>,
 )

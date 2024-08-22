@@ -6,6 +6,7 @@ import (
 )
 
 func setupRoute(r *gin.Engine) {
+	r.Static("uploads/products", "./uploads/products")
 	protected := r.Group("/")
 	protected.Use(handlers.AuthMiddleware())
 	{
