@@ -8,7 +8,8 @@ import {
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 
-import {HamburgerMenuIcon} from "@radix-ui/react-icons";
+import {MenuIcon} from "lucide-react";
+import CartSymbol from "@/components/shop/navigation-bar/CartSymbol.tsx";
 
 const shopLinks: { title: string; href: string; description: string }[] = [
     { title: "Home", href: "/", description: "Go to the homepage" },
@@ -23,12 +24,15 @@ const shopLinks: { title: string; href: string; description: string }[] = [
 
 export default function ShopNavigationBar() {
     return (
-        <NavigationMenu>
+        <div className={"flex items-center justify-between"}>
+            <NavigationMenu>
             <NavigationMenuList>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger id={"home-hamburger-trigger"}><HamburgerMenuIcon className="w-6 h-6" fill="currentColor" /></NavigationMenuTrigger>
-                    <NavigationMenuContent >
-                        <ul id={"navigation-content"} className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                    <NavigationMenuTrigger id={"home-hamburger-trigger"}><MenuIcon className="w-6 h-6"
+                                                                                            fill="currentColor"/></NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <ul id={"navigation-content"}
+                            className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                             {shopLinks.map((link) => (
                                 <ListItem
                                     key={link.title}
@@ -43,6 +47,9 @@ export default function ShopNavigationBar() {
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
+            <CartSymbol />
+
+        </div>
     )
 }
 

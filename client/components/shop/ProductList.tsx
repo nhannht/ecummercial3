@@ -2,7 +2,7 @@ import {useEffect, useMemo, useState} from "react";
 import { useSearchParams} from "react-router-dom";
 // import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import {Button} from "@/components/ui/button";
-import {Category, Product} from "@/components/shop/shop";
+import {Cart, Category, Order, OrderItem, Product, ShippingInfo, User} from "@/components/shop/shop";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Label} from "@/components/ui/label";
 import {TwoThumpSlider} from "@/components/ui/slider.tsx";
@@ -13,6 +13,8 @@ import {
     PaginationLink, PaginationNext,
     PaginationPrevious
 } from "@/components/ui/pagination.tsx";
+import {useToast} from "@/components/ui/use-toast.ts";
+import useLocalStorageState from "use-local-storage-state";
 
 interface CheckboxFilterProps {
     items: string[];
@@ -47,6 +49,32 @@ export default function ProductList() {
     const [searchParams, setSearchParams] = useSearchParams();
     // const navigate = useNavigate();
     const [resultMetaData, setResultMetaData] = useState({})
+
+    const [cartValue ,setCartValue] = useLocalStorageState<Cart>(`${import.meta.env.VITE_APP_NAME}_cart`, {
+        defaultValue: {
+            orderItems: [],
+        }
+    });
+    const {toast} = useToast();
+
+    const handleAddToCart = (product: Product) => {
+        const newOrderItem: OrderItem = {
+            ProductID: product.ID,
+
+        };
+
+        setCartValue({
+            orderItems: [...cartValue.orderItems, newOrderItem],
+        })
+
+
+        toast({
+            title:"Successful",
+            description:`${product.Name} added to cart`,
+            duration:3000
+
+        })
+    };
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_SERVER_URL}/products?${searchParams.toString()}`)
@@ -185,7 +213,9 @@ export default function ProductList() {
                             </div>
                             <div className="flex justify-between items-center">
                                 <span className="text-lg font-semibold">${product.Price}</span>
-                                <Button size="sm">Add to Cart</Button>
+                                <Button
+                                    onClick={()=>handleAddToCart(product)}
+                                    size="sm">Add to Cart</Button>
                             </div>
                         </div>
                     </div>

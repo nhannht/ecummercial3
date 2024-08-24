@@ -8,10 +8,8 @@ import (
 )
 
 type CreateOrderItemInput struct {
-	OrderID   uint    `json:"order_id" binding:"required"`
-	ProductID uint    `json:"product_id" binding:"required"`
-	Quantity  int     `json:"quantity" binding:"required"`
-	Price     float64 `json:"price" binding:"required"`
+	OrderID   uint ` binding:"required"`
+	ProductID uint ` binding:"required"`
 }
 
 func CreateOrderItem(c *gin.Context) {
@@ -21,7 +19,9 @@ func CreateOrderItem(c *gin.Context) {
 		return
 	}
 
-	orderItem := models.OrderItem{OrderID: input.OrderID, ProductID: input.ProductID, Quantity: input.Quantity, Price: input.Price}
+	orderItem := models.OrderItem{OrderID: input.OrderID,
+		ProductID: input.ProductID,
+	}
 	db.DB.Create(&orderItem)
 
 	c.JSON(http.StatusOK, gin.H{"data": orderItem})

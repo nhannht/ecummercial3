@@ -4,7 +4,6 @@ import AdminApp from "./components/admin/AdminApp";
 import UserDashboard from "./components/user/UserDashBoard";
 import HomePage from "./components/shop/HomePage";
 import ProductListingPage from "./components/shop/ProductList";
-import CartPage from "./components/shop/Cart";
 import CheckoutPage from "./components/shop/Checkout";
 import OrderConfirmationPage from "./components/shop/OrderConfirmation";
 import UserRegistrationPage from "./components/user/Signup";
@@ -25,7 +24,7 @@ import ProductEditor from "./components/admin/ProductEditor.tsx";
 import EditSection1Config from "./components/admin/configuration-editors/Landing/Section1";
 import TermsAndConditionsEditor from "./components/admin/configuration-editors/termandcondition/TermAndConditionEditor";
 import ContactEditor from "./components/admin/configuration-editors/contact/ContactEditor";
-import ProductDescriptionEditor from "@/components/admin/ProductDescriptionEditor.tsx";
+// import ProductDescriptionEditor from "@/components/admin/ProductDescriptionEditor.tsx";
 
 export const shopRoutes: RouteObject[] = [
     {
@@ -41,10 +40,6 @@ export const shopRoutes: RouteObject[] = [
     //     element: <div><ProductDetailPage/></div>
     // },
 
-    {
-        path: "cart",
-        element: <div><CartPage/></div>
-    },
     {
         path: "checkout",
         element: <div><CheckoutPage/></div>

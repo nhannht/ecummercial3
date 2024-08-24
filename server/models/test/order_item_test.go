@@ -15,9 +15,9 @@ func TestCreateOrderItem(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -49,9 +49,9 @@ func TestGetOrderItem(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -81,9 +81,9 @@ func TestUpdateOrderItem(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -118,9 +118,9 @@ func TestDeleteOrderItem(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 

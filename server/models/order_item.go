@@ -7,9 +7,9 @@ import (
 type OrderItem struct {
 	gorm.Model `faker:"-"`
 	OrderID    uint    `faker:"-"`
+	Order      Order   `faker:"-"`
 	ProductID  uint    `faker:"-"`
-	Quantity   int     `faker:"oneof:1,2,3,4,5"`
-	Price      float64 `faker:"amount"`
+	Product    Product `faker:"-"`
 }
 
 func (o *OrderItem) BeforeCreate(tx *gorm.DB) (err error) {

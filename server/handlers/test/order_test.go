@@ -40,7 +40,7 @@ func TestCreateOrder(t *testing.T) {
 
 	assert.Equal(t, order.UserID, response["data"].UserID)
 	assert.Equal(t, order.OrderDate, response["data"].OrderDate)
-	assert.Equal(t, order.TotalAmount, response["data"].TotalAmount)
+	assert.Equal(t, order.TotalAmount, response["data"].TotalCost)
 }
 
 func TestGetOrders(t *testing.T) {
@@ -65,7 +65,7 @@ func TestGetOrder(t *testing.T) {
 	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.DB.Create(&user)
 
-	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalAmount: 100.50}
+	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalCost: 100.50}
 	db.DB.Create(&order)
 
 	req, _ := http.NewRequest("GET", "/orders/"+strconv.Itoa(int(order.ID)), nil)
@@ -82,7 +82,7 @@ func TestGetOrder(t *testing.T) {
 
 	assert.Equal(t, order.UserID, response["data"].UserID)
 	assert.Equal(t, order.OrderDate, response["data"].OrderDate)
-	assert.Equal(t, order.TotalAmount, response["data"].TotalAmount)
+	assert.Equal(t, order.TotalCost, response["data"].TotalCost)
 }
 
 func TestUpdateOrder(t *testing.T) {
@@ -94,7 +94,7 @@ func TestUpdateOrder(t *testing.T) {
 	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.DB.Create(&user)
 
-	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalAmount: 100.50}
+	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalCost: 100.50}
 	db.DB.Create(&order)
 
 	updatedOrder := handlers.CreateOrderInput{UserID: user.ID, OrderDate: "2023-10-02", TotalAmount: 150.75}
@@ -115,7 +115,7 @@ func TestUpdateOrder(t *testing.T) {
 
 	assert.Equal(t, updatedOrder.UserID, response["data"].UserID)
 	assert.Equal(t, updatedOrder.OrderDate, response["data"].OrderDate)
-	assert.Equal(t, updatedOrder.TotalAmount, response["data"].TotalAmount)
+	assert.Equal(t, updatedOrder.TotalAmount, response["data"].TotalCost)
 }
 
 func TestDeleteOrder(t *testing.T) {
@@ -127,7 +127,7 @@ func TestDeleteOrder(t *testing.T) {
 	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.DB.Create(&user)
 
-	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalAmount: 100.50}
+	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalCost: 100.50}
 	db.DB.Create(&order)
 
 	req, _ := http.NewRequest("DELETE", "/orders/"+strconv.Itoa(int(order.ID)), nil)

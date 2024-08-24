@@ -15,9 +15,9 @@ func TestCreatePayment(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -41,9 +41,9 @@ func TestGetPayment(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -70,9 +70,9 @@ func TestUpdatePayment(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -106,9 +106,9 @@ func TestDeletePayment(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -160,9 +160,9 @@ func TestCreatePaymentWithZeroAmount(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -186,9 +186,9 @@ func TestCreatePaymentWithNegativeAmount(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -210,9 +210,9 @@ func TestCreatePaymentWithFutureDate(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -236,9 +236,9 @@ func TestCreatePaymentWithPastDate(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -262,9 +262,9 @@ func TestUpdatePaymentAmountToZero(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -294,9 +294,9 @@ func TestUpdatePaymentAmountToNegative(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -323,9 +323,9 @@ func TestUpdatePaymentMethod(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -355,9 +355,9 @@ func TestDeletePaymentAndCheckOrder(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -391,9 +391,9 @@ func TestCreatePaymentWithInvalidMethod(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -415,9 +415,9 @@ func TestCreatePaymentWithEmptyMethod(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 
@@ -439,9 +439,9 @@ func TestCreatePaymentWithNullMethod(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
 	}
 	db.Create(&order)
 

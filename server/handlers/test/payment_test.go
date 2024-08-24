@@ -22,7 +22,7 @@ func TestCreatePayment(t *testing.T) {
 	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.DB.Create(&user)
 
-	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalAmount: 100.50}
+	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalCost: 100.50}
 	db.DB.Create(&order)
 
 	payment := handlers.CreatePaymentInput{OrderID: order.ID, PaymentDate: "2023-10-02", Amount: 100.50, PaymentMethod: "Credit Card"}
@@ -69,7 +69,7 @@ func TestGetPayment(t *testing.T) {
 	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.DB.Create(&user)
 
-	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalAmount: 100.50}
+	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalCost: 100.50}
 	db.DB.Create(&order)
 
 	payment := models.Payment{OrderID: order.ID, PaymentDate: "2023-10-02", Amount: 100.50, PaymentMethod: "Credit Card"}
@@ -102,7 +102,7 @@ func TestUpdatePayment(t *testing.T) {
 	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.DB.Create(&user)
 
-	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalAmount: 100.50}
+	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalCost: 100.50}
 	db.DB.Create(&order)
 
 	payment := models.Payment{OrderID: order.ID, PaymentDate: "2023-10-02", Amount: 100.50, PaymentMethod: "Credit Card"}
@@ -139,7 +139,7 @@ func TestDeletePayment(t *testing.T) {
 	user := models.User{Name: "John Doe", Email: "john@example.com", Password: "password123", Role: "user"}
 	db.DB.Create(&user)
 
-	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalAmount: 100.50}
+	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalCost: 100.50}
 	db.DB.Create(&order)
 
 	payment := models.Payment{OrderID: order.ID, PaymentDate: "2023-10-02", Amount: 100.50, PaymentMethod: "Credit Card"}

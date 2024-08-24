@@ -87,5 +87,6 @@ func setupRoute(r *gin.Engine) {
 
 	r.GET("/configuration/contact/main", handlers.GetConfContactPage)
 	r.POST("/configuration/contact/main", handlers.EditConfContactPage)
+	r.POST("/checkout/validate-order", handlers.ValidateOrder)
 
 }

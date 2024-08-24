@@ -17,10 +17,10 @@ func TestGetOrder(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	db.Create(&order)
 
@@ -29,7 +29,7 @@ func TestGetOrder(t *testing.T) {
 
 	assert.Nil(t, result.Error)
 	assert.Equal(t, order.OrderDate, fetchedOrder.OrderDate)
-	assert.Equal(t, order.TotalAmount, fetchedOrder.TotalAmount)
+	assert.Equal(t, order.TotalCost, fetchedOrder.TotalCost)
 	assert.Equal(t, order.Status, fetchedOrder.Status)
 }
 
@@ -40,17 +40,17 @@ func TestUpdateOrder(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	db.Create(&order)
 
 	updatedData := models.Order{
-		OrderDate:   "2023-10-02",
-		TotalAmount: 150.75,
-		Status:      "shipped",
+		OrderDate: "2023-10-02",
+		TotalCost: 150.75,
+		Status:    "shipped",
 	}
 	db.Model(&order).Updates(updatedData)
 
@@ -58,7 +58,7 @@ func TestUpdateOrder(t *testing.T) {
 	db.First(&updatedOrder, order.ID)
 
 	assert.Equal(t, "2023-10-02", updatedOrder.OrderDate)
-	assert.Equal(t, 150.75, updatedOrder.TotalAmount)
+	assert.Equal(t, 150.75, updatedOrder.TotalCost)
 	assert.Equal(t, "shipped", updatedOrder.Status)
 }
 
@@ -69,10 +69,10 @@ func TestDeleteOrder(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	db.Create(&order)
 
@@ -95,10 +95,10 @@ func TestOrderRelationships(t *testing.T) {
 	db.Create(&product)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	db.Create(&order)
 
@@ -122,9 +122,9 @@ func TestOrderValidations(t *testing.T) {
 	db := SetupTestDB()
 
 	order := models.Order{
-		OrderDate:   "2023-10-01",
-		TotalAmount: -100.50,          // Invalid total amount
-		Status:      "invalid_status", // Invalid status
+		OrderDate: "2023-10-01",
+		TotalCost: -100.50,          // Invalid total amount
+		Status:    "invalid_status", // Invalid status
 	}
 	result := db.Create(&order)
 
@@ -135,9 +135,9 @@ func TestCreateOrderWithoutUser(t *testing.T) {
 	db := SetupTestDB()
 
 	order := models.Order{
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	result := db.Create(&order)
 	//fmt.Printf("%v", result.Error)
@@ -152,10 +152,10 @@ func TestCreateOrderWithInvalidDate(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "invalid-date",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "invalid-date",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	result := db.Create(&order)
 
@@ -169,10 +169,10 @@ func TestCreateOrderWithZeroTotalAmount(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "1997-10-01",
-		TotalAmount: 0.00,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "1997-10-01",
+		TotalCost: 0.00,
+		Status:    "pending",
 	}
 	result := db.Create(&order)
 
@@ -190,10 +190,10 @@ func TestCreateOrderWithNegativeTotalAmount(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: -100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: -100.50,
+		Status:    "pending",
 	}
 	result := db.Create(&order)
 
@@ -207,10 +207,10 @@ func TestUpdateOrderStatus(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	db.Create(&order)
 
@@ -252,10 +252,10 @@ func TestCreateOrderWithMultipleItems(t *testing.T) {
 	db.Create(&product2)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 1050.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 1050.50,
+		Status:    "pending",
 	}
 	db.Create(&order)
 
@@ -292,10 +292,10 @@ func TestOrderTotalAmountCalculation(t *testing.T) {
 	db.Create(&product2)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 0.00,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 0.00,
+		Status:    "pending",
 	}
 	db.Create(&order)
 
@@ -332,10 +332,10 @@ func TestOrderWithNoItems(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	db.Create(&order)
 
@@ -352,10 +352,10 @@ func TestOrderWithMultipleStatuses(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	db.Create(&order)
 
@@ -372,10 +372,10 @@ func TestOrderWithInvalidUserID(t *testing.T) {
 	db := SetupTestDB()
 
 	order := models.Order{
-		UserID:      999, // Non-existent user ID
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    999, // Non-existent user ID
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	result := db.Create(&order)
 
@@ -389,19 +389,19 @@ func TestOrderWithDuplicateID(t *testing.T) {
 	db.Create(&user)
 
 	order1 := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	db.Create(&order1)
 
 	order2 := models.Order{
-		Model:       gorm.Model{ID: order1.ID},
-		UserID:      user.ID,
-		OrderDate:   "2023-10-02",
-		TotalAmount: 200.75,
-		Status:      "shipped",
+		Model:     gorm.Model{ID: order1.ID},
+		UserID:    user.ID,
+		OrderDate: "2023-10-02",
+		TotalCost: 200.75,
+		Status:    "shipped",
 	}
 	result := db.Create(&order2)
 
@@ -424,10 +424,10 @@ func TestOrderWithLongOrderDate(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01T00:00:00Z",
-		TotalAmount: 100.50,
-		Status:      "pending",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01T00:00:00Z",
+		TotalCost: 100.50,
+		Status:    "pending",
 	}
 	result := db.Create(&order)
 
@@ -442,10 +442,10 @@ func TestOrderWithSpecialCharactersInStatus(t *testing.T) {
 	db.Create(&user)
 
 	order := models.Order{
-		UserID:      user.ID,
-		OrderDate:   "2023-10-01",
-		TotalAmount: 100.50,
-		Status:      "pend!ng",
+		UserID:    user.ID,
+		OrderDate: "2023-10-01",
+		TotalCost: 100.50,
+		Status:    "pend!ng",
 	}
 	result := db.Create(&order)
 

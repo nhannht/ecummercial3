@@ -52,7 +52,7 @@ func TestDatabaseOperations(t *testing.T) {
 	assert.NotZero(t, product.ID)
 
 	// Test creating an order
-	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalAmount: 100.50}
+	order := models.Order{UserID: user.ID, OrderDate: "2023-10-01", TotalCost: 100.50}
 	result = DB.Create(&order)
 	assert.Nil(t, result.Error)
 	assert.NotZero(t, order.ID)

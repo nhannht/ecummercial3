@@ -1,11 +1,11 @@
 export type Category = {
-    ID:string,
+    ID?:string,
     CategoryName: string
 }
 
 
 export interface Review {
-    ID: number;
+    ID?: number;
     UserID: number;
     ProductID: number;
     Rating: number;
@@ -15,7 +15,7 @@ export interface Review {
 }
 
 export interface User {
-    ID: number;
+    ID?: number;
     Name: string;
     Email: string;
     Password: string;
@@ -26,14 +26,15 @@ export interface User {
 }
 
 export interface OrderItem {
-    Id: number;
-    ProductID: number;
-    Quantity: number;
-    Price: number;
+    ID?: number;
+    ProductID?: number;
+    Product?: Product;
+    OrderID?: number;
+    Order?: Order;
 }
 
 export interface Product {
-    ID: number;
+    ID?: number;
     Name: string;
     Description: string;
     Price: number;
@@ -46,11 +47,28 @@ export interface Product {
 }
 
 export interface ShippingInfo {
-    ID: number;
-    Street: string;
-    Province: string;
+    ID?: number;
+    Address: string;
+    City: string;
+    State: string;
     OrderId: number;
     Phone: string;
-    Identify: string;
+    Sex: string;
     Note: string;
+}
+
+interface Order {
+    ID?: number;
+    updated_at?: string;
+    UserID?: number;
+    TotalCost?: number;
+    OrderItems?: OrderItem[];
+    Payments?: Payment[];
+    Status?: 'pending' | 'shipped' | 'delivered';
+    ShippingInfo?: ShippingInfo;
+    User?: User;
+}
+
+interface Cart {
+    orderItems: OrderItem[];
 }
