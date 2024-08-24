@@ -22,6 +22,11 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
+    - name: Save env variable
+      run: |
+        echo "VITE_APP_TITLE='${{ secrets.VITE_APP_TITLE }}'" >> client/.env.production
+        echo "VITE_SERVER_URL='${{secrets.VITE_SERVER_URL}}'" >> client/.env.production
+
     - name: Build Vite app
       run: yarn run build
 

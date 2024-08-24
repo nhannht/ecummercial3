@@ -1,53 +1,52 @@
-import {PropsWithChildren } from "react"
-import {useNavigate, } from "react-router-dom"
+import {PropsWithChildren} from "react"
+import {useNavigate,} from "react-router-dom"
 import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem, NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
+
+    NavigationMenuLink,
+
 } from "@/components/ui/navigation-menu"
 
-import {MenuIcon} from "lucide-react";
 import CartSymbol from "@/components/shop/navigation-bar/CartSymbol.tsx";
+import {Menu} from "@/components/Menu.tsx";
+import {emptyUser, MenuLink, User} from "@/lib/global.ts";
+import {NavigationUserDropdown} from "@/components/NavigationUserDropdown.tsx";
+import {LogInButton} from "@/components/LogoutInButtons.tsx";
+import useLocalStorageState from "use-local-storage-state";
 
-const shopLinks: { title: string; href: string; description: string }[] = [
-    { title: "Home", href: "/", description: "Go to the homepage" },
-    { title: "Products", href: "/products", description: "Browse our product catalog" },
-    { title: "Cart", href: "/cart", description: "View items in your cart" },
-    { title: "Search", href: "/search", description: "Search for products" },
-    { title: "Contact Us", href: "/contact-us", description: "Get in touch with us" },
-    { title: "About Us", href: "/about-us", description: "Learn more about us" },
-    { title: "FAQ", href: "/faq", description: "Frequently Asked Questions" },
-    { title: "Terms and Conditions", href: "/terms-and-conditions", description: "Read our terms and conditions" },
+const shopLinks: MenuLink[] = [
+    {title: "Home", href: "/", description: "Go to the homepage"},
+    {title: "Products", href: "/products", description: "Browse our product catalog"},
+    {title: "Cart", href: "/cart", description: "View items in your cart"},
+    {title: "Search", href: "/search", description: "Search for products"},
+    {title: "Contact Us", href: "/contact-us", description: "Get in touch with us"},
+    {title: "About Us", href: "/about-us", description: "Learn more about us"},
+    {title: "FAQ", href: "/faq", description: "Frequently Asked Questions"},
+    {title: "Terms and Conditions", href: "/terms-and-conditions", description: "Read our terms and conditions"},
 ]
 
 export default function ShopNavigationBar() {
+    const [user,_setUser] = useLocalStorageState<User>(`user`, {defaultValue: emptyUser})
     return (
         <div className={"flex items-center justify-between"}>
-            <NavigationMenu>
-            <NavigationMenuList>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger id={"home-hamburger-trigger"}><MenuIcon className="w-6 h-6"
-                                                                                            fill="currentColor"/></NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul id={"navigation-content"}
-                            className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                            {shopLinks.map((link) => (
-                                <ListItem
-                                    key={link.title}
-                                    title={link.title}
-                                    to={link.href}
-                                >
-                                    {link.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-            </NavigationMenuList>
-        </NavigationMenu>
-            <CartSymbol />
+            <Menu
+                shopLinks={shopLinks}
+                callbackfn={(link) => (
+                    <ListItem
+                        key={link.title}
+                        title={link.title}
+                        to={link.href}
+                    >
+                        {link.description}
+                    </ListItem>
+                )}/>
+            <div className={"flex items-center space-x-2"}>
+                <CartSymbol/>
+                {user.Name.trim() === "" ?
+                    (<LogInButton/>) : (
+                        <NavigationUserDropdown user={user}/>
+                    )
+                }
+            </div>
 
         </div>
     )
@@ -62,9 +61,9 @@ const ListItem = (props: PropsWithChildren<{
 
     return (
         <li>
-            <NavigationMenuLink >
+            <NavigationMenuLink>
                 <div
-                    onClick={()=> navigate(props.to)  }
+                    onClick={() => navigate(props.to)}
                     className={"navLink block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"}
                 >
                     <div className="text-sm font-medium leading-none">{props.title}</div>

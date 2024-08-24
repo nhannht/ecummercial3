@@ -3,7 +3,7 @@ import {Button} from "@/components/ui/button"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
 import {Card} from "@/components/ui/card"
 import {StarIcon} from "lucide-react";
-import {Category, Review} from "@/components/shop/shop";
+import {Category, Review} from "@/lib/global";
 import {OtherImagesList} from "@/components/shop/product-editor/OtherImagesList.tsx";
 
 function ReviewPlaceHolder() {

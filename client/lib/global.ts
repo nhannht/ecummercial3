@@ -1,5 +1,5 @@
 export type Category = {
-    ID?:string,
+    ID:string,
     CategoryName: string
 }
 
@@ -57,7 +57,16 @@ export interface ShippingInfo {
     Note: string;
 }
 
-interface Order {
+export interface Payment {
+    ID?: number;
+    OrderID: number;
+    PaymentDate: string;
+    Amount: number;
+    PaymentMethod: string;
+    Status: string
+}
+
+export interface Order {
     ID?: number;
     updated_at?: string;
     UserID?: number;
@@ -69,6 +78,39 @@ interface Order {
     User?: User;
 }
 
-interface Cart {
+export interface Cart {
     orderItems: OrderItem[];
 }
+export type UserLocalStorageData = {
+    User:User
+}
+
+export type MenuLink = {
+    title: string,
+    href: string,
+    description: string
+}
+
+
+ const emptyUser: User = {
+    Addresses: "", Email: "", Name: "", Orders: [], Password: "", Reviews: [], Role: ""
+
+}
+
+
+ const emptyUserLocalData: UserLocalStorageData = {
+    User: {
+        Name: "",
+        Email: "",
+        Password: "",
+        Addresses: "",
+        Orders: [],
+        Reviews: [],
+        Role: ""
+    },
+
+}
+
+
+export {emptyUserLocalData}
+export {emptyUser}

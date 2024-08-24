@@ -1,16 +1,16 @@
 import useLocalStorageState from "use-local-storage-state";
-import {Cart, Order} from "@/components/shop/shop";
+import {Cart, Order} from "@/lib/global";
 import {useEffect, useState} from "react";
 import {CheckoutAddressForm} from "@/components/shop/checkout/CheckoutAddressForm.tsx";
 import {CartForm} from "@/components/shop/checkout/CartForm.tsx";
 
 export type CartDisplayInformation = {
-  productId: number;
+  productId?: number;
   productName: string;
   quantity: number;
   cost: number}[]
 export default function Checkout() {
-  const [cart,setCart] = useLocalStorageState<Cart>(`${import.meta.env.VITE_APP_NAME}_cart`, {
+  const [cart,_setCart] = useLocalStorageState<Cart>(`cart`, {
     defaultValue: {orderItems: []},
   })
   const [order, setOrder] = useState<Order>({})

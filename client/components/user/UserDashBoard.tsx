@@ -1,11 +1,11 @@
 import {Outlet} from "react-router-dom";
-import NavigationBar from "./NavigationBar";
+import UserNavigationBar from "./UserNavigationBar.tsx";
 
 export default function UserDashboard  () {
   return (
-      <div className={"flex   "}>
-        <NavigationBar />
-        <div className={"p-4 w-full"}>
+      <div>
+        <UserNavigationBar />
+        <div >
             <Outlet/>
         </div>
       </div>

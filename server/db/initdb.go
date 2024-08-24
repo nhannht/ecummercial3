@@ -19,15 +19,15 @@ func createAdminUser() {
 		return
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		log.Fatal("Failed to hash password:", err)
-	}
+	//hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	//if err != nil {
+	//	log.Fatal("Failed to hash password:", err)
+	//}
 
 	admin := models.User{
 		Name:     name,
 		Email:    email,
-		Password: string(hashedPassword),
+		Password: password,
 		Role:     role,
 	}
 

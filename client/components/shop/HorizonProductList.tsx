@@ -1,7 +1,7 @@
 import {Card, CardContent} from "@/components/ui/card"
 import {Button} from "@/components/ui/button"
 import  {PropsWithChildren} from "react";
-import {Product} from "@/components/shop/shop";
+import {Product} from "@/lib/global";
 
 function ProductCard(props:PropsWithChildren< {
     name: string,

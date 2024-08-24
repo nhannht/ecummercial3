@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Category, Product, Review} from "@/components/shop/shop";
+import {Category, Product, Review} from "@/lib/global";
 import {useLocation, useParams} from "react-router-dom";
 import {CategoryPicker} from "@/components/admin/product-editor/CategoryPicker.tsx";
 import {MainImagePicker} from "@/components/admin/product-editor/MainImagePicker.tsx";
@@ -124,6 +124,7 @@ const ProductEditor = () => {
             formData.append(`OtherImages[]`, image);
         });
         pickedCategories.forEach((category) => {
+            // @ts-ignore
             formData.append(`Categories[]`, category.ID);
         });
         console.log([...formData]);

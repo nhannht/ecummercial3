@@ -12,3 +12,12 @@ GET localhost:8080/products/prices
 
 ###
 GET localhost:8080/reviews
+
+###
+POST localhost:8080/login
+Content-Type: Application/json
+
+{
+  "Identifier": "admin@nhannht.kute",
+  "Password": "admin123"
+}

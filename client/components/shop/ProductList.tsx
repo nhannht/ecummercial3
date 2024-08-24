@@ -2,7 +2,7 @@ import {useEffect, useMemo, useState} from "react";
 import { useSearchParams} from "react-router-dom";
 // import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import {Button} from "@/components/ui/button";
-import {Cart, Category, Order, OrderItem, Product, ShippingInfo, User} from "@/components/shop/shop";
+import {Cart, Category, OrderItem, Product} from "@/lib/global";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Label} from "@/components/ui/label";
 import {TwoThumpSlider} from "@/components/ui/slider.tsx";
@@ -50,7 +50,7 @@ export default function ProductList() {
     // const navigate = useNavigate();
     const [resultMetaData, setResultMetaData] = useState({})
 
-    const [cartValue ,setCartValue] = useLocalStorageState<Cart>(`${import.meta.env.VITE_APP_NAME}_cart`, {
+    const [cartValue ,setCartValue] = useLocalStorageState<Cart>(`cart`, {
         defaultValue: {
             orderItems: [],
         }

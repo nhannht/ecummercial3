@@ -5,6 +5,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"log"
 	"net/http"
 	"nhannht.kute/ecummercial/server/db"
 	"nhannht.kute/ecummercial/server/models"
@@ -23,6 +24,11 @@ type RegisterInput struct {
 type LoginInput struct {
 	Identifier string `json:"identifier" binding:"required"`
 	Password   string `json:"password" binding:"required"`
+}
+
+type LoginOutput struct {
+	Token string
+	User  models.User
 }
 
 func isValidEmail(email string) bool {
@@ -64,12 +70,16 @@ func Login(c *gin.Context) {
 	}
 
 	var user models.User
-	if err := db.DB.Where("email = ? OR username = ?", input.Identifier).First(&user).Error; err != nil {
+	if err := db.DB.Where("email = ? OR name = ?", input.Identifier, input.Identifier).First(&user).Error; err != nil {
+		log.Printf(err.Error())
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+		log.Printf("User password is %s", user.Password)
+		log.Printf("input password is %s", input.Password)
+		log.Printf(err.Error())
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
@@ -80,7 +90,13 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	// hide password from response
+	user.Password = ""
+
+	loginOutput := LoginOutput{User: user,
+		Token: token}
+
+	c.JSON(http.StatusOK, gin.H{"data": loginOutput})
 }
 
 func Logout(c *gin.Context) {

@@ -3,10 +3,10 @@ import { ShoppingCartIcon } from 'lucide-react'; // You can use any icon library
 import {Button} from "@/components/ui/button.tsx";
 import useLocalStorageState from "use-local-storage-state";
 import {Link} from "react-router-dom";
-import {Cart} from "@/components/shop/shop";
+import {Cart} from "@/lib/global";
 
 const CartSymbol: React.FC = () => {
-    const [cartValue,setCartValue] = useLocalStorageState<Cart>(`${import.meta.env.VITE_APP_NAME}_cart`, {
+    const [cartValue,setCartValue] = useLocalStorageState<Cart>(`cart`, {
         defaultValue: {
             orderItems: [],
         },

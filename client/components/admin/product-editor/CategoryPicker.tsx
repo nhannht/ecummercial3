@@ -1,4 +1,4 @@
-import {Category} from "@/components/shop/shop";
+import {Category} from "@/lib/global";
 import {useState} from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
 import {Button} from "@/components/ui/button.tsx";

@@ -2,7 +2,7 @@ import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components
 import {Separator} from "@/components/ui/separator.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {CartDisplayInformation} from "@/components/shop/Checkout.tsx";
-import {Cart} from "@/components/shop/shop";
+import {Cart} from "@/lib/global";
 import useLocalStorageState from "use-local-storage-state";
 import {MinusIcon, PlusIcon} from "lucide-react";
 
@@ -18,23 +18,25 @@ export function CartForm(props: {
     const tax = subtotal * 0.1; // Example tax calculation
     const total = subtotal + shipping + tax;
 
-    const [cart, setCart] = useLocalStorageState<Cart>(`${import.meta.env.VITE_APP_NAME}_cart`, {
+    const [cart, setCart] = useLocalStorageState<Cart>(`cart`, {
         defaultValue: {orderItems: []},
     })
 
-    const handleIncrement = (productId: number) => {
-        setCart({
+    const handleIncrement = (productId: number|undefined) => {
+        productId && setCart({
             orderItems: [...cart.orderItems, {
                 ProductID: productId
 
             }]
         });
     }
-    const handleDecrement = (productId: number) => {
-        const index = cart.orderItems.findIndex((i) => i.ProductID === productId);
-        cart.orderItems.splice(index, 1);
+    const handleDecrement = (productId: number|undefined) => {
+       if (productId){
+           const index = cart.orderItems.findIndex((i) => i.ProductID === productId);
+           cart.orderItems.splice(index, 1);
 
-        setCart(cart);
+           setCart(cart);
+       }
     }
 
     return (
