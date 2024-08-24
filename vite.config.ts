@@ -2,7 +2,6 @@ import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 import * as path from "node:path";
 import browserslistToEsbuild from "browserslist-to-esbuild";
-import legacy from '@vitejs/plugin-legacy'
 
 // https://vitejs.dev/config/
 export default defineConfig({
