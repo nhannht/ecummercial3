@@ -21,7 +21,6 @@ export function NavigationUserDropdown(props: { user: User }) {
     return <DropdownMenu>
         <DropdownMenuTrigger
             className={"translate-x-0 translate-y-0"}
-            asChild
             >
             <Button variant="ghost" size="icon" className="rounded-full">
                 <Avatar className="h-8 w-8">
