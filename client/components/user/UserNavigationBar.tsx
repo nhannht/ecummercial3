@@ -4,7 +4,7 @@ import {NavigationMenuLink,} from "@/components/ui/navigation-menu"
 import CartSymbol from "@/components/shop/navigation-bar/CartSymbol.tsx";
 import useLocalStorageState from "use-local-storage-state";
 import {emptyUser, MenuLink, User} from "@/lib/global";
-import {LogInButton, LogoutButton} from "@/components/LogoutInButtons.tsx";
+import {LogInButton} from "@/components/LogoutInButtons.tsx";
 import {Menu} from "@/components/Menu.tsx";
 import {NavigationUserDropdown} from "@/components/NavigationUserDropdown.tsx";
 
