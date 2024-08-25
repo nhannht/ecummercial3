@@ -10,11 +10,18 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Link} from "react-router-dom";
 import {emptyUser, User} from "@/lib/global.ts";
 import {useToast} from "@/components/ui/use-toast.ts";
+import useLocalStorageState from "use-local-storage-state";
 
 export function NavigationUserDropdown(props: { user: User }) {
     const {toast} = useToast()
+    const [_user,setUser] = useLocalStorageState<User>(`user`, {defaultValue: emptyUser})
+    const [_token,setToken] = useLocalStorageState<string>(`token`, {defaultValue: ""})
+
+
     return <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger
+            translate-y-0 translate-x-0 asChild={true}
+            >
             <Button variant="ghost" size="icon" className="rounded-full">
                 <Avatar className="h-8 w-8">
                     <AvatarImage src="/placeholder.svg"/>
@@ -44,8 +51,8 @@ export function NavigationUserDropdown(props: { user: User }) {
             <DropdownMenuSeparator/>
             <DropdownMenuItem>
                 <div onClick={() => {
-                    localStorage.setItem("user",JSON.stringify(emptyUser))
-                    localStorage.setItem("cart", JSON.stringify([]))
+                    setUser(emptyUser)
+                    setToken("")
                     toast({
                         description: "Logged out successfully",
                     })

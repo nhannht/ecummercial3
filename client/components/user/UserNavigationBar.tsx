@@ -38,12 +38,9 @@ export default function UserNavigationBar() {
             <div className={"flex items-center space-x-2"}>
                 <CartSymbol/>
 
-                {user.Name.trim() !== "" &&
-                    <NavigationUserDropdown user={user}/>
-                }
                 {user.Name.trim() === "" ?
                     (<LogInButton/>) : (
-                        <LogoutButton />
+                        <NavigationUserDropdown user={user}/>
                     )
                 }
             </div>

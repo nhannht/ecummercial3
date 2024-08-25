@@ -1,100 +1,62 @@
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "../ui/tooltip";
-import {Link} from "react-router-dom"
-import {
-    HomeIcon,
-    LineChartIcon, ListOrderedIcon,
-    Package2Icon,
-    PackageIcon,
-    SettingsIcon,
-    UsersIcon,
-} from "lucide-react";
-const routesData = [
+
+import {emptyUser, MenuLink} from "@/lib/global.ts";
+import {Menu} from "@/components/Menu.tsx";
+import CartSymbol from "@/components/shop/navigation-bar/CartSymbol.tsx";
+import {LogInButton} from "@/components/LogoutInButtons.tsx";
+import {NavigationUserDropdown} from "@/components/NavigationUserDropdown.tsx";
+import {PropsWithChildren} from "react";
+import {useNavigate} from "react-router-dom";
+import {NavigationMenuLink} from "@/components/ui/navigation-menu.tsx";
+import useLocalStorageState from "use-local-storage-state";
+const adminMenuLinks:MenuLink[] = [
     {
-        label: "Products Management",
-        to: "/admin/products",
-        icon: <PackageIcon className="h-5 w-5"/>
+        title: "Products Management",
+        href: "/admin/products",
+        description: "Product list and management",
     },
     {
-        label: "Orders Management",
-        to: "/admin/orders",
-        icon: <ListOrderedIcon className="h-5 w-5"/>
+        title: "Orders Management",
+        href: "/admin/orders",
+        description: "Order list and management",
 
     },
     {
-        label: "Users Management",
-        to: "/admin/users",
-        icon: <UsersIcon className="h-5 w-5"/>
+        title: "Users Management",
+        href: "/admin/users",
+        description:"user list and management",
     },
     {
-        label: "Analytics",
-        to: "/admin/analytics",
-        icon: <LineChartIcon className="h-5 w-5"/>
+        title: "Analytics",
+        href: "/admin/analytics",
+        description: "view analytics data",
     }
 ]
 function NavigationBar() {
+    const [user,_setUser] = useLocalStorageState("user", {defaultValue: emptyUser})
 
 
-    return <div>
+    return <div className={"flex items-center justify-between"}>
+        <Menu
+            shopLinks={adminMenuLinks}
+            callbackfn={(link) => (
+                <ListItem
+                    key={link.title}
+                    title={link.title}
+                    to={link.href}
+                >
+                    {link.description}
+                </ListItem>
+            )}/>
+        <div className={"flex items-center space-x-2"}>
+            <CartSymbol/>
 
-        <aside
-            className={`fixed inset-y-0 left-0 z-10 w-14 flex-col border-r bg-background hidden   sm:flex `}>
-            <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-<TooltipProvider>
-                        <Link
-                            to="/"
-                            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-                        >
-                            <Package2Icon className="h-4 w-4 transition-all group-hover:scale-110" />
-                            <span className="sr-only">Acme Inc</span>
-                        </Link>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    to="/"
-                                    className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                                >
-                                    <HomeIcon className="h-5 w-5" />
-                                    <span className="sr-only">Dashboard</span>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">Dashboard</TooltipContent>
-                        </Tooltip>
-                        {routesData.map((route) => (
-                            <Tooltip key={route.to}>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        to={route.to}
-                                        className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                                    >
-                                        {route.icon}
-                                        <span className="sr-only">{route.label}</span>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right">{route.label}</TooltipContent>
-                            </Tooltip>
-                        ))}
-                    </TooltipProvider>
+            {user.Name.trim() === "" ?
+                (<LogInButton/>) : (
+                    <NavigationUserDropdown user={user}/>
+                )
+            }
+        </div>
 
-
-            </nav>
-            <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Link
-                                to="#"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-
-                            >
-                                <SettingsIcon className="h-5 w-5"/>
-                                <span className="sr-only">Settings</span>
-                            </Link>
-                        </TooltipTrigger>
-                        <TooltipContent side="right">Settings</TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-            </nav>
-        </aside>
     </div>
 
 }
@@ -105,6 +67,29 @@ export default NavigationBar
 
 
 
+const ListItem = (props: PropsWithChildren<{
+    to: string,
+    title: string,
+}>) => {
+
+    const navigate = useNavigate()
+
+    return (
+        <li>
+            <NavigationMenuLink >
+                <div
+                    onClick={()=> navigate(props.to)  }
+                    className={"navLink block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"}
+                >
+                    <div className="text-sm font-medium leading-none">{props.title}</div>
+                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                        {props.children}
+                    </p>
+                </div>
+            </NavigationMenuLink>
+        </li>
+    )
+}
 
 
 

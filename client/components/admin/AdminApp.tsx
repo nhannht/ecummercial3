@@ -1,13 +1,13 @@
 
 import { Outlet} from "react-router-dom"
 
-import NavigationBar from "./NavigationBar";
+import AdminNavigationBar from "./NavigationBar";
 
 export default function AdminApp() {
   return (
-    <div className={"flex"}>
-        <NavigationBar />
-        <div className={"sm:pl-24 pr-10 w-full"}>
+    <div >
+        <AdminNavigationBar />
+        <div>
             <Outlet/>
         </div>
       </div>
