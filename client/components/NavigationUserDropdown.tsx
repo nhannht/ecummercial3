@@ -1,16 +1,12 @@
-import {DropdownMenu} from "@radix-ui/react-dropdown-menu";
-import {
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu.tsx";
+
 import {Button} from "@/components/ui/button.tsx";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Link} from "react-router-dom";
 import {emptyUser, User} from "@/lib/global.ts";
 import {useToast} from "@/components/ui/use-toast.ts";
 import useLocalStorageState from "use-local-storage-state";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
 
 export function NavigationUserDropdown(props: { user: User }) {
     const {toast} = useToast()
@@ -18,8 +14,8 @@ export function NavigationUserDropdown(props: { user: User }) {
     const [_token,setToken] = useLocalStorageState<string>(`token`, {defaultValue: ""})
 
 
-    return <DropdownMenu>
-        <DropdownMenuTrigger
+    return <Popover>
+        <PopoverTrigger
             className={"translate-x-0 translate-y-0"}
             >
             <Button variant="ghost" size="icon" className="rounded-full">
@@ -29,8 +25,8 @@ export function NavigationUserDropdown(props: { user: User }) {
                 </Avatar>
                 <span className="sr-only">Toggle user menu</span>
             </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        </PopoverTrigger>
+        <PopoverContent align="end">
             <div className="flex items-center gap-2 p-2">
                 <Avatar className="h-8 w-8">
                     <AvatarImage src="/placeholder.svg"/>
@@ -41,15 +37,15 @@ export function NavigationUserDropdown(props: { user: User }) {
                     <div className="text-sm text-muted-foreground">{props.user.Email}</div>
                 </div>
             </div>
-            <DropdownMenuSeparator/>
-            <DropdownMenuItem>
+            {/*<DropdownMenuSeparator/>*/}
+            <div>
                 <Link to="/user/dashboard" className="flex items-center gap-2">
                     <div className="h-4 w-4"/>
                     <span>Dashboard</span>
                 </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator/>
-            <DropdownMenuItem>
+            </div>
+            <Separator/>
+            <div>
                 <div onClick={() => {
                     setUser(emptyUser)
                     setToken("")
@@ -62,9 +58,9 @@ export function NavigationUserDropdown(props: { user: User }) {
                     <div className="h-4 w-4"/>
                     <span>Log out</span>
                 </div>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator/>
+            </div>
+            {/*<Separator/>*/}
 
-        </DropdownMenuContent>
-    </DropdownMenu>;
+        </PopoverContent>
+    </Popover>;
 }
