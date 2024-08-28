@@ -99,9 +99,9 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": loginOutput})
 }
 
-func Logout(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"data": "Logout successful"})
-}
+//func Logout(c *gin.Context) {
+//	c.JSON(http.StatusOK, gin.H{"data": "Logout successful"})
+//}
 
 func createToken(userID uint) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
@@ -126,6 +126,11 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		// Remove "Bearer " prefix if present
+		if len(tokenString) > 7 && tokenString[:7] == "Bearer " {
+			tokenString = tokenString[7:]
+		}
+
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -133,7 +138,10 @@ func AuthMiddleware() gin.HandlerFunc {
 			return jwtSecret, nil
 		})
 
+		log.Printf("Token is %v", token)
+
 		if err != nil || !token.Valid {
+			fmt.Printf("Error parsing token: %v", err)
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			c.Abort()
 			return

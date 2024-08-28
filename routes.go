@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"nhannht.kute/ecummercial/server/handlers"
 )
 
@@ -9,84 +10,90 @@ func setupRoute(r *gin.Engine) {
 	r.Static("uploads/products", "./uploads/products")
 	protected := r.Group("/")
 	protected.Use(handlers.AuthMiddleware())
+	adminProtected := r.Group("/")
+	adminProtected.Use(handlers.AuthMiddleware(), handlers.AdminMiddleware())
 	{
 		r.POST("/register", handlers.Register)
 		r.POST("/login", handlers.Login)
-		r.POST("/logout", handlers.Logout)
+		//r.POST("/logout", handlers.Logout)
 	}
 
 	{
-		r.POST("/users", handlers.CreateUser)
-		r.GET("/users", handlers.GetUsers)
+		adminProtected.POST("/users", handlers.CreateUser)
+		adminProtected.GET("/users", handlers.GetUsers)
 		r.GET("/users/:id", handlers.GetUser)
-		r.PUT("/users/:id", handlers.UpdateUser)
-		r.DELETE("/users/:id", handlers.DeleteUser)
+		adminProtected.PUT("/users/:id", handlers.UpdateUser)
+		adminProtected.DELETE("/users/:id", handlers.DeleteUser)
 
 	}
 
 	{
-		r.POST("/products", handlers.CreateProduct)
+		adminProtected.POST("/products", handlers.CreateProduct)
 		r.GET("/products", handlers.GetProducts)
 		r.GET("/products/:id", handlers.GetProduct)
-		r.PUT("/products/:id", handlers.UpdateProduct)
-		r.DELETE("/products/:id", handlers.DeleteProduct)
+		adminProtected.PUT("/products/:id", handlers.UpdateProduct)
+		adminProtected.DELETE("/products/:id", handlers.DeleteProduct)
 		r.GET("/products/prices", handlers.GetMinMaxPrice)
 	}
 
 	{
-		r.POST("/orders", handlers.CreateOrder)
+		protected.POST("/orders", handlers.CreateOrder)
 		r.GET("/orders", handlers.GetOrders)
 		r.GET("/orders/:id", handlers.GetOrder)
-		r.PUT("/orders/:id", handlers.UpdateOrder)
-		r.DELETE("/orders/:id", handlers.DeleteOrder)
+		adminProtected.PUT("/orders/:id", handlers.UpdateOrder)
+		adminProtected.DELETE("/orders/:id", handlers.DeleteOrder)
 	}
 	{
-		r.POST("/orderitems", handlers.CreateOrderItem)
+		adminProtected.POST("/orderitems", handlers.CreateOrderItem)
 		r.GET("/orderitems", handlers.GetOrderItems)
 		r.GET("/orderitems/:id", handlers.GetOrderItem)
-		r.PUT("/orderitems/:id", handlers.UpdateOrderItem)
-		r.DELETE("/orderitems/:id", handlers.DeleteOrderItem)
+		adminProtected.PUT("/orderitems/:id", handlers.UpdateOrderItem)
+		adminProtected.DELETE("/orderitems/:id", handlers.DeleteOrderItem)
 
 	}
 	{
-		r.POST("/categories", handlers.CreateCategory)
+		adminProtected.POST("/categories", handlers.CreateCategory)
 		r.GET("/categories", handlers.GetCategories)
 		r.GET("/categories/:id", handlers.GetCategory)
-		r.PUT("/categories/:id", handlers.UpdateCategory)
-		r.DELETE("/categories/:id", handlers.DeleteCategory)
+		adminProtected.PUT("/categories/:id", handlers.UpdateCategory)
+		adminProtected.DELETE("/categories/:id", handlers.DeleteCategory)
 	}
 	{
-		r.POST("/reviews", handlers.CreateReview)
+		adminProtected.POST("/reviews", handlers.CreateReview)
 		r.GET("/reviews", handlers.GetReviews)
 		r.GET("/reviews/:id", handlers.GetReview)
-		r.PUT("/reviews/:id", handlers.UpdateReview)
-		r.DELETE("/reviews/:id", handlers.DeleteReview)
+		adminProtected.PUT("/reviews/:id", handlers.UpdateReview)
+		adminProtected.DELETE("/reviews/:id", handlers.DeleteReview)
 	}
 	{
-		r.POST("/payments", handlers.CreatePayment)
+		adminProtected.POST("/payments", handlers.CreatePayment)
 		r.GET("/payments", handlers.GetPayments)
 		r.GET("/payments/:id", handlers.GetPayment)
-		r.PUT("/payments/:id", handlers.UpdatePayment)
-		r.DELETE("/payments/:id", handlers.DeletePayment)
+		adminProtected.PUT("/payments/:id", handlers.UpdatePayment)
+		adminProtected.DELETE("/payments/:id", handlers.DeletePayment)
 
 	}
 	r.GET("/product-images/:imageName", handlers.ServeProductImage)
 	r.GET("/images/others/:imageName", handlers.ServeOtherImage)
-	r.POST("/upload/other", handlers.UploadOtherImage)
-	r.GET("/configuration/homepage/section1", handlers.GetConfHomePageSection1)
-	r.POST("/configuration/homepage/section1", handlers.EditConfHomePageSection1)
+	adminProtected.POST("/upload/other", handlers.UploadOtherImage)
+	r.GET("/config/homepage/section1", handlers.GetConfHomePageSection1)
+	adminProtected.POST("/config/homepage/section1", handlers.EditConfHomePageSection1)
 
-	r.GET("/configuration/termandcondition/main", handlers.GetConfTermsAndConditionsPage)
-	r.POST("/configuration/termandcondition/main", handlers.EditConfTermsAndConditionsPage)
+	r.GET("/config/toq", handlers.GetConfTermsAndConditionsPage)
+	adminProtected.POST("/config/terms-and-conditions/main", handlers.EditConfTermsAndConditionsPage)
 
-	r.GET("/configuration/aboutus/main", handlers.GetConfAboutPage)
-	r.POST("/configuration/aboutus/main", handlers.EditConfAboutPage)
+	r.GET("/config/aboutus", handlers.GetConfAboutPage)
+	adminProtected.POST("/config/aboutus", handlers.EditConfAboutPage)
 
-	r.GET("/configuration/faq/main", handlers.GetConfFAQPage)
-	r.POST("/configuration/faq/main", handlers.EditConfFAQPage)
+	r.GET("/config/contact", handlers.GetConfContactPage)
+	adminProtected.POST("/config/contact", handlers.EditConfContactPage)
+	adminProtected.POST("/checkout/validate-order", handlers.ValidateOrder)
 
-	r.GET("/configuration/contact/main", handlers.GetConfContactPage)
-	r.POST("/configuration/contact/main", handlers.EditConfContactPage)
-	r.POST("/checkout/validate-order", handlers.ValidateOrder)
+	r.GET("/config/faq", handlers.GetFAQ)
+	adminProtected.POST("/config/faq", handlers.EditFAQ)
+
+	adminProtected.GET("/test", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "Test route"})
+	})
 
 }

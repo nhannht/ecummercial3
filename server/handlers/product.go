@@ -241,13 +241,33 @@ func GetProducts(c *gin.Context) {
 	minPrice := c.Query("minPrice")
 	maxPrice := c.Query("maxPrice")
 	categories := c.QueryArray("categories")
+	log.Printf("Categories: %v", categories)
 
 	// Get query parameters for sorting
-	sortBy := c.DefaultQuery("sortBy", "price")     // Default sort by price
-	sortOrder := c.DefaultQuery("sortOrder", "asc") // Default sort order ascending
+	//sortBy := c.DefaultQuery("sortBy", "updated_at") // Default sort by price
+	//sortOrder := c.DefaultQuery("sortOrder", "desc") // Default sort order ascending
+
+	sortBy := c.QueryArray("sortBy")
+	sortOrder := c.QueryArray("sortOrder")
+
+	//preloadReviews := c.DefaultQuery("preloadReviews", "false") == "true"
+	//preloadCategories := c.DefaultQuery("preloadCategories", "false") == "true"
+	//preloadOrderItems := c.DefaultQuery("preloadOrderItems", "false") == "true"
+
+	preload := c.QueryArray("preload")
 
 	// Build the query
 	query := db.DB.Model(&models.Product{})
+
+	// Get query parameters for preloading
+
+	for _, p := range preload {
+		query.Preload(p)
+	}
+
+	for sortByI, sortByV := range sortBy {
+		query = query.Order(fmt.Sprintf("%s %s", sortByV, sortOrder[sortByI]))
+	}
 
 	if minPrice != "" {
 		query = query.Where("price >= ?", minPrice)
@@ -262,32 +282,9 @@ func GetProducts(c *gin.Context) {
 			Group("products.id")
 	}
 
-	// Apply sorting
-	if sortBy == "price" || sortBy == "updated_at" {
-		query = query.Order(fmt.Sprintf("%s %s", sortBy, sortOrder))
-	} else {
-		// Default to sorting by price if an invalid sortBy value is provided
-		query = query.Order("price asc")
-	}
-
 	// Get the total count of products after applying filters
 	var totalCount int64
 	query.Count(&totalCount)
-
-	// Get query parameters for preloading
-	preloadReviews := c.DefaultQuery("preloadReviews", "false") == "true"
-	preloadCategories := c.DefaultQuery("preloadCategories", "false") == "true"
-	preloadOrderItems := c.DefaultQuery("preloadOrderItems", "false") == "true"
-
-	if preloadReviews {
-		query = query.Preload("Reviews")
-	}
-	if preloadCategories {
-		query = query.Preload("Categories")
-	}
-	if preloadOrderItems {
-		query = query.Preload("OrderItems")
-	}
 
 	// Fetch the products with pagination and filters
 	query.Offset(offset).Limit(pageSize).Find(&products)

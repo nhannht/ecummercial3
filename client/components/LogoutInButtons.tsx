@@ -6,7 +6,7 @@ import {User} from "@/lib/global";
 
 export function LogInButton() {
     return <Link
-        to="/user/login"
+        to="/login"
         className="inline-flex h-9
                      items-center
                       justify-center

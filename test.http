@@ -2,7 +2,10 @@
 GET localhost:8080/products
 
 ###
-GET localhost:8080/products/49
+GET localhost:8080/products?sortBy=products.updated_at&sortOrder=desc&categories=Books
+
+###
+GET localhost:8080/products?categories=Books&preloadCategories=true
 
 ###
 GET localhost:8080/categories
@@ -21,3 +24,8 @@ Content-Type: Application/json
   "Identifier": "admin@nhannht.kute",
   "Password": "admin123"
 }
+
+###
+GET http://localhost:8080/test
+Content-Type: Application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjUwNDEwMDcsInVzZXJfaWQiOjF9.esfiOu0-PGZXPLAo2-LC5CEHZUOB1Nh2sQSf9MwbE4s

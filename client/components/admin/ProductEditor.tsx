@@ -18,13 +18,13 @@ const ProductEditor = () => {
     const isEditMode = location.pathname.includes('/edit');
     const [isDirty, setIsDirty] = useState(false); // Track unsaved changges
 
-    const [name, setName] = useState('');
-    const [price, setPrice] = useState(0);
-    const [stock, setStock] = useState(0);
-    const [description, setDescription] = useState('');
+    const [name, setName] = useState<string>('');
+    const [price, setPrice] = useState<number>(0);
+    const [stock, setStock] = useState<number>(0);
+    const [description, setDescription] = useState<string>('');
 
     const [mainImage, setMainImage] = useState<File | null>(null);
-    const [mainImageUrl, setMainImageUrl] = useState('');
+    const [mainImageUrl, setMainImageUrl] = useState<string>('');
 
     const [otherImages, setOtherImages] = useState<File[]>([]);
     const [otherImageUrls, setOtherImageUrls] = useState<string[]>([]);
@@ -45,18 +45,21 @@ const ProductEditor = () => {
                 .then(response => response.json())
                 .then((product) => {
                     const productData: Product = product.data;
-                    setName(productData.Name)
-                    setPrice(productData.Price)
+                    //@ts-ignore
+                    setName(productData.Name);setPrice(productData.Price);
                     // setStock(product.stock);
+                    //@ts-ignore
                     setDescription(productData.Description);
-                    productData.Image.trim() !== "" && setMainImageUrl(`${import.meta.env.VITE_SERVER_URL}/${productData.Image}`);
+                    productData.Image?.trim() !== "" && setMainImageUrl(`${import.meta.env.VITE_SERVER_URL}/${productData.Image}`);
                     productData.OtherImages && productData.OtherImages.forEach((image) => {
                         otherImageUrls.push(`${import.meta.env.VITE_SERVER_URL}/${image}`)
                     })
                     // console.log(otherImageUrls)
                     let t = [...new Set(otherImageUrls)]
                     setOtherImageUrls(t);
+                    // @ts-ignore
                     setPickedCategories(productData.Categories);
+                    // @ts-ignore
                     setReviews(productData.Reviews);
                     // console.log(product);
                     // console.log(product.Categories)
@@ -66,9 +69,9 @@ const ProductEditor = () => {
 
     }, [isEditMode, id, isDirty]);
 
-    const handleSelectCategory = (currentID: string) => {
+    const handleSelectCategory = (currentID: number) => {
         setPickedCategories((prev) => {
-                const category = categories.find(category => category.ID === currentID);
+            const category = categories.find(category => category.ID === currentID);
                 return category ?
                     (prev.some(cat => cat.ID === currentID) ? prev.filter(cat => cat.ID !== currentID) : [...prev, category])
                     : prev;
@@ -105,8 +108,8 @@ const ProductEditor = () => {
         setIsDirty(true)
     }
 
-    const handleRemoveCategory = (categoryID: string) => {
-        setPickedCategories((prev) => prev.filter((item) => item.ID !== categoryID));
+    const handleRemoveCategory = (categoryID: number) => {
+        setPickedCategories((prev) => prev.filter((item) => item.ID !== Number(categoryID)));
         setIsDirty(true)
     }
 

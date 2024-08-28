@@ -16,7 +16,7 @@ import useLocalStorageState from "use-local-storage-state";
 const shopLinks: MenuLink[] = [
     {title: "Home", href: "/", description: "Go to the homepage"},
     {title: "Products", href: "/products", description: "Browse our product catalog"},
-    {title: "Cart", href: "/cart", description: "View items in your cart"},
+    {title: "Cart", href: "/checkout", description: "View items in your cart and checkout"},
     {title: "Search", href: "/search", description: "Search for products"},
     {title: "Contact Us", href: "/contact-us", description: "Get in touch with us"},
     {title: "About Us", href: "/about-us", description: "Learn more about us"},

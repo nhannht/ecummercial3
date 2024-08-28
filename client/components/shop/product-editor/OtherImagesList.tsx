@@ -4,7 +4,7 @@ export function OtherImagesList(props: {
 }) {
     return <div className="grid gap-4">
         <div className="grid grid-cols-3 gap-4">
-            {props.otherImagesUrls.length > 0 ? (
+            { props.otherImagesUrls && props.otherImagesUrls.length > 0 ? (
                 props.otherImagesUrls.slice(0, 3).map(props.callbackfn)
             ) : (
                 <>
@@ -40,7 +40,7 @@ export function OtherImagesList(props: {
                     </button>
                 </>
             )}
-            {props.otherImagesUrls.length > 3 && (
+            {props.otherImagesUrls &&  props.otherImagesUrls.length > 3 && (
                 <div
                     className="border rounded-lg overflow-hidden flex items-center justify-center text-center text-muted-foreground">
                     And +{props.otherImagesUrls.length - 3} more images

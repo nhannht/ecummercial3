@@ -1,7 +1,7 @@
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "../ui/card"
 import {Label} from "../ui/label"
 import {Input} from "../ui/input"
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import {Button} from "../ui/button"
 import useLocalStorageState from "use-local-storage-state";
 import {useState} from "react";
@@ -26,6 +26,7 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const [error, setError] = useState<string | null>(null);
     const {toast} = useToast();
+    const navigate = useNavigate()
 
 
     const handleLogin = async () => {
@@ -47,10 +48,21 @@ export default function Login() {
             }
 
             const responseJSON = await response.json();
-            const data = responseJSON.data
+            const data: {
+                User: User,
+                Token: string
+            } = responseJSON.data
             setUserData(data.User)
             setUserToken(data.Token);
             // console.log(responseJSON)
+
+            if (data.User.Role === "admin") {
+                navigate("/admin")
+
+            } else if (data.User.Role === "user") {
+                navigate("/user")
+            }
+
             toast({
                 description: `Successfully logged in`,
             })

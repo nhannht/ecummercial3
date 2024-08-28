@@ -43,7 +43,7 @@ func EditConfHomePageSection1(c *gin.Context) {
 		}
 	}
 
-	// Create the new configuration data
+	// Create the new config data
 	configData := map[string]string{
 		"description": description,
 		"buttonText":  buttonText,
@@ -55,15 +55,15 @@ func EditConfHomePageSection1(c *gin.Context) {
 	// Convert the config data to JSON
 	jsonData, err := json.Marshal(configData)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal configuration data"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal config data"})
 		return
 	}
 	log.Printf("Print config data: %s", string(jsonData))
 
 	// Write the JSON data to the file
-	filePath := "configuration/homepage/section1.json"
+	filePath := "config/homepage/section1.json"
 	if err := os.WriteFile(filePath, jsonData, 0644); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write config file"})
 		return
 	}
 
@@ -73,12 +73,12 @@ func EditConfHomePageSection1(c *gin.Context) {
 
 func GetConfHomePageSection1(c *gin.Context) {
 	// Define the path to the JSON file
-	filePath := "configuration/homepage/section1.json"
+	filePath := "config/homepage/section1.json"
 
 	// Open the JSON file
 	file, err := os.Open(filePath)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open config file"})
 		return
 	}
 	defer func(file *os.File) {
@@ -91,14 +91,14 @@ func GetConfHomePageSection1(c *gin.Context) {
 	// Read the file content
 	byteValue, err := io.ReadAll(file)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read config file"})
 		return
 	}
 
 	// Parse the JSON content
 	var configData map[string]interface{}
 	if err := json.Unmarshal(byteValue, &configData); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse config file"})
 		return
 	}
 
@@ -108,12 +108,12 @@ func GetConfHomePageSection1(c *gin.Context) {
 
 func GetConfAboutPage(c *gin.Context) {
 	// Define the path to the JSON file
-	filePath := "configuration/aboutus/config.json"
+	filePath := "config/aboutus/config.json"
 
 	// Open the JSON file
 	file, err := os.Open(filePath)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open config file"})
 		return
 	}
 	defer func(file *os.File) {
@@ -126,14 +126,14 @@ func GetConfAboutPage(c *gin.Context) {
 	// Read the file content
 	byteValue, err := io.ReadAll(file)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read config file"})
 		return
 	}
 
 	// Parse the JSON content
 	var configData map[string]interface{}
 	if err := json.Unmarshal(byteValue, &configData); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse config file"})
 		return
 	}
 
@@ -145,7 +145,7 @@ func EditConfAboutPage(c *gin.Context) {
 	// Retrieve form data
 	content := c.PostForm("content")
 
-	// Create the new configuration data
+	// Create the new config data
 	configData := map[string]string{
 		"content": content,
 	}
@@ -153,15 +153,15 @@ func EditConfAboutPage(c *gin.Context) {
 	// Convert the config data to JSON
 	jsonData, err := json.Marshal(configData)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal configuration data"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal config data"})
 		return
 	}
 	log.Printf("Print config data: %s", string(jsonData))
 
 	// Write the JSON data to the file
-	filePath := "configuration/aboutus/config.json"
+	filePath := "config/aboutus/config.json"
 	if err := os.WriteFile(filePath, jsonData, 0644); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write config file"})
 		return
 	}
 
@@ -171,12 +171,12 @@ func EditConfAboutPage(c *gin.Context) {
 
 func GetConfContactPage(c *gin.Context) {
 	// Define the path to the JSON file
-	filePath := "configuration/contact/config.json"
+	filePath := "config/contact/config.json"
 
 	// Open the JSON file
 	file, err := os.Open(filePath)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open config file"})
 		return
 	}
 	defer func(file *os.File) {
@@ -189,14 +189,14 @@ func GetConfContactPage(c *gin.Context) {
 	// Read the file content
 	byteValue, err := io.ReadAll(file)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read config file"})
 		return
 	}
 
 	// Parse the JSON content
 	var configData map[string]interface{}
 	if err := json.Unmarshal(byteValue, &configData); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse config file"})
 		return
 	}
 
@@ -212,7 +212,7 @@ func EditConfContactPage(c *gin.Context) {
 	facebook := c.PostForm("facebook")
 	instagram := c.PostForm("instagram")
 
-	// Create the new configuration data
+	// Create the new config data
 	configData := map[string]string{
 		"phone":     phone,
 		"address":   address,
@@ -224,78 +224,15 @@ func EditConfContactPage(c *gin.Context) {
 	// Convert the config data to JSON
 	jsonData, err := json.Marshal(configData)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal configuration data"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal config data"})
 		return
 	}
 	log.Printf("Print config data: %s", string(jsonData))
 
 	// Write the JSON data to the file
-	filePath := "configuration/contact/config.json"
+	filePath := "config/contact/config.json"
 	if err := os.WriteFile(filePath, jsonData, 0644); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write configuration file"})
-		return
-	}
-
-	// Return success response
-	c.JSON(http.StatusOK, gin.H{"message": "Configuration updated successfully"})
-}
-
-func GetConfFAQPage(c *gin.Context) {
-	// Define the path to the JSON file
-	filePath := "configuration/faq/config.json"
-
-	// Open the JSON file
-	file, err := os.Open(filePath)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open configuration file"})
-		return
-	}
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-
-		}
-	}(file)
-
-	// Read the file content
-	byteValue, err := io.ReadAll(file)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read configuration file"})
-		return
-	}
-
-	// Parse the JSON content
-	var configData map[string]interface{}
-	if err := json.Unmarshal(byteValue, &configData); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse configuration file"})
-		return
-	}
-
-	// Return the parsed content as a JSON response
-	c.JSON(http.StatusOK, configData)
-}
-
-func EditConfFAQPage(c *gin.Context) {
-	// Retrieve form data
-	content := c.PostForm("content")
-
-	// Create the new configuration data
-	configData := map[string]string{
-		"content": content,
-	}
-
-	// Convert the config data to JSON
-	jsonData, err := json.Marshal(configData)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal configuration data"})
-		return
-	}
-	log.Printf("Print config data: %s", string(jsonData))
-
-	// Write the JSON data to the file
-	filePath := "configuration/faq/config.json"
-	if err := os.WriteFile(filePath, jsonData, 0644); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write config file"})
 		return
 	}
 
@@ -305,12 +242,12 @@ func EditConfFAQPage(c *gin.Context) {
 
 func GetConfTermsAndConditionsPage(c *gin.Context) {
 	// Define the path to the JSON file
-	filePath := "configuration/termandcondition/config.json"
+	filePath := "config/termandcondition/config.json"
 
 	// Open the JSON file
 	file, err := os.Open(filePath)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open config file"})
 		return
 	}
 	defer func(file *os.File) {
@@ -323,14 +260,14 @@ func GetConfTermsAndConditionsPage(c *gin.Context) {
 	// Read the file content
 	byteValue, err := io.ReadAll(file)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read config file"})
 		return
 	}
 
 	// Parse the JSON content
 	var configData map[string]interface{}
 	if err := json.Unmarshal(byteValue, &configData); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse config file"})
 		return
 	}
 
@@ -342,7 +279,7 @@ func EditConfTermsAndConditionsPage(c *gin.Context) {
 	// Retrieve form data
 	content := c.PostForm("content")
 
-	// Create the new configuration data
+	// Create the new config data
 	configData := map[string]string{
 		"content": content,
 	}
@@ -350,18 +287,100 @@ func EditConfTermsAndConditionsPage(c *gin.Context) {
 	// Convert the config data to JSON
 	jsonData, err := json.Marshal(configData)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal configuration data"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal config data"})
 		return
 	}
 	log.Printf("Print config data: %s", string(jsonData))
 
 	// Write the JSON data to the file
-	filePath := "configuration/termandcondition/config.json"
+	filePath := "config/termandcondition/config.json"
+
+	// Create the parent directories if they do not exist
+	if err := os.MkdirAll(filepath.Dir(filePath), os.ModePerm); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create directory"})
+		return
+	}
+
 	if err := os.WriteFile(filePath, jsonData, 0644); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write configuration file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write config file"})
 		return
 	}
 
 	// Return success response
 	c.JSON(http.StatusOK, gin.H{"message": "Configuration updated successfully"})
+}
+
+type FAQItem struct {
+	ID       uint   `json:"id"`
+	Question string `json:"question"`
+	Answer   string `json:"answer"`
+}
+
+func EditFAQ(c *gin.Context) {
+	// Retrieve form data
+
+	var faqItems []FAQItem
+	if err := c.ShouldBindJSON(&faqItems); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse FAQ data"})
+		return
+	}
+
+	// Convert the FAQ data to JSON
+	jsonData, err := json.Marshal(faqItems)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal FAQ data"})
+		return
+	}
+
+	// Write the JSON data to the file
+	filePath := "config/faq/config.json"
+
+	// Create the parent directories if they do not exist
+	if err := os.MkdirAll(filepath.Dir(filePath), os.ModePerm); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create directory"})
+		return
+	}
+
+	if err := os.WriteFile(filePath, jsonData, 0644); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write FAQ config file"})
+		return
+	}
+
+	// Return success response
+	c.JSON(http.StatusOK, gin.H{"message": "FAQ config updated successfully"})
+}
+
+func GetFAQ(c *gin.Context) {
+	// Define the path to the JSON file
+	filePath := "config/faq/config.json"
+
+	// Open the JSON file
+	file, err := os.Open(filePath)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open FAQ config file"})
+		return
+	}
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to close FAQ config file"})
+		}
+	}(file)
+
+	// Read the file content
+	byteValue, err := io.ReadAll(file)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read FAQ config file"})
+		return
+	}
+
+	// Parse the JSON content
+	var faqItems []FAQItem
+	if err := json.Unmarshal(byteValue, &faqItems); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse FAQ config file"})
+		return
+	}
+
+	// Return the parsed content as a JSON response
+	c.JSON(http.StatusOK, faqItems)
 }

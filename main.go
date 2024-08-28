@@ -17,14 +17,17 @@ func main() {
 	}
 
 	r := gin.Default()
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:5173"}
+	config.AllowCredentials = true
+	config.AllowMethods = []string{"GET", "POST",
+		"PUT", "DELETE",
+		"PATCH", "OPTIONS"}
+	config.AllowHeaders = []string{"Authorization", "Content-Type"}
 
-	r.Use(cors.Default())
+	r.Use(cors.New(config))
 
 	setupRoute(r)
-	// same as
-	// config := cors.DefaultConfig()
-	// config.AllowAllOrigins = true
-	// router.Use(cors.New(config))
 	certFile := os.Getenv("CERT_FILE")
 	certKey := os.Getenv("CERT_KEY")
 	if certFile == "" || certKey == "" {

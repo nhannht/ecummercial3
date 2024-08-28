@@ -5,7 +5,7 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { Separator } from "../ui/separator"
 
-export default function Component() {
+export default function UserProfile() {
   return (
     <div className="w-full max-w-4xl mx-auto py-8 md:py-12 px-4 md:px-6">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">

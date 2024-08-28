@@ -15,7 +15,7 @@ const EditSection1Config = () => {
     });
 
     useEffect(() => {
-        // Fetch the current configuration data
+        // Fetch the current config data
         fetch('http://localhost:8080/configuration/homepage/section1')
             .then(response => response.json())
             .then(data => {
@@ -28,7 +28,7 @@ const EditSection1Config = () => {
                 });
             })
             .catch(error => {
-                console.error('Error fetching configuration data:', error);
+                console.error('Error fetching config data:', error);
             });
     }, []);
 
@@ -76,10 +76,10 @@ const EditSection1Config = () => {
             if (configResponse.ok) {
                 alert('Configuration updated successfully');
             } else {
-                console.error('Error updating configuration:', await configResponse.text());
+                console.error('Error updating config:', await configResponse.text());
             }
         } catch (error) {
-            console.error('Error updating configuration:', error);
+            console.error('Error updating config:', error);
         }
     };
 

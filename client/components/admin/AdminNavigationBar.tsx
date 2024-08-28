@@ -29,9 +29,24 @@ const adminMenuLinks:MenuLink[] = [
         title: "Analytics",
         href: "/admin/analytics",
         description: "view analytics data",
+    },
+    {
+        title: "Term of Service Editor",
+        href:"/admin/toq-editor",
+        description:"Edit term of service page"
+    },
+    {
+        title: "Privacy Policy Editor",
+        href:"/admin/pp-editor",
+        description:"Edit privacy policy page"
+    },
+    {
+        title:"FAQ Editor",
+        href:"/admin/faq-editor",
+        description:"Edit frequently asked questions page"
     }
 ]
-function NavigationBar() {
+function AdminNavigationBar() {
     const [user,_setUser] = useLocalStorageState("user", {defaultValue: emptyUser})
 
 
@@ -61,10 +76,7 @@ function NavigationBar() {
 
 }
 
-export default NavigationBar
-
-
-
+export default AdminNavigationBar
 
 
 const ListItem = (props: PropsWithChildren<{

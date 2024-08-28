@@ -38,6 +38,36 @@ func createAdminUser() {
 	log.Println("Admin user created successfully")
 }
 
+func createCustomUser() {
+	var user models.User
+	email := "user@nhannht.kute"
+	name := "user"
+	password := "user123"
+	role := "user"
+	if err := DB.Where("email = ?", email).First(&user).Error; err == nil {
+		// Admin user already exists
+		return
+	}
+
+	//hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	//if err != nil {
+	//	log.Fatal("Failed to hash password:", err)
+	//}
+
+	admin := models.User{
+		Name:     name,
+		Email:    email,
+		Password: password,
+		Role:     role,
+	}
+
+	if err := DB.Create(&admin).Error; err != nil {
+		log.Fatal("Failed to create  user:", err)
+	}
+
+	log.Println("Custom user created successfully")
+}
+
 func createRandomUsers(t int) {
 	for i := 0; i < t; i++ {
 		user := models.User{}
@@ -293,4 +323,5 @@ func fillDbWithRandomData() {
 	createRandomOrderItems(10)
 	createRandomCategories(20)
 	createRandomShippingInfo(10)
+	createCustomUser()
 }

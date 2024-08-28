@@ -1,5 +1,5 @@
 export type Category = {
-    ID:string,
+    ID?:number,
     CategoryName: string
 }
 
@@ -35,15 +35,16 @@ export interface OrderItem {
 
 export interface Product {
     ID?: number;
-    Name: string;
-    Description: string;
-    Price: number;
-    Stock: number;
-    Image: string;
-    OtherImages: string[];
-    Categories: Category[];
-    Reviews: Review[];
-    OrderItems: OrderItem[];
+    Name?: string;
+    Description?: string;
+    Price?: number;
+    Stock?: number;
+    Image?: string;
+    OtherImages?: string[];
+    Categories?: Category[];
+    Reviews?: Review[];
+    OrderItems?: OrderItem[];
+    UpdatedAt: string;
 }
 
 export interface ShippingInfo {
@@ -114,3 +115,17 @@ export type MenuLink = {
 
 export {emptyUserLocalData}
 export {emptyUser}
+export type FAQItem = {
+    id: number,
+    question: string,
+    answer: string
+}
+export type SortOption = {
+    sortBy: string,
+    sortOrder: "asc" | "desc"
+}
+export type SortChoice = {
+    ID: string,
+    orders: SortOption[],
+    description: string
+}

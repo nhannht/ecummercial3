@@ -1,7 +1,7 @@
 import App from "./App";
 import Shop from "./components/shop/Shop";
 import AdminApp from "./components/admin/AdminApp";
-import UserDashboard from "./components/user/UserDashBoard";
+import UserApp from "./components/user/UserApp.tsx";
 import HomePage from "./components/shop/HomePage";
 import ProductListingPage from "./components/shop/ProductList";
 import CheckoutPage from "./components/shop/Checkout";
@@ -19,11 +19,14 @@ import AboutUsPage from "./components/shop/AboutUs";
 import FAQPage from "./components/shop/FAQ";
 import TermsAndConditionsPage from "./components/shop/TermsAndConditions";
 import {RouteObject} from "react-router-dom";
-import DashBoard from "./components/admin/DashBoard";
+import AdminDashBoard from "./components/admin/AdminDashBoard.tsx";
 import ProductEditor from "./components/admin/ProductEditor.tsx";
 import EditSection1Config from "./components/admin/configuration-editors/Landing/Section1";
 import TermsAndConditionsEditor from "./components/admin/configuration-editors/termandcondition/TermAndConditionEditor";
 import ContactEditor from "./components/admin/configuration-editors/contact/ContactEditor";
+import ProductDetailPage from "@/components/shop/ProductDetailPage.tsx";
+import UserDashboard from "@/components/user/UserDashboard.tsx";
+import FAQEditor from "@/components/admin/configuration-editors/faq/FAQEditor.tsx";
 // import ProductDescriptionEditor from "@/components/admin/ProductDescriptionEditor.tsx";
 
 export const shopRoutes: RouteObject[] = [
@@ -35,10 +38,10 @@ export const shopRoutes: RouteObject[] = [
         path: "products",
         element: <div><ProductListingPage/></div>
     },
-    // {
-    //     path: "products/:id",
-    //     element: <div><ProductDetailPage/></div>
-    // },
+    {
+        path: "products/:id",
+        element: <div><ProductDetailPage/></div>
+    },
 
     {
         path: "checkout",
@@ -68,12 +71,21 @@ export const shopRoutes: RouteObject[] = [
         path: "terms-and-conditions",
         element: <div><TermsAndConditionsPage/></div>
     },
+    {
+        path: "login",
+        element: <div><UserLoginPage/></div>
+    },
 
 ]
 const adminRoutes:RouteObject[] = [
     {
         path: "",
-        element: <div><DashBoard/></div>
+        element: <div><AdminDashBoard/></div>
+    },
+    {
+        path:"dashboard",
+        element: <div><AdminDashBoard/></div>
+
     },
     {
         path:"landing",
@@ -100,16 +112,20 @@ const adminRoutes:RouteObject[] = [
         element: <div><ProductEditor /></div>
     },
     {
-        path:"configuration/homepage/section1",
+        path:"config/homepage/section1",
         element: <div><EditSection1Config/></div>
     },
     {
-        path:"configuration/termandcondition/main",
+        path:"toq-editor",
         element:<div><TermsAndConditionsEditor/></div>
     },
     {
-        path:"configuration/contact/main",
+        path:"contact-editor",
         element:<div><ContactEditor /></div>
+    },
+    {
+        path:"faq-editor",
+        element:<div><FAQEditor/></div>
     }
 ];
 const userRoutes = [
@@ -122,10 +138,6 @@ const userRoutes = [
         element: <div><UserRegistrationPage/></div>
     },
     {
-        path: "login",
-        element: <div><UserLoginPage/></div>
-    },
-    {
         path: "profile",
         element: <div><UserProfilePage/></div>
     },
@@ -133,12 +145,17 @@ const userRoutes = [
         path: "order-history",
         element: <div><OrderHistoryPage/></div>
     },
+    {
+        path:"dashboard",
+        element: <div><UserDashboard/></div>
+    }
 
 ];
 export const routes: RouteObject[] = [{
     path: "/",
     element: <div><App/></div>,
     children: [
+
         {
             path: "",
             element: <div><Shop/></div>,
@@ -146,7 +163,7 @@ export const routes: RouteObject[] = [{
         },
         {
             path: "user",
-            element: <div><UserDashboard/></div>,
+            element: <div><UserApp/></div>,
             children: userRoutes
         },
         {
