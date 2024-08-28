@@ -2,7 +2,7 @@
 GET localhost:8080/products
 
 ###
-GET localhost:8080/products?sortBy=products.updated_at&sortOrder=desc&categories=Books
+GET localhost:8080/products?page=5&sortBy=products.updated_at&sortOrder=desc
 
 ###
 GET localhost:8080/products?categories=Books&preloadCategories=true
@@ -29,3 +29,6 @@ Content-Type: Application/json
 GET http://localhost:8080/test
 Content-Type: Application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjUwNDEwMDcsInVzZXJfaWQiOjF9.esfiOu0-PGZXPLAo2-LC5CEHZUOB1Nh2sQSf9MwbE4s
+
+###
+GET http://localhost:8080/orders?sortBy=updated_at&sortOrder=desc&preload=OrderItems.Product

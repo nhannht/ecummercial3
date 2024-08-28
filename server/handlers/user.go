@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"nhannht.kute/ecummercial/server/db"
 	"nhannht.kute/ecummercial/server/models"
+	"strconv"
 )
 
 type CreateUserInput struct {
@@ -36,9 +37,43 @@ func CreateUser(c *gin.Context) {
 
 func GetUsers(c *gin.Context) {
 	var users []models.User
-	db.DB.Find(&users)
 
-	c.JSON(http.StatusOK, gin.H{"data": users})
+	// Get query parameters for pagination
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
+
+	// Calculate offset and limit
+	offset := (page - 1) * pageSize
+
+	sortBy := c.QueryArray("sortBy")
+	sortOrder := c.QueryArray("sortOrder")
+
+	preload := c.QueryArray("preload")
+
+	query := db.DB.Model(&models.User{})
+
+	for _, p := range preload {
+		query.Preload(p)
+	}
+
+	for sortByI, sortByV := range sortBy {
+		query = query.Order(fmt.Sprintf("%s %s", sortByV, sortOrder[sortByI]))
+	}
+
+	var totalCount int64
+	query.Count(&totalCount)
+
+	// Fetch the products with pagination and filters
+	query.Offset(offset).Limit(pageSize).Find(&users)
+
+	c.JSON(http.StatusOK, gin.H{
+		"data":       users,
+		"totalCount": totalCount,
+		"page":       page,
+		"pageSize":   pageSize,
+		"sortBy":     sortBy,
+		"sortOrder":  sortOrder,
+	})
 }
 
 func GetUser(c *gin.Context) {

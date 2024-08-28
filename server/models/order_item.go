@@ -6,6 +6,7 @@ import (
 
 type OrderItem struct {
 	gorm.Model `faker:"-"`
+	Name       string  `faker:"word"`
 	OrderID    uint    `faker:"-"`
 	Order      Order   `faker:"-"`
 	ProductID  uint    `faker:"-"`

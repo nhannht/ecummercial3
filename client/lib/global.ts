@@ -23,6 +23,7 @@ export interface User {
     Orders: Order[];
     Reviews: Review[];
     Role: string;
+    UpdatedAt:string
 }
 
 export interface OrderItem {
@@ -77,6 +78,7 @@ export interface Order {
     Status?: 'pending' | 'shipped' | 'delivered';
     ShippingInfo?: ShippingInfo;
     User?: User;
+    UpdatedAt: string;
 }
 
 export interface Cart {
@@ -128,4 +130,11 @@ export type SortChoice = {
     ID: string,
     orders: SortOption[],
     description: string
+}
+
+export type ResultMetadata = {
+    currentPage: number,
+    pageSize: number,
+    totalCount: number
+
 }

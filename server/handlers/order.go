@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"nhannht.kute/ecummercial/server/db"
 	"nhannht.kute/ecummercial/server/models"
+	"strconv"
 )
 
 type ValidateOrderCheckoutInput struct {
@@ -95,9 +97,46 @@ func CreateOrder(c *gin.Context) {
 
 func GetOrders(c *gin.Context) {
 	var orders []models.Order
-	db.DB.Find(&orders)
+	// Get query parameters for pagination
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
 
-	c.JSON(http.StatusOK, gin.H{"data": orders})
+	// Calculate offset and limit
+	offset := (page - 1) * pageSize
+
+	sortBy := c.QueryArray("sortBy")
+	sortOrder := c.QueryArray("sortOrder")
+
+	preload := c.QueryArray("preload")
+
+	// Build the query
+	query := db.DB.Model(&models.Order{})
+
+	// Get query parameters for preloading
+	for _, p := range preload {
+		query.Preload(p)
+	}
+
+	for sortByI, sortByV := range sortBy {
+		query = query.Order(fmt.Sprintf("%s %s", sortByV, sortOrder[sortByI]))
+	}
+
+	// Get the total count of products after applying filters
+	var totalCount int64
+	query.Count(&totalCount)
+
+	// Fetch the products with pagination and filters
+	query.Offset(offset).Limit(pageSize).Find(&orders)
+
+	// Return the products along with pagination and sorting metadata
+	c.JSON(http.StatusOK, gin.H{
+		"data":       orders,
+		"totalCount": totalCount,
+		"page":       page,
+		"pageSize":   pageSize,
+		"sortBy":     sortBy,
+		"sortOrder":  sortOrder,
+	})
 }
 
 func GetOrder(c *gin.Context) {

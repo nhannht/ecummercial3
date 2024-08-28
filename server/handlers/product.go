@@ -241,18 +241,10 @@ func GetProducts(c *gin.Context) {
 	minPrice := c.Query("minPrice")
 	maxPrice := c.Query("maxPrice")
 	categories := c.QueryArray("categories")
-	log.Printf("Categories: %v", categories)
-
-	// Get query parameters for sorting
-	//sortBy := c.DefaultQuery("sortBy", "updated_at") // Default sort by price
-	//sortOrder := c.DefaultQuery("sortOrder", "desc") // Default sort order ascending
+	//log.Printf("Categories: %v", categories)
 
 	sortBy := c.QueryArray("sortBy")
 	sortOrder := c.QueryArray("sortOrder")
-
-	//preloadReviews := c.DefaultQuery("preloadReviews", "false") == "true"
-	//preloadCategories := c.DefaultQuery("preloadCategories", "false") == "true"
-	//preloadOrderItems := c.DefaultQuery("preloadOrderItems", "false") == "true"
 
 	preload := c.QueryArray("preload")
 

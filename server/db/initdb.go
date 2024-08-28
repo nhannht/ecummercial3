@@ -191,6 +191,7 @@ func createRandomOrderItems(t int) {
 					log.Fatalln("Cannot convert product to models.Product ")
 				}
 				orderItem.ProductID = product.ID
+				orderItem.Product = product
 			}
 			if len(orders) > 0 {
 				orderI, pickErr := lib.PickRandomElement(orders)
@@ -202,9 +203,14 @@ func createRandomOrderItems(t int) {
 					log.Fatalln("Cannot convert order to models.Order ")
 				}
 				orderItem.OrderID = order.ID
+				orderItem.Order = order
 			}
-			DB.Create(&orderItem)
 
+			//log.Printf("ID %v OrderID %v , Name %v\n", orderItem.ID, orderItem.OrderID, orderItem.Name)
+			result := DB.Create(&orderItem)
+			if result.Error != nil {
+				log.Printf("Cannot create fake order item: %v", result.Error)
+			}
 			//log.Printf("Successfully created fake order item: %+v\n", orderItem)
 		}
 	}

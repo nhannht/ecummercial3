@@ -2,17 +2,11 @@ import {useEffect, useMemo, useState} from "react";
 import {Link, useSearchParams} from "react-router-dom";
 // import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import {Button} from "@/components/ui/button";
-import { Category, Product} from "@/lib/global";
+import {Category, Product} from "@/lib/global";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Label} from "@/components/ui/label";
 import {TwoThumpSlider} from "@/components/ui/slider.tsx";
-import {
-    Pagination,
-    PaginationContent, PaginationEllipsis,
-    PaginationItem,
-    PaginationLink, PaginationNext,
-    PaginationPrevious
-} from "@/components/ui/pagination.tsx";
+import {PaginationComponent} from "@/components/PaginationComponent.tsx";
 // import {useToast} from "@/components/ui/use-toast.ts";
 // import useLocalStorageState from "use-local-storage-state";
 
@@ -234,62 +228,7 @@ export default function ProductList() {
                 ))}
             </div>
             <div className="flex flex-row w-[95vw]">
-                <Pagination>
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious
-                                className={"hover:cursor-pointer focus:outline-none"}
-                                onClick={() => setSearchParams({page: (parseInt(searchParams.get("page") || "1") - 1).toString()})}
-                            />
-                        </PaginationItem>
-                        {/*@ts-ignore*/}
-                        {Array.from({length: Math.ceil(resultMetaData.totalCount / resultMetaData.pageSize)}, (_, index) => {
-                            const pageNumber = index + 1;
-                            const currentPage = parseInt(searchParams.get("page") || "1");
-                            // @ts-ignore
-                            const totalPages = Math.ceil(resultMetaData.totalCount / resultMetaData.pageSize);
-
-                            if (totalPages > 5) {
-                                if (pageNumber === 1 || pageNumber === totalPages || (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)) {
-                                    return (
-                                        <PaginationItem key={index}>
-                                            <PaginationLink
-                                                onClick={() => setSearchParams({page: pageNumber.toString()})}
-                                                className={pageNumber === currentPage ? "border border-dark bg-gray-200 cursor-pointer" : "cursor-pointer"}
-                                            >
-                                                {pageNumber}
-                                            </PaginationLink>
-                                        </PaginationItem>
-                                    );
-                                } else if (pageNumber === currentPage - 2 || pageNumber === currentPage + 2) {
-                                    return (
-                                        <PaginationItem key={index}>
-                                            <PaginationEllipsis/>
-                                        </PaginationItem>
-                                    );
-                                } else {
-                                    return null;
-                                }
-                            } else {
-                                return (
-                                    <PaginationItem key={index}>
-                                        <PaginationLink
-                                            onClick={() => setSearchParams({page: pageNumber.toString()})}
-                                            className={pageNumber === currentPage ? "border border-dark bg-gray-200 cursor-pointer" : "cursor-pointer"}
-                                        >
-                                            {pageNumber}
-                                        </PaginationLink>
-                                    </PaginationItem>
-                                );
-                            }
-                        })}
-                        <PaginationItem>
-                            <PaginationNext
-                                onClick={() => setSearchParams({page: (parseInt(searchParams.get("page") || "1") + 1).toString()})}
-                            />
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
+                <PaginationComponent searchParams={searchParams} setSearchParams={setSearchParams}/>
             </div>
 
         </div>

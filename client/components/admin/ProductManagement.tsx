@@ -1,9 +1,11 @@
 import {useEffect, useState} from "react";
-import {Category, Product, SortChoice, SortOption} from "@/lib/global.ts";
-import {useSearchParams} from "react-router-dom";
+import {Category, Product, ResultMetadata, SortChoice, SortOption} from "@/lib/global.ts";
+import {Link, useSearchParams} from "react-router-dom";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {CategoryPicker} from "@/components/admin/product-editor/CategoryPicker.tsx";
 import {SortSettingsComponent} from "@/components/admin/SortSettingsComponent.tsx";
+import {PaginationComponent} from "@/components/PaginationComponent.tsx";
+import {PencilIcon} from "lucide-react";
 
 const sortChoices: SortChoice[] = [
     {
@@ -26,10 +28,10 @@ const sortChoices: SortChoice[] = [
 
 
 export default function ProductManagement() {
-    const [products, setProducts] = useState<Product[]|undefined>([]);
+    const [products, setProducts] = useState<Product[] | undefined>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     // const [priceRange, _setPriceRange] = useState([0, 1]);
-    const [sorts,setSorts] = useState<SortOption[]>([
+    const [sorts, setSorts] = useState<SortOption[]>([
         {sortBy: "products.updated_at", sortOrder: "desc"},
 
 
@@ -40,13 +42,17 @@ export default function ProductManagement() {
     const [selectedCategory, setSelectedCategory] = useState<Category[]>([]);
     const [searchParams, setSearchParams] = useSearchParams();
     // const navigate = useNavigate();
-    const [_resultMetaData, setResultMetaData] = useState({})
+    const [resultMetaData, setResultMetaData] = useState<ResultMetadata>({
+        totalCount: products?.length || 0,
+        currentPage: parseInt(searchParams.get("page") || "1"),
+        pageSize: 10
+    })
 
 
     // const {toast} = useToast();
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_SERVER_URL}/products?${searchParams.toString()}`)
+        fetch(`${import.meta.env.VITE_SERVER_URL}/products?${searchParams.toString()}&preload=Categories`)
             .then(response => response.json())
             .then(result => {
                 // console.log(data)
@@ -65,34 +71,19 @@ export default function ProductManagement() {
             .catch(error => console.error('Error fetching categories:', error));
     }, []);
 
-    // useEffect(() => {
-    //   fetch(`${import.meta.env.VITE_SERVER_URL}/products/prices`)
-    //       .then(response => response.json())
-    //       .then(data => {
-    //         const min = data.minPrice;
-    //         const max = data.maxPrice;
-    //         setPriceRange([min, max]);
-    //         // setPriceMax(max);
-    //         // setPriceMin(min);
-    //       })
-    //       .catch(error => console.error('Error fetching product prices:', error));
-    // }, []);
 
-
-
-
-    useEffect(()=>{
+    useEffect(() => {
         console.log("sorts updated")
         searchParams.delete("sortBy");
         searchParams.delete("sortOrder");
-        sorts.forEach(sorts=>{
+        sorts.forEach(sorts => {
             searchParams.append("sortBy", sorts.sortBy);
             searchParams.append("sortOrder", sorts.sortOrder);
         })
         setSearchParams(searchParams)
 
 
-    },[sorts])
+    }, [sorts])
 
 
     // const filteredProducts = useMemo(() => {
@@ -130,7 +121,7 @@ export default function ProductManagement() {
 
     return (
         <div className="flex flex-col gap-4 p-4 sm:p-6">
-            <div className={"flex flex-col gap-4 sm:flex-row sm:items-center"}>
+            <div className={"flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-end"}>
                 <CategoryPicker categories={categories}
                                 selectedCategories={selectedCategory}
                                 handleSelectCategory={handleSelectCategory}
@@ -170,11 +161,26 @@ export default function ProductManagement() {
                                     className="hidden md:table-cell">{product.Categories?.map(category => category.CategoryName).join(', ')}</TableCell>
                                 <TableCell
                                     className="hidden md:table-cell">{new Date(product.UpdatedAt).toLocaleDateString()}</TableCell>
+                                <TableCell className={"table-cell"}>
+                                    <Link className={"table-cell"} to={`/admin/products/edit/${product.ID}`}>
+                                        <PencilIcon/>
+                                    </Link>
+                                </TableCell>
+
+
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </div>
+
+            <PaginationComponent searchParams={searchParams}
+                                 setSearchParams={setSearchParams}
+                                 resultMetaData={resultMetaData}
+
+            />
+
+
         </div>
 
 

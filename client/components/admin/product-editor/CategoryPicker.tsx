@@ -2,10 +2,11 @@ import {Category} from "@/lib/global";
 import {useState} from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {Check, ChevronsUpDown, X} from "lucide-react";
+import {Check, ChevronsUpDown} from "lucide-react";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command.tsx";
 import {cn} from "@/lib/utils.ts";
-import {Badge} from "@/components/ui/badge.tsx";
+
+
 
 export function CategoryPicker(props: {
     categories: Category[]
@@ -45,7 +46,7 @@ export function CategoryPicker(props: {
                                         <Check
                                             className={cn(
                                                 "mr-2 h-4 w-4",
-                                                props.selectedCategories.includes(category) ? "opacity-100" : "opacity-0"
+                                                props.selectedCategories.find(c => c.ID === category.ID) ? "opacity-100" : "opacity-0"
                                             )}
                                         />
                                         {category.CategoryName}
@@ -58,33 +59,6 @@ export function CategoryPicker(props: {
                 </PopoverContent>
             </Popover>
 
-            <div className="space-y-2">
-                <h3 className="text-sm font-medium">Selected Categories:</h3>
-                {props.selectedCategories.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No categories selected</p>
-                ) : (
-                    <ul className="flex flex-row flex-wrap items-center justify-center space-x-2 ">
-                        {props.selectedCategories.map((category) => (
-                            <li key={category.ID} className="flex items-center space-x-2 my-1">
-                                <Badge variant="outline">
-                                    {props.categories.find(c => c.ID === category.ID)?.CategoryName}
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="h-6 w-6 p-0 ml-2"
-
-                                        //@ts-ignore
-                                        onClick={() => props.handleRemoveCategory(category.ID)}
-                                    >
-                                        <X className="h-4 w-4"/>
-                                        <span className="sr-only">Remove</span>
-                                    </Button>
-                                </Badge>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
         </div>
     )
 }
