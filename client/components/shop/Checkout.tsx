@@ -13,7 +13,18 @@ export default function Checkout() {
   const [cart,_setCart] = useLocalStorageState<Cart>(`cart`, {
     defaultValue: {orderItems: []},
   })
-  const [order, setOrder] = useState<Order>({})
+  const [order, setOrder] = useState<Order>({
+    ID: 0,
+    OrderItems: [],
+    Payments: [],
+    ShippingInfo: undefined,
+    Status: undefined,
+    TotalCost: 0,
+    UpdatedAt: "",
+    User: undefined,
+    UserID: 0,
+    updated_at: ""
+  })
   const [cartDisplayInformation,setCartDisplayInformation] = useState<CartDisplayInformation>([])
 
   useEffect(()=>{

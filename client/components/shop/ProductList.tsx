@@ -2,7 +2,7 @@ import {useEffect, useMemo, useState} from "react";
 import {Link, useSearchParams} from "react-router-dom";
 // import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import {Button} from "@/components/ui/button";
-import {Category, Product} from "@/lib/global";
+import {Category, Product, ResultMetadata} from "@/lib/global";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Label} from "@/components/ui/label";
 import {TwoThumpSlider} from "@/components/ui/slider.tsx";
@@ -82,7 +82,7 @@ export default function ProductList() {
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
     const [searchParams, setSearchParams] = useSearchParams();
     // const navigate = useNavigate();
-    const [resultMetaData, setResultMetaData] = useState({})
+    const [resultMetaData, setResultMetaData] = useState<ResultMetadata>({currentPage: 0, pageSize: 0, totalCount: 0})
 
     // const [cartValue, setCartValue] = useLocalStorageState<Cart>(`cart`, {
     //     defaultValue: {
@@ -228,7 +228,10 @@ export default function ProductList() {
                 ))}
             </div>
             <div className="flex flex-row w-[95vw]">
-                <PaginationComponent searchParams={searchParams} setSearchParams={setSearchParams}/>
+                <PaginationComponent searchParams={searchParams}
+                                     setSearchParams={setSearchParams}
+                                     resultMetaData={resultMetaData}
+                />
             </div>
 
         </div>

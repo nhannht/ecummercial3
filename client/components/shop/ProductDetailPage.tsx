@@ -42,11 +42,11 @@ export default function ProductDetailPage (){
     }
 
     return <ProductDetails
-        name={product.Name}
-        description={product.Description}
-        mainImageUrl={product.Image}
+        name={product.Name ? product.Name : ""}
+        description={product.Description ? product.Description : ""}
+        mainImageUrl={product.Image ? product.Image :"placeholder.svg"}
         mainImageAlt={"Place holder alt"}
-        otherImageUrls={product.OtherImages}
+        otherImageUrls={product.OtherImages ? product.OtherImages : []}
         productPrice={product.Price}
         reviews={product.Reviews}
         categories={product.Categories}

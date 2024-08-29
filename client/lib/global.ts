@@ -96,9 +96,10 @@ export type MenuLink = {
 
 
  const emptyUser: User = {
-    Addresses: "", Email: "", Name: "", Orders: [], Password: "", Reviews: [], Role: ""
+     UpdatedAt: "",
+     Addresses: "", Email: "", Name: "", Orders: [], Password: "", Reviews: [], Role: ""
 
-}
+ }
 
 
  const emptyUserLocalData: UserLocalStorageData = {
@@ -109,7 +110,9 @@ export type MenuLink = {
         Addresses: "",
         Orders: [],
         Reviews: [],
-        Role: ""
+        Role: "",
+        UpdatedAt: "",
+
     },
 
 }
