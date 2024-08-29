@@ -5,6 +5,7 @@ import {Card} from "@/components/ui/card"
 import {StarIcon} from "lucide-react";
 import {Category, Product, Review} from "@/lib/global";
 import {OtherImagesList} from "@/components/shop/product-editor/OtherImagesList.tsx";
+import {CollapsibleContentWrapper} from "@/components/CollapsibleContentWrapper.tsx";
 
 function ReviewPlaceHolder() {
     return <div>
@@ -164,10 +165,12 @@ export default function ProductDetails(props: {
                     />
                     <div className="grid gap-2">
                         <h1 className="text-3xl md:text-4xl font-bold">{props.name}</h1>
-                        <div
-                            className="quill-content"
-                            dangerouslySetInnerHTML={{__html: props.description}}
-                        />
+                        <CollapsibleContentWrapper>
+                            <div
+                                className="quill-content"
+                                dangerouslySetInnerHTML={{__html: props.description}}
+                            />
+                        </CollapsibleContentWrapper>
 
 
                     </div>
@@ -175,9 +178,9 @@ export default function ProductDetails(props: {
 
                 <div className="grid gap-6">
                     <OtherImagesList otherImagesUrls={props.otherImageUrls} callbackfn={(url, index) => (
-                        <button
+                        <div
                             key={index}
-                            className="border rounded-lg overflow-hidden transition-colors hover:border-primary"
+                            className="border rounded-lg  aspect-square overflow-hidden transition-colors hover:border-primary"
                         >
                             <img
                                 src={url}
@@ -186,8 +189,9 @@ export default function ProductDetails(props: {
                                 height={150}
                                 className="aspect-square object-cover"
                             />
-                        </button>
+                        </div>
                     )}/>
+
                     <div className="grid gap-4">
                         <div className="flex items-center justify-between">
                             <span className="text-3xl font-bold">{props.productPrice || "$99.99"}</span>

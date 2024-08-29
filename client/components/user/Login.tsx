@@ -43,8 +43,10 @@ export default function Login() {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error);
+                return response.text().then(text=>{
+                    toast({description: "Failed to login" });
+                    throw Error(`server responded with ${response.status}: ${text}`);
+                })
             }
 
             const responseJSON = await response.json();

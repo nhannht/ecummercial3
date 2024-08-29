@@ -9,7 +9,7 @@ export function OtherImagesList(props: {
             ) : (
                 <>
                     <button
-                        className="border rounded-lg overflow-hidden transition-colors hover:border-primary">
+                        className="border aspect-square rounded-lg overflow-hidden transition-colors hover:border-primary">
                         <img
                             src="/placeholder.svg"
                             alt="Product Image 1"
@@ -19,7 +19,7 @@ export function OtherImagesList(props: {
                         />
                     </button>
                     <button
-                        className="border rounded-lg overflow-hidden transition-colors hover:border-primary">
+                        className="border aspect-square rounded-lg overflow-hidden transition-colors hover:border-primary">
                         <img
                             src="/placeholder.svg"
                             alt="Product Image 2"
@@ -29,7 +29,7 @@ export function OtherImagesList(props: {
                         />
                     </button>
                     <button
-                        className="border rounded-lg overflow-hidden transition-colors hover:border-primary">
+                        className="border aspect-square rounded-lg overflow-hidden transition-colors hover:border-primary">
                         <img
                             src="/placeholder.svg"
                             alt="Product Image 3"

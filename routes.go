@@ -11,7 +11,9 @@ func setupRoute(r *gin.Engine) {
 	protected := r.Group("/")
 	protected.Use(handlers.AuthMiddleware())
 	adminProtected := r.Group("/")
+	userProtected := r.Group("/")
 	adminProtected.Use(handlers.AuthMiddleware(), handlers.AdminMiddleware())
+	userProtected.Use(handlers.AuthMiddleware(), handlers.UserMiddleware())
 	{
 		r.POST("/register", handlers.Register)
 		r.POST("/login", handlers.Login)
@@ -44,9 +46,9 @@ func setupRoute(r *gin.Engine) {
 		adminProtected.DELETE("/orders/:id", handlers.DeleteOrder)
 	}
 	{
-		adminProtected.POST("/orderitems", handlers.CreateOrderItem)
-		r.GET("/orderitems", handlers.GetOrderItems)
-		r.GET("/orderitems/:id", handlers.GetOrderItem)
+		protected.POST("/orderitems", handlers.CreateOrderItem)
+		protected.GET("/orderitems", handlers.GetOrderItems)
+		protected.GET("/orderitems/:id", handlers.GetOrderItem)
 		adminProtected.PUT("/orderitems/:id", handlers.UpdateOrderItem)
 		adminProtected.DELETE("/orderitems/:id", handlers.DeleteOrderItem)
 
@@ -59,7 +61,7 @@ func setupRoute(r *gin.Engine) {
 		adminProtected.DELETE("/categories/:id", handlers.DeleteCategory)
 	}
 	{
-		adminProtected.POST("/reviews", handlers.CreateReview)
+		protected.POST("/reviews", handlers.CreateReview)
 		r.GET("/reviews", handlers.GetReviews)
 		r.GET("/reviews/:id", handlers.GetReview)
 		adminProtected.PUT("/reviews/:id", handlers.UpdateReview)
@@ -95,5 +97,7 @@ func setupRoute(r *gin.Engine) {
 	adminProtected.GET("/test", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "Test route"})
 	})
+
+	adminProtected.GET("/admin/analytic", handlers.GetAnalyticData)
 
 }

@@ -84,31 +84,7 @@ export default function ProductList() {
     // const navigate = useNavigate();
     const [resultMetaData, setResultMetaData] = useState<ResultMetadata>({currentPage: 0, pageSize: 0, totalCount: 0})
 
-    // const [cartValue, setCartValue] = useLocalStorageState<Cart>(`cart`, {
-    //     defaultValue: {
-    //         orderItems: [],
-    //     }
-    // });
-    // const {toast} = useToast();
 
-    // const handleAddToCart = (product: Product) => {
-    //     const newOrderItem: OrderItem = {
-    //         ProductID: product.ID,
-    //
-    //     };
-    //
-    //     setCartValue({
-    //         orderItems: [...cartValue.orderItems, newOrderItem],
-    //     })
-    //
-    //
-    //     toast({
-    //         title: "Successful",
-    //         description: `${product.Name} added to cart`,
-    //         duration:3000
-    //
-    //     })
-    // };
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_SERVER_URL}/products?${searchParams.toString()}`)

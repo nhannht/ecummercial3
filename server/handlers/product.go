@@ -312,8 +312,10 @@ func UpdateProduct(c *gin.Context) {
 	}
 
 	var input CreateProductInput
-	if err := c.ShouldBindJSON(&input); err != nil {
+	if err := c.ShouldBind(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		log.Printf("Error when binding JSON: %v", err)
+		log.Printf("Input: %+v", input)
 		return
 	}
 	file, getMainImageErr := c.FormFile("image")
@@ -362,7 +364,11 @@ func UpdateProduct(c *gin.Context) {
 		OtherImages: otherImagePaths,
 	}
 
-	db.DB.Model(&product).Updates(newProduct)
+	result := db.DB.Model(&product).Updates(newProduct)
+	if result.Error != nil {
+		log.Printf("Cannot update product: %v", result.Error)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": product})
 }

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"nhannht.kute/ecummercial/server/db"
 	"nhannht.kute/ecummercial/server/models"
@@ -22,14 +23,24 @@ func CreateOrderItem(c *gin.Context) {
 	orderItem := models.OrderItem{OrderID: input.OrderID,
 		ProductID: input.ProductID,
 	}
-	db.DB.Create(&orderItem)
+	result := db.DB.Create(&orderItem)
+	if result.Error != nil {
+		log.Printf("Error creating record: %v", result.Error)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": orderItem})
 }
 
 func GetOrderItems(c *gin.Context) {
 	var orderItems []models.OrderItem
-	db.DB.Find(&orderItems)
+	result := db.DB.Find(&orderItems)
+	if result.Error != nil {
+		log.Printf("Error fetching records: %v", result.Error)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": orderItems})
 }
@@ -57,7 +68,11 @@ func UpdateOrderItem(c *gin.Context) {
 		return
 	}
 
-	db.DB.Model(&orderItem).Updates(input)
+	if err := db.DB.Model(&orderItem).Updates(input).Error; err != nil {
+		log.Printf("Error updating record: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": orderItem})
 }
@@ -69,7 +84,10 @@ func DeleteOrderItem(c *gin.Context) {
 		return
 	}
 
-	db.DB.Delete(&orderItem)
+	if err := db.DB.Delete(&orderItem).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": true})
 }

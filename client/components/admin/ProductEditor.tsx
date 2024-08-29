@@ -10,9 +10,11 @@ import ProductDescriptionEditor from "@/components/admin/ProductDescriptionEdito
 import {Button} from "@/components/ui/button.tsx";
 import ProductDetails from "@/components/shop/ProductDetails.tsx";
 import {useToast} from "@/components/ui/use-toast.ts";
+import useLocalStorageState from "use-local-storage-state";
 
 
 const ProductEditor = () => {
+    const [token] = useLocalStorageState('token',{defaultValue:""})
     const {id} = useParams(); // Get the route parameters
     const location = useLocation(); // Get the current path
     const isEditMode = location.pathname.includes('/edit');
@@ -127,20 +129,25 @@ const ProductEditor = () => {
             formData.append(`OtherImages[]`, image);
         });
         pickedCategories.forEach((category) => {
-            // @ts-ignore
-            formData.append(`Categories[]`, category.ID);
+            formData.append(`Categories[]`, category.ID ? category.ID?.toString(): "");
         });
-        console.log([...formData]);
+        // console.log([...formData]);
 
         try {
             const response = isEditMode && id
                 ? await fetch(`${import.meta.env.VITE_SERVER_URL}/products/${id}`, {
                     method: 'PUT',
                     body: formData,
+                    headers:{
+                        Authorization: `Bearer ${token}`,
+                    }
                 })
                 : await fetch(`${import.meta.env.VITE_SERVER_URL}/products`, {
                     method: 'POST',
                     body: formData,
+                    headers:{
+                        Authorization: `Bearer ${token}`,
+                    }
                 });
 
             if (!response.ok) {
@@ -168,59 +175,64 @@ const ProductEditor = () => {
 
 
     return (
-        <div className="new-product-editor">
+        <div className="new-product-editor p-4 flex flex-col items-center">
+            <div className={"w-full sm:w-2/3"}>
+                <CategoryPicker categories={categories}
+                                selectedCategories={pickedCategories}
+                                handleRemoveCategory={handleRemoveCategory}
+                                handleSelectCategory={handleSelectCategory}
 
-            <CategoryPicker categories={categories}
-                            selectedCategories={pickedCategories}
-                            handleRemoveCategory={handleRemoveCategory}
-                            handleSelectCategory={handleSelectCategory}
+                />
+                <MainImagePicker
+                    selectedImage={mainImage}
+                    handleImagePick={handleMainImagePick}
+                    imagePreviewUrl={mainImageUrl}
+                />
+                <OtherImagesPicker
+                    handleImagesPick={handleOtherImagesPick}
+                    selectedOtherImages={otherImages}
+                    handleRemoveImage={handleOtherImagesRemove}
+                    imagePreviewUrls={otherImageUrls}
+                />
+                <div className="grid gap-4">
+                    <div className="grid gap-2">
+                        <Label htmlFor="name">Product Name</Label>
+                        <Input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required/>
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="price">Product Price</Label>
+                        <Input id="price" type="number" step="0.01" value={price}
+                               onChange={(e) => {
+                                   setPrice(parseFloat(e.target.value))
+                                   setIsDirty(true)
+                               }} required/>
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="stock">Product Stock</Label>
+                        <Input id="stock" type="number" value={stock}
+                               onChange={(e) => setStock(parseInt(e.target.value))}
+                               required/>
+                    </div>
 
-            />
-            <MainImagePicker
-                selectedImage={mainImage}
-                handleImagePick={handleMainImagePick}
-                imagePreviewUrl={mainImageUrl}
-            />
-            <OtherImagesPicker
-                handleImagesPick={handleOtherImagesPick}
-                selectedOtherImages={otherImages}
-                handleRemoveImage={handleOtherImagesRemove}
-                imagePreviewUrls={otherImageUrls}
-            />
-            <div className="grid gap-4">
-                <div className="grid gap-2">
-                    <Label htmlFor="name">Product Name</Label>
-                    <Input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required/>
+                    <div className="grid gap-2">
+                        <Label htmlFor="description">Product Description</Label>
+                        <ProductDescriptionEditor content={description} setContent={setDescription}/>
+                    </div>
                 </div>
-                <div className="grid gap-2">
-                    <Label htmlFor="price">Product Price</Label>
-                    <Input id="price" type="number" step="0.01" value={price}
-                           onChange={(e) => {
-                               setPrice(parseFloat(e.target.value))
-                               setIsDirty(true)
-                           }} required/>
-                </div>
-                <div className="grid gap-2">
-                    <Label htmlFor="stock">Product Stock</Label>
-                    <Input id="stock" type="number" value={stock} onChange={(e) => setStock(parseInt(e.target.value))}
-                           required/>
+                <div className="mt-6 flex justify-end gap-2">
+                    <Button type="button" variant="outline" onClick={() => console.log('Cancel')}>
+                        Cancel
+                    </Button>
+                    <Button type="button" onClick={handleSave}>
+                        Save
+                    </Button>
                 </div>
 
-                <div className="grid gap-2">
-                    <Label htmlFor="description">Product Description</Label>
-                    <ProductDescriptionEditor content={description} setContent={setDescription}/>
-                </div>
+
             </div>
-            <div className="mt-6 flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => console.log('Cancel')}>
-                    Cancel
-                </Button>
-                <Button type="button" onClick={handleSave}>
-                    Save
-                </Button>
-            </div>
-            <div className="mt-8">
+            <div className="mt-8 mx-4">
                 <h2 className="text-2xl font-bold mb-4">Product Preview</h2>
+                <h4 className={"font-thin text-pretty text-muted-foreground"}>This is where your product page should be, the real data will only change after you click save</h4>
                 <ProductDetails
                     name={name}
                     description={description}
