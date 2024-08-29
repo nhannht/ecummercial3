@@ -18,7 +18,7 @@ func main() {
 
 	r := gin.Default()
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:5173"}
+	config.AllowOrigins = []string{"http://localhost:5173", "https://ecummercial.pages.dev"}
 	config.AllowCredentials = true
 	config.AllowMethods = []string{"GET", "POST",
 		"PUT", "DELETE",
