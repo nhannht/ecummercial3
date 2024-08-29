@@ -8,6 +8,7 @@ import (
 
 func setupRoute(r *gin.Engine) {
 	r.Static("uploads/products", "./uploads/products")
+	r.StaticFile("/robots.txt", "./server_statics/robots.txt")
 	protected := r.Group("/")
 	protected.Use(handlers.AuthMiddleware())
 	adminProtected := r.Group("/")

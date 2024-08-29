@@ -31,11 +31,7 @@ export default function ProductManagement() {
     const [products, setProducts] = useState<Product[] | undefined>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     // const [priceRange, _setPriceRange] = useState([0, 1]);
-    const [sorts, setSorts] = useState<SortOption[]>([
-        {sortBy: "products.updated_at", sortOrder: "desc"},
-
-
-    ]);
+    const [sorts, setSorts] = useState<SortOption[]>([]);
 
     // const [priceMax, setPriceMax] = useState(0);
     // const [priceMin, setPriceMin] = useState(0);

@@ -24,7 +24,7 @@ const sortChoices: SortChoice[] = [
 
 export default function UserManagement() {
   const [users, setUsers] = useState<User[]|undefined>([])
-  const [sorts, setSorts] = useState<SortOption[]>([{sortBy: "updated_at", sortOrder: "desc"}]);
+  const [sorts, setSorts] = useState<SortOption[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [resultMetaData, setResultMetaData] = useState<ResultMetadata>({
     totalCount: users?.length || 0,

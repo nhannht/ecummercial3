@@ -20,7 +20,7 @@ const SortSettingsComponent = (props: {
     handleSort: (sorts: SortOption[]) => void
 }) => {
 
-    const [choiceID,setChoiceID] = useState(props.choices[0].ID)
+    const [choiceID,setChoiceID] = useState("-1")
 
     if (isMobileSafari) {
         return (
@@ -49,11 +49,11 @@ const SortSettingsComponent = (props: {
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm" className="h-8 gap-1">
                         <ListOrderedIcon className="h-4 w-4"/>
-                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">{props.choices.find(c=>c.ID === choiceID)?.description}</span>
+                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">{props.choices.find(c=>c.ID === choiceID) ? props.choices.find(c=>c.ID === choiceID)?.description : "Sort"}</span>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Sort by: {choiceID} </DropdownMenuLabel>
+                    <DropdownMenuLabel>Sort by:  </DropdownMenuLabel>
                     <DropdownMenuSeparator/>
                     <DropdownMenuRadioGroup
                         value={choiceID}

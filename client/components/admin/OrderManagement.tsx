@@ -23,7 +23,7 @@ const sortChoices: SortChoice[] = [
 
 export default function OrderManagement() {
   const [orders, setOrders] = useState<Order[]|undefined>([])
-  const [sorts, setSorts] = useState<SortOption[]>([{sortBy: "updated_at", sortOrder: "desc"}]);
+  const [sorts, setSorts] = useState<SortOption[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [resultMetaData, setResultMetaData] = useState<ResultMetadata>({
     totalCount: orders?.length || 0,
