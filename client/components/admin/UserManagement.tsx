@@ -93,7 +93,7 @@ export default function UserManagement() {
                   <TableRow key={user.ID}>
                     {/*<TableCell>*/}
                     {/*  <img*/}
-                    {/*      src={user.Image}*/}
+                    {/*      src={user.}*/}
                     {/*      width="64"*/}
                     {/*      height="64"*/}
                     {/*      alt={user.Name}*/}

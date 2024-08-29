@@ -144,8 +144,8 @@ const ProductEditor = () => {
                 });
 
             if (!response.ok) {
-
                 return response.text().then(text => {
+                    toast({description:"Error in server response, please contact engineer team"})
                     throw new Error(`Server response with status ${response.status} and error is ${text}`);
                 })
             }
@@ -159,6 +159,7 @@ const ProductEditor = () => {
             )
             setIsDirty(false);
         } catch (error) {
+            toast({description:"Error when trying to send request to server, please contact engineer team"})
             console.log(JSON.stringify(error));
         }
     };

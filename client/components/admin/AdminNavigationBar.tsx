@@ -25,21 +25,21 @@ const adminMenuLinks:MenuLink[] = [
         href: "/admin/users",
         description:"user list and management",
     },
-    {
-        title: "Analytics",
-        href: "/admin/analytics",
-        description: "view analytics data",
-    },
-    {
-        title: "Term of Service Editor",
-        href:"/admin/toq-editor",
-        description:"Edit term of service page"
-    },
-    {
-        title: "Privacy Policy Editor",
-        href:"/admin/pp-editor",
-        description:"Edit privacy policy page"
-    },
+    // {
+    //     title: "Analytics",
+    //     href: "/admin/analytics",
+    //     description: "view analytics data",
+    // },
+    // {
+    //     title: "Term of Service Editor",
+    //     href:"/admin/toq-editor",
+    //     description:"Edit term of service page"
+    // },
+    // {
+    //     title: "Privacy Policy Editor",
+    //     href:"/admin/pp-editor",
+    //     description:"Edit privacy policy page"
+    // },
     {
         title:"FAQ Editor",
         href:"/admin/faq-editor",

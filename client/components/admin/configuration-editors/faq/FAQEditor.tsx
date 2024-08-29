@@ -5,12 +5,14 @@ import {Textarea} from "@/components/ui/textarea"
 import {FAQItem} from "@/lib/global.ts";
 import useLocalStorageState from "use-local-storage-state";
 import {faqitemsplacefallback} from "@/lib/utils.ts";
+import {useToast} from "@/components/ui/use-toast.ts";
 
 export default function FAQEditor() {
     const [faqs, setFaqs] = useState<FAQItem[]>(faqitemsplacefallback)
     const [editingFaq, setEditingFaq] = useState<FAQItem|null>(null)
     const [newFaq, setNewFaq] = useState({ question: "", answer: "" })
     const [token] = useLocalStorageState<string>("token", { defaultValue: "" })
+    const {toast} = useToast()
     const handleFaqEdit = (faq) => {
         setEditingFaq(faq)
     }
@@ -49,12 +51,17 @@ export default function FAQEditor() {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to save FAQs to the server");
+                return response.text().then(text=>{
+                    toast({description: "Failed to save FAQs to the server" });
+                    throw new Error(`Failed to save FAQs to the server ${text}`);
+                })
+
             }
 
             const result = await response.json();
             console.log("FAQs saved successfully:", result);
         } catch (error) {
+            toast({description: "Failed to save FAQs to the server" })
             console.error("Error saving FAQs to the server:", error);
         }
     };
@@ -101,6 +108,7 @@ export default function FAQEditor() {
                                 key={faq.id}
                                 className="bg-white rounded-lg shadow-md p-4 cursor-move"
                                 onDragOver={(e) => e.preventDefault()}
+
                                 onDrop={(e) => {
                                     e.preventDefault()
                                     const dragIndex = parseInt(e.dataTransfer.getData("text/plain"))

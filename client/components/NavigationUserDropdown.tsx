@@ -38,8 +38,11 @@ export function NavigationUserDropdown(props: { user: User }) {
         >
 
                 <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder.svg"/>
-                    <AvatarFallback>Ad</AvatarFallback>
+                    {
+                        user.Role === "admin" ? (<AvatarImage src="/mask-king.svg"/>)
+                            : (<AvatarImage src="/mask-user.svg"/>)
+                    }
+                    <AvatarFallback>{user.Name.substring(0,1) || user.Email.substring(0,1)}</AvatarFallback>
                 </Avatar>
                 <span className="sr-only">Toggle user menu</span>
 
@@ -47,8 +50,11 @@ export function NavigationUserDropdown(props: { user: User }) {
         <PopoverContent align="end">
             <div className="flex items-center gap-2 p-2">
                 <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder.svg"/>
-                    <AvatarFallback>JD</AvatarFallback>
+                    {
+                        user.Role === "admin" ? (<AvatarImage src="/mask-king.svg"/>)
+                            : (<AvatarImage src="/mask-user.svg"/>)
+                    }
+                    <AvatarFallback>{user.Name.substring(0,1) || user.Email.substring(0,1)}</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-0.5 leading-none">
                     <div className="font-semibold">{props.user.Name}</div>

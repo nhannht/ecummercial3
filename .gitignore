@@ -35,4 +35,5 @@ client/dist-ssr
 
 /config/homepage/feature_categories.json
 /config/homepage/feature_products.json
-
+/uploads/products/*
+!/uploads/products/placeholder.svg

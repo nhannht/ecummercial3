@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"nhannht.kute/ecummercial/server/db"
 	"nhannht.kute/ecummercial/server/models"
@@ -99,9 +100,14 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	db.DB.Model(&user).Updates(input)
+	result := db.DB.Model(&user).Updates(input)
+	if result.Error != nil {
+		log.Printf("Error updating record: %v", result.Error)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
+
 }
 
 func DeleteUser(c *gin.Context) {
@@ -111,7 +117,11 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 
-	db.DB.Delete(&user)
+	result := db.DB.Delete(&user)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		log.Printf("Error deleting record: %v", result.Error)
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": true})
 }
