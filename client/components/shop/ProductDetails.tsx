@@ -3,9 +3,10 @@ import {Button} from "@/components/ui/button"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
 import {Card} from "@/components/ui/card"
 import {StarIcon} from "lucide-react";
-import {Category, Product, Review} from "@/lib/global";
+import {Cart, OrderItem, Product} from "@/lib/global";
 import {OtherImagesList} from "@/components/shop/product-editor/OtherImagesList.tsx";
 import {CollapsibleContentWrapper} from "@/components/CollapsibleContentWrapper.tsx";
+import useLocalStorageState from "use-local-storage-state";
 
 function ReviewPlaceHolder() {
     return <div>
@@ -142,33 +143,42 @@ function RelatedProducts(props:{
 }
 
 export default function ProductDetails(props: {
-    name: string,
-    description: string
-    mainImageUrl: string,
-    mainImageAlt: string,
-    otherImageUrls: string[],
-    productPrice?: number,
-    reviews?: Review[],
-    categories?: Category[],
-    relatedProducts?: Product[]
+    product: Product,
 }) {
+
+    const [cart,setCart] = useLocalStorageState<Cart>('cart', {
+        defaultValue:{
+            orderItems: [],
+        }
+    });
+
+    const handleAddToCart = ()=>{
+        const orderItem:OrderItem = {
+            ProductID: props.product.ID,
+            Product: props.product,
+        }
+        setCart({
+            orderItems: [...cart.orderItems,orderItem]
+        });
+
+    }
+
     return (
         <div className="w-full max-w-6xl mx-auto py-12 md:py-20 px-4 md:px-6">
             <div className="grid md:grid-cols-2 gap-8 md:gap-12">
                 <div className="grid gap-6">
                     <img
-                        src={props.mainImageUrl || "/placeholder.svg"}
-                        alt={props.mainImageAlt || "a place holder for image picture"}
+                        src={props.product.Image || "/placeholder.svg"}
                         width={800}
                         height={600}
                         className="w-full rounded-lg object-cover aspect-[4/3]"
                     />
                     <div className="grid gap-2">
-                        <h1 className="text-3xl md:text-4xl font-bold">{props.name}</h1>
+                        <h1 className="text-3xl md:text-4xl font-bold">{props.product.Name}</h1>
                         <CollapsibleContentWrapper>
                             <div
                                 className="quill-content"
-                                dangerouslySetInnerHTML={{__html: props.description}}
+                                dangerouslySetInnerHTML={{__html: props.product.Description ? props.product.Description : ''}}
                             />
                         </CollapsibleContentWrapper>
 
@@ -177,7 +187,7 @@ export default function ProductDetails(props: {
                 </div>
 
                 <div className="grid gap-6">
-                    <OtherImagesList otherImagesUrls={props.otherImageUrls} callbackfn={(url, index) => (
+                    <OtherImagesList otherImagesUrls={props.product.OtherImages ? props.product.OtherImages : []} callbackfn={(url, index) => (
                         <div
                             key={index}
                             className="border rounded-lg  aspect-square overflow-hidden transition-colors hover:border-primary"
@@ -194,16 +204,18 @@ export default function ProductDetails(props: {
 
                     <div className="grid gap-4">
                         <div className="flex items-center justify-between">
-                            <span className="text-3xl font-bold">{props.productPrice || "$99.99"}</span>
-                            <Button size="lg">Add to Cart</Button>
+                            <span className="text-3xl font-bold">{props.product.Price}</span>
+                            <Button
+                                onClick={handleAddToCart}
+                                size="lg">Add to Cart</Button>
                         </div>
                         {
-                            props.reviews ?
+                            props.product.Reviews ?
                                 (
                                     <div>
                                         <h2 className="text-xl font-bold mb-4">Customer Reviews</h2>
                                         <div className="grid gap-6">
-                                            {props.reviews.map((review) => (
+                                            {props.product.Reviews.map((review) => (
                                                 <div key={review.ID} className="flex gap-4">
                                                     <Avatar className="w-10 h-10 border">
                                                         <AvatarImage src="/placeholder.svg" alt="nhannht"/>

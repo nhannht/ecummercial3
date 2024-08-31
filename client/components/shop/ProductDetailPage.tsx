@@ -5,7 +5,19 @@ import {Product} from "@/lib/global.ts";
 
 export default function ProductDetailPage (){
     const {id} = useParams<{ id: string }>();
-    const [product, setProduct] = useState<Product | null>(null);
+    const [product, setProduct] = useState<Product >({
+        Categories: [],
+        Description: "",
+        ID: 0,
+        Image: "",
+        Name: "",
+        OrderItems: [],
+        OtherImages: [],
+        Price: 0,
+        Reviews: [],
+        Stock: 0,
+        UpdatedAt: ""
+    });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -14,15 +26,18 @@ export default function ProductDetailPage (){
             try {
                 const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/products/${id}`)
                 if (!response.ok) {
-                    throw new Error("Failed to fetch product");
+                    return response.text().then(text =>{
+                        throw new Error(`Server Error: ${text} (${response.status})`);
+                    })
 
                 }
                 const data = await response.json()
                 setProduct(data.data)
 
             } catch (error) {
-                // @ts-ignore
-                setError(error.message)
+                if (error instanceof Error) {
+                    setError(error.message)
+                }
             } finally {
                 setLoading(false)
             }
@@ -41,10 +56,14 @@ export default function ProductDetailPage (){
         return <div>Product not found</div>
     }
 
+    if (product.ID !== 0){
+        return <ProductDetails product={product}/>
+    }
+
     return <ProductDetails
         name={product.Name ? product.Name : ""}
         description={product.Description ? product.Description : ""}
-        mainImageUrl={product.Image ? product.Image :"placeholder.svg"}
+        mainImageUrl={product.Image ? product.Image :"/placeholder.svg"}
         mainImageAlt={"Place holder alt"}
         otherImageUrls={product.OtherImages ? product.OtherImages : []}
         productPrice={product.Price}

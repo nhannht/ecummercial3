@@ -90,7 +90,7 @@ func setupRoute(r *gin.Engine) {
 
 	r.GET("/config/contact", handlers.GetConfContactPage)
 	adminProtected.POST("/config/contact", handlers.EditConfContactPage)
-	adminProtected.POST("/checkout/validate-order", handlers.ValidateOrder)
+	r.POST("/checkout/craft-preview-order", handlers.CraftPreviewOrderForUserCart)
 
 	r.GET("/config/faq", handlers.GetFAQ)
 	adminProtected.POST("/config/faq", handlers.EditFAQ)

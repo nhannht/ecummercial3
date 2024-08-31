@@ -3,6 +3,7 @@ import {Cart, Order} from "@/lib/global";
 import {useEffect, useState} from "react";
 import {CheckoutAddressForm} from "@/components/shop/checkout/CheckoutAddressForm.tsx";
 import {CartForm} from "@/components/shop/checkout/CartForm.tsx";
+import {useToast} from "@/components/ui/use-toast.ts";
 
 export type CartDisplayInformation = {
   productId?: number;
@@ -26,6 +27,9 @@ export default function Checkout() {
     updated_at: ""
   })
   const [cartDisplayInformation,setCartDisplayInformation] = useState<CartDisplayInformation>([])
+  const [token] = useLocalStorageState("token",{defaultValue: ""})
+  const {toast} = useToast()
+  const [errorMsg,setErrorMsg] = useState("")
 
   useEffect(()=>{
     if (order.OrderItems){
@@ -49,6 +53,8 @@ export default function Checkout() {
         return acc;
       }, [] as CartDisplayInformation);
       setCartDisplayInformation(t)
+    } else  {
+      setCartDisplayInformation([])
     }
   },[order])
 
@@ -57,7 +63,7 @@ export default function Checkout() {
   useEffect(() => {
     const validateOrder = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/checkout/validate-order`, {
+        const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/checkout/craft-preview-order`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -66,18 +72,39 @@ export default function Checkout() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to validate order');
+          return response.text().then(text=>{
+          throw new Error(`Server Error: ${text} - ${response.status} `);
+
+          })
         }
 
         const data = await response.json();
         setOrder(data.tempOrder);
       } catch (error) {
-        console.error('Error validating order:', error);
+        if (error instanceof Error) {
+          console.error("Error when try to send validate request to server",error.message)
+        }
+
       }
     };
 
     validateOrder();
   }, [cart]);
+
+
+  const handlePlaceOrder = ()=>{
+    if (token.trim() === ""){
+      toast({
+        description: "Please login or create account to place your order",
+      })
+      setErrorMsg("Please login or create account to place your order")
+
+    } else {
+
+    }
+
+
+  }
 
   return (
     <div className="grid gap-8 px-4 py-8 md:px-6 md:py-12 lg:grid-cols-2 lg:gap-12">

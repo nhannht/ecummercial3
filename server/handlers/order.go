@@ -13,7 +13,7 @@ type ValidateOrderCheckoutInput struct {
 	OrderItems []models.OrderItem ` binding:"required"`
 }
 
-func ValidateOrder(c *gin.Context) {
+func CraftPreviewOrderForUserCart(c *gin.Context) {
 	var input ValidateOrderCheckoutInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
